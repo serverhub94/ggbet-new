@@ -2,7 +2,7 @@
 	"$schema": "https://schemas.wp.org/trunk/block.json",
 	"apiVersion": 3,
 	"name": "new-theme/site-header",
-	"title": "Шапка сайта",
+	"title": "Site Header",
 	"category": "new-theme",
 	"icon": "menu",
 	"textdomain": "new-theme",

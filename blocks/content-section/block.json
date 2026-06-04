@@ -2,7 +2,7 @@
 	"$schema": "https://schemas.wp.org/trunk/block.json",
 	"apiVersion": 3,
 	"name": "new-theme/content-section",
-	"title": "Редактируемая секция контента",
+	"title": "Content Section",
 	"category": "new-theme",
 	"icon": "text-page",
 	"textdomain": "new-theme",

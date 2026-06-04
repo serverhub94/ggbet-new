@@ -2,7 +2,7 @@
 	"$schema": "https://schemas.wp.org/trunk/block.json",
 	"apiVersion": 3,
 	"name": "new-theme/about-list",
-	"title": "О блоке List",
+	"title": "About List",
 	"category": "new-theme",
 	"icon": "list-view",
 	"textdomain": "new-theme",

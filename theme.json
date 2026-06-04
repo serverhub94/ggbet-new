@@ -1,5 +1,5 @@
 {
-	"$schema": "https://schemas.wp.org/wp/6.5/theme.json",
+	"$schema": "https://schemas.wp.org/wp/6.6/theme.json",
 	"settings": {
 		"appearanceTools": true,
 		"color": {
@@ -11,12 +11,12 @@
 				},
 				{
 					"color": "#ffc700",
-					"name": "Рейтинг Yellow",
+					"name": "Rating Yellow",
 					"slug": "rating-yellow"
 				},
 				{
 					"color": "#ff8f28",
-					"name": "Бонус Orange",
+					"name": "Bonus Orange",
 					"slug": "bonus-orange"
 				},
 				{
@@ -115,17 +115,17 @@
 					"slug": "lead"
 				},
 				{
-					"name": "Заголовок 3",
+					"name": "Heading 3",
 					"size": "24px",
 					"slug": "heading-3"
 				},
 				{
-					"name": "Заголовок 2",
+					"name": "Heading 2",
 					"size": "34px",
 					"slug": "heading-2"
 				},
 				{
-					"name": "Заголовок 1",
+					"name": "Heading 1",
 					"size": "64px",
 					"slug": "heading-1"
 				}

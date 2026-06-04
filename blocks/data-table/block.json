@@ -2,7 +2,7 @@
 	"$schema": "https://schemas.wp.org/trunk/block.json",
 	"apiVersion": 3,
 	"name": "new-theme/data-table",
-	"title": "Редактируемая таблица данных",
+	"title": "Data Table",
 	"category": "new-theme",
 	"icon": "editor-table",
 	"textdomain": "new-theme",

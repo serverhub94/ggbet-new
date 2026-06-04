@@ -2,7 +2,7 @@
 	"$schema": "https://schemas.wp.org/trunk/block.json",
 	"apiVersion": 3,
 	"name": "new-theme/offer-card",
-	"title": "Казино-оффер Card",
+	"title": "Casino Offer Card",
 	"category": "new-theme",
 	"icon": "tickets-alt",
 	"parent": [ "new-theme/offer-list" ],

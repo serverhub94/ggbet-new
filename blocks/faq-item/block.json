@@ -2,7 +2,7 @@
 	"$schema": "https://schemas.wp.org/trunk/block.json",
 	"apiVersion": 3,
 	"name": "new-theme/faq-item",
-	"title": "Элемент FAQ",
+	"title": "FAQ Item",
 	"category": "new-theme",
 	"icon": "editor-help",
 	"parent": [ "new-theme/faq" ],

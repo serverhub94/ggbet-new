@@ -6,6 +6,10 @@
  * Idempotent: skips posts that already exist by post_name (slug).
  */
 
+if ( 'cli' !== php_sapi_name() && ! defined( 'WP_CLI' ) ) {
+    exit;
+}
+
 define( 'ABSPATH_SEED', true );
 $_SERVER['HTTP_HOST'] = 'localhost';
 
