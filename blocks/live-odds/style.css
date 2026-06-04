@@ -1,0 +1,27 @@
+/*
+ * Live odds block-local layer.
+ * The full legacy widget CSS remains in assets/css/legacy-reference.css until
+ * the dynamic live-odds migration replaces the static HTML partial.
+ */
+
+.odds-tips {
+	overflow: hidden;
+	position: relative;
+}
+
+.odds-tips .odds-tips-wrapper {
+	overflow: hidden;
+}
+
+.odds-tips .tip-match {
+	box-sizing: border-box;
+}
+
+.odds-tips .odd-provider img {
+	object-fit: contain;
+}
+
+.odds-tips-cta {
+	text-align: center;
+	padding: 16px 0 8px;
+}

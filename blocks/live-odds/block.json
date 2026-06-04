@@ -1,0 +1,24 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "new-theme/live-odds",
+	"title": "Виджет live odds",
+	"category": "new-theme",
+	"icon": "chart-line",
+	"textdomain": "new-theme",
+	"style": "file:./style.css",
+	"attributes": {
+		"title":           { "type": "string",  "default": "Isskirtiniai sporto statymai" },
+		"source":          { "type": "string",  "default": "manual" },
+		"enableSlider":    { "type": "boolean", "default": true },
+		"providerLogoSrc": { "type": "string",  "default": "assets/img/2021/08/betano-logo.svg" },
+		"providerLogoAlt": { "type": "string",  "default": "Betano" },
+		"defaultCtaUrl":   { "type": "string",  "default": "" },
+		"ctaLabel":        { "type": "string",  "default": "" },
+		"ctaUrl":          { "type": "string",  "default": "" },
+		"items":           { "type": "array",   "default": [] }
+	},
+	"supports": {
+		"html": false
+	}
+}

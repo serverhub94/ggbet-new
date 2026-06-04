@@ -1,0 +1,24 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "new-theme/content-section",
+	"title": "Редактируемая секция контента",
+	"category": "new-theme",
+	"icon": "text-page",
+	"textdomain": "new-theme",
+	"attributes": {
+		"kind": { "type": "string" },
+		"title": { "type": "string" },
+		"text": { "type": "string" },
+		"image": { "type": "string" },
+		"imageId": { "type": "number" },
+		"background": { "type": "string" },
+		"items": {
+			"type": "array",
+			"items": { "type": "object" }
+		}
+	},
+	"supports": {
+		"html": false
+	}
+}

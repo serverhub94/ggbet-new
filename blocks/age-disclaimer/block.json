@@ -1,0 +1,17 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "new-theme/age-disclaimer",
+	"title": "Возрастное предупреждение",
+	"category": "new-theme",
+	"icon": "warning",
+	"textdomain": "new-theme",
+	"attributes": {
+		"text": { "type": "string" },
+		"linkText": { "type": "string" },
+		"linkUrl": { "type": "string" }
+	},
+	"supports": {
+		"html": false
+	}
+}

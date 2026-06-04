@@ -1,0 +1,3 @@
+function abcChecker(usage_type){if(usage_type==='1'){$('a[href^="'+window.location.protocol+'//'+window.location.host+'/ir/"], a[href^="'+window.location.protocol+'//'+window.location.host+'/go/"]').on("click",function(e){e.preventDefault();let href=$(this).attr("href");window.open(window.location.protocol+'//'+window.location.host+'/?abcredirect='+href,"_blank")})}}
+setTimeout(function(){var type='0';if(window.abcPositive===undefined){type='1';abcChecker(type)}else{try{fetch(new Request("https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js",{method:'HEAD',mode:'no-cors',})).catch(error=>{type='1';abcChecker(type)})}catch(e){type='1';abcChecker(type)}}
+setTimeout(function(){if(type==='0'){abcChecker(type)}},2000)},2000)

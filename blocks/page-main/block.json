@@ -1,0 +1,15 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "new-theme/page-main",
+	"title": "Основной контейнер страницы",
+	"category": "new-theme",
+	"icon": "welcome-widgets-menus",
+	"textdomain": "new-theme",
+	"attributes": {
+		"schema": { "type": "string" }
+	},
+	"supports": {
+		"html": false
+	}
+}

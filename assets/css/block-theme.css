@@ -1,0 +1,356 @@
+.nt-page {
+	background: #f2f2f3;
+	color: #1d2129;
+	font-family: Roboto, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+.nt-page a {
+	color: inherit;
+	text-decoration: none;
+}
+
+.nt-age-disclaimer {
+	background: #11151c;
+	color: #fff;
+	font-family: "Roboto Condensed", Roboto, sans-serif;
+	font-size: 13px;
+	font-weight: 700;
+	letter-spacing: .02em;
+	padding: 10px 0;
+	text-transform: uppercase;
+}
+
+.nt-age-disclaimer__inner,
+.nt-header__inner,
+.nt-hero__inner,
+.nt-section__inner,
+.nt-footer__inner {
+	box-sizing: border-box;
+	margin: 0 auto;
+	max-width: 1194px;
+	padding-left: 15px;
+	padding-right: 15px;
+	width: 100%;
+}
+
+.nt-age-disclaimer span {
+	color: #12a96a;
+	margin-right: 8px;
+}
+
+.nt-header {
+	background: #1d2129;
+	color: #fff;
+	position: sticky;
+	top: 0;
+	z-index: 50;
+}
+
+.nt-header__inner {
+	align-items: center;
+	display: flex;
+	gap: 28px;
+	min-height: 72px;
+}
+
+.nt-header__logo {
+	display: block;
+	flex: 0 0 auto;
+	height: 25px;
+	width: 125px;
+}
+
+.nt-header__nav {
+	align-items: center;
+	display: flex;
+	flex: 1;
+	flex-wrap: wrap;
+	gap: 18px;
+	justify-content: flex-end;
+}
+
+.nt-header__nav a {
+	color: #fff;
+	font-family: "Roboto Condensed", Roboto, sans-serif;
+	font-size: 15px;
+	font-weight: 700;
+	text-transform: uppercase;
+}
+
+.nt-hero {
+	background-position: center top;
+	background-size: cover;
+	color: #fff;
+	position: relative;
+}
+
+.nt-hero::before {
+	background: linear-gradient(90deg, rgba(29, 33, 41, .9), rgba(29, 33, 41, .58));
+	content: "";
+	inset: 0;
+	position: absolute;
+}
+
+.nt-hero__inner {
+	min-height: 360px;
+	padding-bottom: 58px;
+	padding-top: 72px;
+	position: relative;
+	z-index: 1;
+}
+
+.nt-hero h1 {
+	font-family: "Roboto Condensed", Roboto, sans-serif;
+	font-size: clamp(40px, 7vw, 72px);
+	line-height: .96;
+	margin: 0 0 22px;
+	max-width: 780px;
+	text-transform: uppercase;
+}
+
+.nt-hero p {
+	font-size: 20px;
+	line-height: 1.5;
+	margin: 0;
+	max-width: 760px;
+}
+
+.nt-section {
+	padding: 34px 0;
+}
+
+.nt-section h2 {
+	font-family: "Roboto Condensed", Roboto, sans-serif;
+	font-size: 34px;
+	line-height: 1.12;
+	margin: 0 0 16px;
+	text-transform: uppercase;
+}
+
+.nt-section p {
+	font-size: 17px;
+	line-height: 1.65;
+	margin: 0 0 16px;
+}
+
+.nt-offer-list {
+	display: grid;
+	gap: 16px;
+}
+
+.nt-offer-card {
+	background: #fff;
+	border-radius: 6px;
+	box-shadow: 0 6px 18px rgba(29, 33, 41, .08);
+	display: grid;
+	gap: 16px;
+	grid-template-columns: 150px minmax(0, 1fr) 180px 140px;
+	padding: 16px;
+}
+
+.nt-offer-card__logo-wrap {
+	align-items: center;
+	background: #f8f8f9;
+	border-radius: 4px;
+	display: flex;
+	justify-content: center;
+	min-height: 104px;
+	padding: 16px;
+}
+
+.nt-offer-card__logo {
+	max-height: 54px;
+	object-fit: contain;
+	width: 100%;
+}
+
+.nt-offer-card h3 {
+	font-family: "Roboto Condensed", Roboto, sans-serif;
+	font-size: 24px;
+	line-height: 1.1;
+	margin: 0 0 8px;
+	text-transform: uppercase;
+}
+
+.nt-offer-card__rating {
+	color: #12a96a;
+	font-family: "Roboto Condensed", Roboto, sans-serif;
+	font-weight: 700;
+	margin-bottom: 10px;
+}
+
+.nt-offer-card__features {
+	display: flex;
+	flex-direction: column;
+	gap: 6px;
+	margin: 0;
+	padding: 0;
+}
+
+.nt-offer-card__features li {
+	list-style: none;
+	padding-left: 22px;
+	position: relative;
+}
+
+.nt-offer-card__features li::before {
+	color: #12a96a;
+	content: "✓";
+	font-weight: 700;
+	left: 0;
+	position: absolute;
+}
+
+.nt-offer-card__bonus {
+	align-items: center;
+	border: 1px solid #ff8f28;
+	border-radius: 4px;
+	color: #ff8f28;
+	display: flex;
+	font-family: "Roboto Condensed", Roboto, sans-serif;
+	font-size: 24px;
+	font-weight: 700;
+	justify-content: center;
+	padding: 12px;
+	text-align: center;
+	text-transform: uppercase;
+}
+
+.nt-offer-card__actions {
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+	justify-content: center;
+}
+
+.nt-button {
+	align-items: center;
+	border-radius: 4px;
+	display: inline-flex;
+	font-family: "Roboto Condensed", Roboto, sans-serif;
+	font-weight: 700;
+	justify-content: center;
+	min-height: 44px;
+	padding: 10px 16px;
+	text-transform: uppercase;
+}
+
+.nt-button--primary {
+	background: #12a96a;
+	color: #fff;
+}
+
+.nt-button--secondary {
+	background: #f2f2f3;
+	color: #1d2129;
+}
+
+.nt-card-grid {
+	display: grid;
+	gap: 16px;
+	grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.nt-link-card {
+	background: #fff;
+	border-radius: 6px;
+	box-shadow: 0 6px 18px rgba(29, 33, 41, .08);
+	display: flex;
+	flex-direction: column;
+	min-height: 100%;
+	overflow: hidden;
+}
+
+.nt-link-card__image {
+	aspect-ratio: 16 / 9;
+	background: #d8d8dc;
+	object-fit: cover;
+	width: 100%;
+}
+
+.nt-link-card__body {
+	padding: 18px;
+}
+
+.nt-link-card h3 {
+	font-family: "Roboto Condensed", Roboto, sans-serif;
+	font-size: 22px;
+	line-height: 1.15;
+	margin: 0 0 8px;
+	text-transform: uppercase;
+}
+
+.nt-link-card p {
+	font-size: 15px;
+	line-height: 1.45;
+	margin: 0;
+}
+
+.nt-faq {
+	display: grid;
+	gap: 12px;
+}
+
+.nt-faq-item {
+	background: #fff;
+	border-radius: 6px;
+	box-shadow: 0 6px 18px rgba(29, 33, 41, .08);
+	padding: 18px 20px;
+}
+
+.nt-faq-item h3 {
+	font-family: "Roboto Condensed", Roboto, sans-serif;
+	font-size: 22px;
+	line-height: 1.2;
+	margin: 0 0 8px;
+}
+
+.nt-footer {
+	background: #1d2129;
+	color: #fff;
+	padding: 42px 0;
+}
+
+.nt-footer__inner {
+	display: grid;
+	gap: 24px;
+}
+
+.nt-footer__links {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 16px;
+}
+
+@media (max-width: 900px) {
+	.nt-header__inner,
+	.nt-header__nav {
+		align-items: flex-start;
+		flex-direction: column;
+	}
+
+	.nt-offer-card {
+		grid-template-columns: 120px minmax(0, 1fr);
+	}
+
+	.nt-offer-card__bonus,
+	.nt-offer-card__actions {
+		grid-column: 1 / -1;
+	}
+
+	.nt-card-grid {
+		grid-template-columns: 1fr;
+	}
+}
+
+@media (max-width: 560px) {
+	.nt-hero__inner {
+		min-height: 300px;
+		padding-bottom: 42px;
+		padding-top: 52px;
+	}
+
+	.nt-offer-card {
+		grid-template-columns: 1fr;
+	}
+}

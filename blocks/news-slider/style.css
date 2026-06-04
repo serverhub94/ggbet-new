@@ -1,0 +1,21 @@
+/*
+ * News slider block-local layer.
+ * Legacy visual parity still lives in assets/css/legacy-reference.css.
+ */
+
+.news-slider {
+	position: relative;
+}
+
+.news-slider-item__thumb {
+	object-fit: cover;
+}
+
+.news-slider .slick-track {
+	align-items: stretch;
+	display: flex;
+}
+
+.news-slider .slick-slide {
+	height: auto;
+}

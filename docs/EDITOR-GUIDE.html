@@ -1,0 +1,1685 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Руководство редактора — New Theme</title>
+<style>
+  /* ── Reset & Base ─────────────────────────────────────────────── */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --green:   #15a96a;
+    --dark:    #1D2129;
+    --dark2:   #2c333e;
+    --gray:    #f2f2f3;
+    --gray2:   #e4e6ea;
+    --gray3:   #9ba8b5;
+    --text:    #1a1f27;
+    --text2:   #4a5568;
+    --white:   #ffffff;
+    --orange:  #f6a623;
+    --red:     #e53e3e;
+    --blue:    #3182ce;
+    --sidebar: 280px;
+    --radius:  8px;
+    --shadow:  0 2px 12px rgba(0,0,0,.08);
+  }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    font-size: 15px;
+    line-height: 1.65;
+    color: var(--text);
+    background: var(--gray);
+    display: flex;
+    min-height: 100vh;
+  }
+
+  /* ── Sidebar ──────────────────────────────────────────────────── */
+  #sidebar {
+    width: var(--sidebar);
+    flex-shrink: 0;
+    background: var(--dark);
+    min-height: 100vh;
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+  }
+  .sidebar-logo {
+    padding: 24px 20px 16px;
+    border-bottom: 1px solid rgba(255,255,255,.08);
+  }
+  .sidebar-logo h1 {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--white);
+    line-height: 1.3;
+  }
+  .sidebar-logo p {
+    font-size: 11px;
+    color: var(--gray3);
+    margin-top: 3px;
+  }
+  .sidebar-badge {
+    display: inline-block;
+    background: var(--green);
+    color: white;
+    font-size: 10px;
+    font-weight: 700;
+    padding: 2px 7px;
+    border-radius: 20px;
+    margin-bottom: 6px;
+    letter-spacing: .5px;
+  }
+  nav ul { list-style: none; padding: 12px 0; }
+  nav ul li a {
+    display: block;
+    padding: 7px 20px;
+    font-size: 13px;
+    color: var(--gray3);
+    text-decoration: none;
+    transition: color .15s, background .15s;
+    border-left: 3px solid transparent;
+  }
+  nav ul li a:hover,
+  nav ul li a.active {
+    color: var(--white);
+    background: rgba(255,255,255,.05);
+    border-left-color: var(--green);
+  }
+  nav .nav-group {
+    padding: 12px 20px 4px;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: rgba(255,255,255,.3);
+  }
+  nav .sub a { padding-left: 34px; font-size: 12px; }
+
+  /* ── Main content ─────────────────────────────────────────────── */
+  #main {
+    flex: 1;
+    padding: 40px 48px;
+    max-width: 900px;
+  }
+
+  /* ── Section header ───────────────────────────────────────────── */
+  .page-header {
+    background: var(--dark);
+    color: white;
+    border-radius: var(--radius);
+    padding: 36px 40px;
+    margin-bottom: 36px;
+    position: relative;
+    overflow: hidden;
+  }
+  .page-header::before {
+    content: '';
+    position: absolute;
+    right: -40px; top: -40px;
+    width: 200px; height: 200px;
+    border-radius: 50%;
+    background: rgba(21,169,106,.15);
+  }
+  .page-header h1 { font-size: 26px; font-weight: 800; margin-bottom: 8px; }
+  .page-header p  { color: var(--gray3); font-size: 14px; }
+  .page-header .badge-row { display:flex; gap:8px; margin-top:14px; flex-wrap:wrap; }
+  .badge {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 600;
+  }
+  .badge-green { background: rgba(21,169,106,.2); color: #4ade9e; }
+  .badge-gray  { background: rgba(255,255,255,.1); color: var(--gray3); }
+
+  /* ── Content sections ─────────────────────────────────────────── */
+  section { margin-bottom: 48px; }
+  section + section { border-top: 1px solid var(--gray2); padding-top: 48px; }
+
+  h2.section-title {
+    font-size: 20px;
+    font-weight: 800;
+    color: var(--dark);
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  h2.section-title .num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    background: var(--green);
+    color: white;
+    font-size: 14px;
+    font-weight: 800;
+    flex-shrink: 0;
+  }
+  h3.block-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--dark);
+    margin: 28px 0 12px;
+    padding-bottom: 6px;
+    border-bottom: 2px solid var(--gray2);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  p { margin-bottom: 12px; color: var(--text2); }
+  p:last-child { margin-bottom: 0; }
+
+  /* ── Cards ────────────────────────────────────────────────────── */
+  .card {
+    background: white;
+    border-radius: var(--radius);
+    padding: 20px 24px;
+    margin-bottom: 16px;
+    box-shadow: var(--shadow);
+  }
+  .card-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
+  .card-grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; margin-bottom: 16px; }
+  @media (max-width: 700px) { .card-grid-2, .card-grid-3 { grid-template-columns: 1fr; } }
+  .mini-card {
+    background: white;
+    border-radius: var(--radius);
+    padding: 16px;
+    box-shadow: var(--shadow);
+    text-align: center;
+  }
+  .mini-card .icon { font-size: 28px; margin-bottom: 8px; }
+  .mini-card h4 { font-size: 13px; font-weight: 700; margin-bottom: 4px; }
+  .mini-card p  { font-size: 12px; color: var(--gray3); margin: 0; }
+
+  /* ── Tables ───────────────────────────────────────────────────── */
+  .table-wrap { overflow-x: auto; margin-bottom: 16px; }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    border-radius: var(--radius);
+    overflow: hidden;
+    box-shadow: var(--shadow);
+    font-size: 14px;
+  }
+  thead th {
+    background: var(--dark);
+    color: white;
+    padding: 11px 14px;
+    text-align: left;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: .3px;
+  }
+  tbody td { padding: 10px 14px; border-bottom: 1px solid var(--gray2); vertical-align: top; }
+  tbody tr:last-child td { border-bottom: none; }
+  tbody tr:hover td { background: #f8fafb; }
+  .col-param { font-family: monospace; font-size: 13px; color: var(--dark); font-weight: 600; white-space: nowrap; }
+  .col-type  { font-size: 11px; color: var(--gray3); font-style: italic; white-space: nowrap; }
+  .col-req   { color: var(--red); font-weight: 700; }
+
+  /* ── Steps ────────────────────────────────────────────────────── */
+  .steps { counter-reset: step; list-style: none; padding: 0; }
+  .steps li {
+    counter-increment: step;
+    position: relative;
+    padding: 0 0 20px 52px;
+  }
+  .steps li::before {
+    content: counter(step);
+    position: absolute;
+    left: 0; top: 0;
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    background: var(--green);
+    color: white;
+    font-weight: 800;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .steps li::after {
+    content: '';
+    position: absolute;
+    left: 15px;
+    top: 36px;
+    bottom: 4px;
+    width: 2px;
+    background: var(--gray2);
+  }
+  .steps li:last-child::after { display: none; }
+  .steps li:last-child { padding-bottom: 0; }
+  .steps li strong { display: block; font-size: 14px; margin-bottom: 4px; color: var(--dark); }
+  .steps li p { font-size: 13px; margin: 0; }
+
+  /* ── Alerts ───────────────────────────────────────────────────── */
+  .alert {
+    border-radius: var(--radius);
+    padding: 14px 18px;
+    margin-bottom: 16px;
+    display: flex;
+    gap: 12px;
+    font-size: 13px;
+    line-height: 1.5;
+  }
+  .alert .icon { font-size: 18px; flex-shrink: 0; margin-top: 1px; }
+  .alert p { margin: 0; color: inherit; }
+  .alert-tip      { background: #e8f5ee; color: #155724; }
+  .alert-warn     { background: #fff8e1; color: #856404; }
+  .alert-important{ background: #fdecea; color: #721c24; }
+  .alert-info     { background: #e8f0fe; color: #1a56db; }
+
+  /* ── Screenshot placeholder ───────────────────────────────────── */
+  .screenshot {
+    border: 2px dashed #c0c8d4;
+    border-radius: var(--radius);
+    background: #f8fafc;
+    padding: 24px;
+    margin: 16px 0;
+    text-align: center;
+  }
+  .screenshot .cam { font-size: 32px; margin-bottom: 8px; display: block; }
+  .screenshot .label {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--dark);
+    margin-bottom: 6px;
+  }
+  .screenshot .hint {
+    font-size: 12px;
+    color: var(--gray3);
+    line-height: 1.5;
+  }
+  .screenshot .hint code {
+    background: #e4e6ea;
+    padding: 1px 5px;
+    border-radius: 3px;
+    font-family: monospace;
+  }
+
+  /* ── Code & Kbd ───────────────────────────────────────────────── */
+  code {
+    background: var(--gray2);
+    border-radius: 4px;
+    padding: 2px 6px;
+    font-family: 'Courier New', monospace;
+    font-size: 13px;
+    color: var(--dark);
+  }
+  kbd {
+    background: var(--dark);
+    color: white;
+    border-radius: 4px;
+    padding: 2px 7px;
+    font-size: 12px;
+    font-family: monospace;
+    box-shadow: 0 2px 0 rgba(0,0,0,.4);
+  }
+  pre {
+    background: var(--dark);
+    color: #a8d8a8;
+    border-radius: var(--radius);
+    padding: 16px;
+    font-size: 13px;
+    overflow-x: auto;
+    margin-bottom: 16px;
+    line-height: 1.6;
+  }
+
+  /* ── Path breadcrumb ──────────────────────────────────────────── */
+  .path {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--dark2);
+    color: var(--white);
+    border-radius: 20px;
+    padding: 5px 14px;
+    font-size: 12px;
+    font-weight: 600;
+    margin-bottom: 14px;
+  }
+  .path .sep { color: var(--green); font-weight: 800; }
+
+  /* ── Block reference cards ────────────────────────────────────── */
+  .block-card {
+    background: white;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    margin-bottom: 24px;
+    overflow: hidden;
+  }
+  .block-card-header {
+    background: var(--dark);
+    color: white;
+    padding: 14px 20px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .block-card-header .bc-icon { font-size: 22px; }
+  .block-card-header h3 {
+    font-size: 15px;
+    font-weight: 700;
+    margin: 0;
+  }
+  .block-card-header .bc-slug {
+    margin-left: auto;
+    background: rgba(255,255,255,.1);
+    color: var(--gray3);
+    font-size: 11px;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-family: monospace;
+  }
+  .block-card-body { padding: 16px 20px; }
+  .block-desc { font-size: 13px; color: var(--text2); margin-bottom: 12px; }
+
+  /* ── Tag pills ────────────────────────────────────────────────── */
+  .pill {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 600;
+  }
+  .pill-green  { background: #e6f7ef; color: #157a48; }
+  .pill-orange { background: #fef3e2; color: #9a6011; }
+  .pill-blue   { background: #e8f0fe; color: #1a56db; }
+  .pill-gray   { background: var(--gray2); color: var(--text2); }
+
+  /* ── Page map ─────────────────────────────────────────────────── */
+  .page-map {
+    background: white;
+    border-radius: var(--radius);
+    padding: 20px;
+    box-shadow: var(--shadow);
+    margin-bottom: 16px;
+  }
+  .pm-row {
+    display: flex;
+    align-items: center;
+    padding: 7px 0;
+    border-bottom: 1px solid var(--gray2);
+    font-size: 13px;
+  }
+  .pm-row:last-child { border-bottom: none; }
+  .pm-indent { flex-shrink: 0; color: var(--gray2); margin-right: 4px; }
+  .pm-icon { font-size: 16px; margin-right: 8px; }
+  .pm-name { font-weight: 600; color: var(--dark); flex: 1; }
+  .pm-desc { font-size: 12px; color: var(--gray3); }
+
+  /* ── Quick task cards ─────────────────────────────────────────── */
+  .task-card {
+    background: white;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    margin-bottom: 20px;
+    overflow: hidden;
+  }
+  .task-header {
+    padding: 14px 20px;
+    background: var(--gray);
+    border-bottom: 1px solid var(--gray2);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    user-select: none;
+  }
+  .task-header h4 { font-size: 14px; font-weight: 700; color: var(--dark); flex: 1; }
+  .task-header .tag { font-size: 11px; color: var(--gray3); }
+  .task-body { padding: 16px 20px; }
+
+  /* ── Footer ───────────────────────────────────────────────────── */
+  .guide-footer {
+    margin-top: 48px;
+    padding-top: 24px;
+    border-top: 1px solid var(--gray2);
+    font-size: 12px;
+    color: var(--gray3);
+    text-align: center;
+  }
+
+  /* ── Print ────────────────────────────────────────────────────── */
+  @media print {
+    #sidebar { display: none; }
+    #main { max-width: 100%; padding: 20px; }
+    .screenshot { break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ══ SIDEBAR ══════════════════════════════════════════════════ -->
+<div id="sidebar">
+  <div class="sidebar-logo">
+    <div class="sidebar-badge">GUIDE v1.0</div>
+    <h1>Руководство редактора</h1>
+    <p>Для менеджеров и редакторов</p>
+  </div>
+  <nav>
+    <div class="nav-group">Начало работы</div>
+    <ul>
+      <li><a href="#s1">1. Вход в WP Admin</a></li>
+      <li><a href="#s2">2. Обзор панели</a></li>
+      <li><a href="#s3">3. Редактор сайта</a></li>
+    </ul>
+    <div class="nav-group">Редактирование</div>
+    <ul>
+      <li><a href="#s4">4. Шапка (Header)</a></li>
+      <li><a href="#s5">5. Подвал (Footer)</a></li>
+      <li><a href="#s6">6. Главная страница</a></li>
+      <li><a href="#s7">7. Офферы казино</a></li>
+      <li><a href="#s8">8. Статьи и новости</a></li>
+    </ul>
+    <div class="nav-group">Справочник блоков</div>
+    <ul>
+      <li><a href="#b-disclaimer" class="sub">Age Disclaimer</a></li>
+      <li><a href="#b-hero" class="sub">Hero (Баннер)</a></li>
+      <li><a href="#b-offerlist" class="sub">Offer List</a></li>
+      <li><a href="#b-offercard" class="sub">Offer Card</a></li>
+      <li><a href="#b-twocol" class="sub">Two Column Text</a></li>
+      <li><a href="#b-aboutlist" class="sub">About List</a></li>
+      <li><a href="#b-infogrid" class="sub">Info Grid</a></li>
+      <li><a href="#b-rellinks" class="sub">Related Links</a></li>
+      <li><a href="#b-table" class="sub">Data Table</a></li>
+      <li><a href="#b-newsslider" class="sub">News Slider</a></li>
+      <li><a href="#b-liveodds" class="sub">Live Odds</a></li>
+      <li><a href="#b-faq" class="sub">FAQ</a></li>
+      <li><a href="#b-cardgrid" class="sub">Card Grid</a></li>
+    </ul>
+    <div class="nav-group">Частые задачи</div>
+    <ul>
+      <li><a href="#tasks">Пошаговые инструкции</a></li>
+    </ul>
+  </nav>
+</div>
+
+<!-- ══ MAIN ══════════════════════════════════════════════════════ -->
+<div id="main">
+
+  <!-- Page header -->
+  <div class="page-header">
+    <h1>📋 Руководство редактора контента</h1>
+    <p>Полный гайд по управлению сайтом в WordPress — от входа до редактирования каждого блока.</p>
+    <div class="badge-row">
+      <span class="badge badge-green">Для менеджеров</span>
+      <span class="badge badge-gray">WordPress Block Editor</span>
+      <span class="badge badge-gray">Версия 2026-06</span>
+    </div>
+  </div>
+
+  <!-- ══ 1. Вход ══════════════════════════════════════════════════ -->
+  <section id="s1">
+    <h2 class="section-title"><span class="num">1</span> Вход в панель управления</h2>
+
+    <div class="card">
+      <p><strong>Адрес входа:</strong> <code>https://ВАШ_ДОМЕН/wp-admin/</code></p>
+      <p>Введите логин и пароль, которые вам выдали. После входа откроется главная панель управления.</p>
+    </div>
+
+    <div class="screenshot">
+      <span class="cam">📸</span>
+      <p class="label">СКРИНШОТ 1 — Страница входа в WordPress</p>
+      <p class="hint">
+        Откройте <code>/wp-admin/</code> в браузере.<br>
+        Сделайте скриншот всей страницы с формой входа (два поля: логин и пароль, кнопка «Войти»).
+      </p>
+    </div>
+
+    <div class="alert alert-tip">
+      <span class="icon">💡</span>
+      <p><strong>Забыли пароль?</strong> Нажмите ссылку «Забыли пароль?» под кнопкой входа. Введите email — придёт письмо для сброса пароля.</p>
+    </div>
+  </section>
+
+  <!-- ══ 2. Обзор панели ══════════════════════════════════════════ -->
+  <section id="s2">
+    <h2 class="section-title"><span class="num">2</span> Обзор панели управления</h2>
+
+    <div class="screenshot">
+      <span class="cam">📸</span>
+      <p class="label">СКРИНШОТ 2 — Главная панель управления (Dashboard)</p>
+      <p class="hint">
+        После входа откроется Dashboard.<br>
+        Сделайте скриншот и <strong>обозначьте стрелками или рамками</strong> в левом меню:<br>
+        «Записи», «Медиафайлы», «Casino Offers», «Внешний вид».
+      </p>
+    </div>
+
+    <p>В <strong>левом меню</strong> находятся все разделы управления сайтом:</p>
+
+    <div class="card-grid-2">
+      <div class="mini-card">
+        <div class="icon">✏️</div>
+        <h4>Записи</h4>
+        <p>Статьи, новости блога</p>
+      </div>
+      <div class="mini-card">
+        <div class="icon">🖼️</div>
+        <h4>Медиафайлы</h4>
+        <p>Картинки, логотипы, иконки</p>
+      </div>
+      <div class="mini-card">
+        <div class="icon">🎰</div>
+        <h4>Casino Offers</h4>
+        <p>Карточки казино: бонус, рейтинг, ссылки</p>
+      </div>
+      <div class="mini-card">
+        <div class="icon">🎨</div>
+        <h4>Внешний вид → Редактор</h4>
+        <p>Главная страница, шапка, подвал</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ 3. Редактор сайта ════════════════════════════════════════ -->
+  <section id="s3">
+    <h2 class="section-title"><span class="num">3</span> Редактор сайта — главный инструмент</h2>
+
+    <p><strong>Внешний вид → Редактор</strong> — это место, где вы редактируете дизайн и контент страниц, шапки и подвала сайта.</p>
+
+    <ol class="steps">
+      <li>
+        <strong>Откройте редактор</strong>
+        <p>Левое меню → <strong>Внешний вид</strong> → <strong>Редактор</strong></p>
+      </li>
+      <li>
+        <strong>Выберите, что редактировать</strong>
+        <p>В левой панели редактора выберите <strong>Шаблоны</strong> (страницы) или <strong>Части шаблона</strong> (шапка, подвал)</p>
+      </li>
+      <li>
+        <strong>Нажмите на нужный шаблон</strong>
+        <p>Откроется визуальный редактор с предпросмотром страницы</p>
+      </li>
+      <li>
+        <strong>Кликните на блок для редактирования</strong>
+        <p>Справа появятся его настройки</p>
+      </li>
+      <li>
+        <strong>Нажмите «Сохранить»</strong>
+        <p>Синяя кнопка в правом верхнем углу — изменения видны на сайте сразу</p>
+      </li>
+    </ol>
+
+    <div class="screenshot">
+      <span class="cam">📸</span>
+      <p class="label">СКРИНШОТ 3 — Интерфейс Редактора сайта</p>
+      <p class="hint">
+        Откройте <strong>Внешний вид → Редактор → Шаблоны → Главная страница</strong>.<br>
+        Сделайте скриншот всего окна браузера.<br>
+        Обозначьте стрелками или рамками 4 зоны:<br>
+        ① Левая панель (список шаблонов)<br>
+        ② Центральная область (предпросмотр)<br>
+        ③ Правая панель (настройки блока)<br>
+        ④ Синяя кнопка «Сохранить» вверху справа
+      </p>
+    </div>
+
+    <h3 class="block-title">Что можно редактировать</h3>
+    <div class="page-map">
+      <div class="pm-row">
+        <div class="pm-icon">📁</div>
+        <div class="pm-name">Шаблоны (Templates)</div>
+        <div class="pm-desc">Страницы сайта</div>
+      </div>
+      <div class="pm-row">
+        <div class="pm-indent">└─</div>
+        <div class="pm-icon">🏠</div>
+        <div class="pm-name">Главная страница (Front Page)</div>
+        <div class="pm-desc">Главная — все секции</div>
+      </div>
+      <div class="pm-row">
+        <div class="pm-indent">└─</div>
+        <div class="pm-icon">📄</div>
+        <div class="pm-name">Страница (Page)</div>
+        <div class="pm-desc">Шаблон обычных страниц</div>
+      </div>
+      <div class="pm-row">
+        <div class="pm-indent">└─</div>
+        <div class="pm-icon">📝</div>
+        <div class="pm-name">Запись (Single)</div>
+        <div class="pm-desc">Шаблон статей</div>
+      </div>
+      <div class="pm-row">
+        <div class="pm-icon">🧩</div>
+        <div class="pm-name">Части шаблона (Template Parts)</div>
+        <div class="pm-desc">Глобальные элементы</div>
+      </div>
+      <div class="pm-row">
+        <div class="pm-indent">└─</div>
+        <div class="pm-icon">🔝</div>
+        <div class="pm-name">Header</div>
+        <div class="pm-desc">Шапка — логотип и меню</div>
+      </div>
+      <div class="pm-row">
+        <div class="pm-indent">└─</div>
+        <div class="pm-icon">⬇️</div>
+        <div class="pm-name">Footer</div>
+        <div class="pm-desc">Подвал — ссылки и копирайт</div>
+      </div>
+    </div>
+
+    <div class="alert alert-important">
+      <span class="icon">⚠️</span>
+      <p><strong>Важно:</strong> Изменения в Редакторе сайта вступают в силу только после нажатия кнопки <strong>«Сохранить»</strong>. Если закрыть вкладку без сохранения — все изменения пропадут.</p>
+    </div>
+  </section>
+
+  <!-- ══ 4. Header ════════════════════════════════════════════════ -->
+  <section id="s4">
+    <h2 class="section-title"><span class="num">4</span> Как редактировать Шапку сайта (Header)</h2>
+
+    <div class="path">
+      <span>Внешний вид</span>
+      <span class="sep">→</span>
+      <span>Редактор</span>
+      <span class="sep">→</span>
+      <span>Части шаблона</span>
+      <span class="sep">→</span>
+      <span>Header</span>
+    </div>
+
+    <div class="screenshot">
+      <span class="cam">📸</span>
+      <p class="label">СКРИНШОТ 4 — Header открыт в редакторе, блок выделен</p>
+      <p class="hint">
+        Откройте <strong>Части шаблона → Header</strong>, кликните на шапку.<br>
+        Сделайте скриншот: справа должна быть открыта панель с вкладками «Logo» и «Navigation Menu».
+      </p>
+    </div>
+
+    <h3 class="block-title">🖼️ Логотипы</h3>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Поле</th><th>Описание</th></tr>
+        </thead>
+        <tbody>
+          <tr><td class="col-param">Dark logo</td><td>Тёмный логотип — на светлом фоне</td></tr>
+          <tr><td class="col-param">Light logo</td><td>Светлый логотип — на тёмном фоне (в шапке)</td></tr>
+          <tr><td class="col-param">Alt text</td><td>Текст-описание логотипа для поисковиков (например, «Aposta Legal»)</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="alert alert-tip">
+      <span class="icon">💡</span>
+      <p>Чтобы поменять логотип — нажмите кнопку выбора изображения. В открывшемся окне выберите файл из медиатеки или загрузите новый (кнопка «Загрузить файл» вверху).</p>
+    </div>
+
+    <div class="screenshot">
+      <span class="cam">📸</span>
+      <p class="label">СКРИНШОТ 5 — Панель логотипа (правая панель)</p>
+      <p class="hint">
+        Кликните на шапку → в правой панели откройте раздел <strong>Logo</strong>.<br>
+        Сделайте скриншот правой панели с кнопками выбора логотипа.
+      </p>
+    </div>
+
+    <h3 class="block-title">🧭 Навигационное меню</h3>
+    <p>Меню имеет <strong>3 уровня вложенности</strong>: пункты верхнего уровня → подпункты → под-подпункты.</p>
+
+    <div class="screenshot">
+      <span class="cam">📸</span>
+      <p class="label">СКРИНШОТ 6 — Редактор пунктов меню</p>
+      <p class="hint">
+        Кликните на шапку → правая панель → раздел <strong>Navigation Menu</strong>.<br>
+        Разверните любой пункт меню (например, «Bónus»).<br>
+        Сделайте скриншот с видимыми полями: Label, URL, Badge text, кнопкой «Add sub-item».
+      </p>
+    </div>
+
+    <p>Каждый пункт меню содержит:</p>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Поле</th><th>Описание</th><th>Пример</th></tr>
+        </thead>
+        <tbody>
+          <tr><td class="col-param">Label</td><td>Текст пункта</td><td>Bónus</td></tr>
+          <tr><td class="col-param">URL</td><td>Ссылка (внутренняя или внешняя)</td><td>/bonus-em-portugal/</td></tr>
+          <tr><td class="col-param">Icon</td><td>Путь к иконке (оставить как есть если не меняете)</td><td>assets/img/.../icon.svg</td></tr>
+          <tr><td class="col-param">Badge text</td><td>Бейдж на пункте меню</td><td>novo</td></tr>
+          <tr><td class="col-param">Badge bg color</td><td>Цвет фона бейджа</td><td>#12a96a</td></tr>
+          <tr><td class="col-param">New badge</td><td>Включить/выключить бейдж «NEW»</td><td>✓ или ✗</td></tr>
+          <tr><td class="col-param">Mega menu</td><td>Использовать широкое меню для этого пункта</td><td>✓ для «Recursos»</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="alert alert-info">
+      <span class="icon">ℹ️</span>
+      <p><strong>Правила для URL:</strong><br>
+        • Страницы этого сайта: <code>/betano-portugal/</code> (начинается со слэша)<br>
+        • Внешние сайты: <code>https://example.com/</code> (полный адрес)<br>
+        • Якорь (не-ссылка): <code>#</code>
+      </p>
+    </div>
+  </section>
+
+  <!-- ══ 5. Footer ════════════════════════════════════════════════ -->
+  <section id="s5">
+    <h2 class="section-title"><span class="num">5</span> Как редактировать Подвал сайта (Footer)</h2>
+
+    <div class="path">
+      <span>Внешний вид</span>
+      <span class="sep">→</span>
+      <span>Редактор</span>
+      <span class="sep">→</span>
+      <span>Части шаблона</span>
+      <span class="sep">→</span>
+      <span>Footer</span>
+    </div>
+
+    <div class="screenshot">
+      <span class="cam">📸</span>
+      <p class="label">СКРИНШОТ 7 — Footer открыт, правая панель с полями</p>
+      <p class="hint">
+        Откройте <strong>Части шаблона → Footer</strong>, кликните на подвал.<br>
+        Сделайте скриншот с видимой правой панелью (поля: Logo, Disclaimer text, Copyright).
+      </p>
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Поле</th><th>Описание</th></tr>
+        </thead>
+        <tbody>
+          <tr><td class="col-param">Logo</td><td>Логотип в подвале</td></tr>
+          <tr><td class="col-param">Alt text</td><td>Альтернативный текст логотипа</td></tr>
+          <tr><td class="col-param">Disclaimer text</td><td>Текст о jogo responsável (ответственной игре) — большой абзац</td></tr>
+          <tr><td class="col-param">Copyright</td><td>Строка копирайта, например: <code>© 2026 – Aposta Legal. Todos os direitos reservados.</code></td></tr>
+          <tr><td class="col-param">Info Links</td><td>Ссылки колонки «Informações» — Jogo Responsável, Os Nossos Critérios</td></tr>
+          <tr><td class="col-param">More Links</td><td>Ссылки колонки «Saber Mais» — Contactos, Sobre Nós</td></tr>
+          <tr><td class="col-param">External Links</td><td>Ссылки на сайты других стран с флагом (Чили, Эквадор, Мексика...)</td></tr>
+          <tr><td class="col-param">Footer Links</td><td>Ссылки в самом низу — Политика конфиденциальности, Условия</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ══ 6. Главная страница ══════════════════════════════════════ -->
+  <section id="s6">
+    <h2 class="section-title"><span class="num">6</span> Как редактировать Главную страницу</h2>
+
+    <div class="path">
+      <span>Внешний вид</span>
+      <span class="sep">→</span>
+      <span>Редактор</span>
+      <span class="sep">→</span>
+      <span>Шаблоны</span>
+      <span class="sep">→</span>
+      <span>Главная страница (Front Page)</span>
+    </div>
+
+    <p>Главная страница собрана из блоков, расположенных сверху вниз. Кликайте на нужный блок — справа появятся его настройки.</p>
+
+    <div class="screenshot">
+      <span class="cam">📸</span>
+      <p class="label">СКРИНШОТ 8 — Главная страница в редакторе (вид сверху)</p>
+      <p class="hint">
+        Откройте <strong>Шаблоны → Главная страница</strong>.<br>
+        Сделайте скриншот с видом всей страницы. Желательно обозначить цифрами или стрелками каждый блок (Hero, Offer List, Two Column Text и т.д.).
+      </p>
+    </div>
+
+    <h3 class="block-title">Структура главной страницы (сверху вниз)</h3>
+    <div class="page-map">
+      <div class="pm-row"><div class="pm-icon">⚠️</div><div class="pm-name">Age Disclaimer</div><div class="pm-desc">Полоса +18 в самом верху</div></div>
+      <div class="pm-row"><div class="pm-icon">🔝</div><div class="pm-name">Site Header</div><div class="pm-desc">Логотип и навигационное меню</div></div>
+      <div class="pm-row"><div class="pm-icon">🖼️</div><div class="pm-name">Hero</div><div class="pm-desc">Большой баннер с заголовком H1</div></div>
+      <div class="pm-row"><div class="pm-icon">🎰</div><div class="pm-name">Offer List</div><div class="pm-desc">Список казино-офферов</div></div>
+      <div class="pm-row"><div class="pm-icon">📝</div><div class="pm-name">Two Column Text ×2</div><div class="pm-desc">SEO-тексты в две колонки</div></div>
+      <div class="pm-row"><div class="pm-icon">✅</div><div class="pm-name">About List ×3</div><div class="pm-desc">Списки с зелёными галочками</div></div>
+      <div class="pm-row"><div class="pm-icon">🔗</div><div class="pm-name">Related Links ×3</div><div class="pm-desc">Карточки-ссылки на разделы</div></div>
+      <div class="pm-row"><div class="pm-icon">⚽</div><div class="pm-name">Live Odds</div><div class="pm-desc">Виджет актуальных ставок</div></div>
+      <div class="pm-row"><div class="pm-icon">📊</div><div class="pm-name">Data Table ×7</div><div class="pm-desc">Таблицы сравнения казино</div></div>
+      <div class="pm-row"><div class="pm-icon">🗃️</div><div class="pm-name">Info Grid ×2</div><div class="pm-desc">Информационные блоки-ячейки</div></div>
+      <div class="pm-row"><div class="pm-icon">📰</div><div class="pm-name">News Slider</div><div class="pm-desc">Слайдер статей «Destaques»</div></div>
+      <div class="pm-row"><div class="pm-icon">⬇️</div><div class="pm-name">Site Footer</div><div class="pm-desc">Подвал сайта</div></div>
+    </div>
+  </section>
+
+  <!-- ══ 7. Casino Offers ════════════════════════════════════════ -->
+  <section id="s7">
+    <h2 class="section-title"><span class="num">7</span> Управление Офферами казино</h2>
+
+    <div class="path">
+      <span>Casino Offers</span>
+      <span class="sep">→</span>
+      <span>Все Casino Offers</span>
+    </div>
+
+    <p>Это список всех казино, которые отображаются на главной странице. <strong>Данные редактируются здесь</strong> — не в Редакторе сайта.</p>
+
+    <div class="screenshot">
+      <span class="cam">📸</span>
+      <p class="label">СКРИНШОТ 9 — Список Casino Offers в админке</p>
+      <p class="hint">
+        Левое меню → <strong>Casino Offers</strong>.<br>
+        Сделайте скриншот списка со всеми казино. Обозначьте колонку «Порядок» — она определяет позицию в списке.
+      </p>
+    </div>
+
+    <h3 class="block-title">Как добавить новое казино</h3>
+    <ol class="steps">
+      <li>
+        <strong>Нажмите «Добавить новый Casino Offer»</strong>
+        <p>Кнопка вверху страницы Casino Offers</p>
+      </li>
+      <li>
+        <strong>Введите название казино</strong>
+        <p>В поле заголовка вверху страницы (например, «Betano»)</p>
+      </li>
+      <li>
+        <strong>Заполните блок «Casino Offer Details»</strong>
+        <p>Все поля описаны в таблице ниже</p>
+      </li>
+      <li>
+        <strong>Задайте порядок</strong>
+        <p>Правая панель → <strong>Атрибуты страницы → Порядок</strong> (1 = первое в списке)</p>
+      </li>
+      <li>
+        <strong>Нажмите «Опубликовать»</strong>
+        <p>Казино появится на сайте</p>
+      </li>
+    </ol>
+
+    <div class="screenshot">
+      <span class="cam">📸</span>
+      <p class="label">СКРИНШОТ 10 — Страница редактирования Casino Offer</p>
+      <p class="hint">
+        Откройте любой оффер для редактирования.<br>
+        Сделайте скриншот блока «Casino Offer Details» с полями.<br>
+        Обозначьте стрелкой поле «Порядок» в правой панели.
+      </p>
+    </div>
+
+    <h3 class="block-title">Поля Casino Offer Details</h3>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Поле</th><th>Описание</th><th>Пример</th></tr>
+        </thead>
+        <tbody>
+          <tr><td class="col-param">Logo</td><td>Логотип казино — выберите картинку из медиатеки</td><td>betano-logo.svg</td></tr>
+          <tr><td class="col-param">Rating</td><td>Рейтинг от 0 до 5 (с точкой, не с запятой)</td><td>4.8</td></tr>
+          <tr><td class="col-param">Bonus</td><td>Текст бонуса</td><td>100% até 500€</td></tr>
+          <tr><td class="col-param">Features</td><td>Преимущества — каждое с новой строки</td><td>Levantamentos rápidos<br>App disponível</td></tr>
+          <tr><td class="col-param">Payment icons</td><td>Иконки методов оплаты — можно выбрать несколько файлов</td><td>mbway-logo.svg, visa.svg</td></tr>
+          <tr><td class="col-param">Offer URL</td><td>Аффилиат-ссылка для кнопки «Jogar»</td><td>https://apostalegal.pt/ir/betano</td></tr>
+          <tr><td class="col-param">Review URL</td><td>Ссылка на обзор для кнопки «Análise»</td><td>/betano-portugal/</td></tr>
+          <tr><td class="col-param">License status</td><td>Номер лицензии SRIJ</td><td>SRIJ n.º 017/018</td></tr>
+          <tr><td class="col-param">Legal offer</td><td>Чекбокс — отметить если казино легальное</td><td>✓</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="alert alert-warn">
+      <span class="icon">⚠️</span>
+      <p><strong>Рейтинг</strong> вводите с точкой, не с запятой: <code>4.8</code> — правильно, <code>4,8</code> — неправильно.</p>
+    </div>
+
+    <h3 class="block-title">Как изменить порядок казино</h3>
+    <ol class="steps">
+      <li><strong>Откройте нужный оффер</strong><p>Casino Offers → кликните на название</p></li>
+      <li><strong>Найдите «Порядок» в правой панели</strong><p>Атрибуты страницы → Порядок</p></li>
+      <li><strong>Введите число</strong><p>1 = первое место, 2 = второе и т.д.</p></li>
+      <li><strong>Нажмите «Обновить»</strong><p>Порядок на сайте изменится сразу</p></li>
+    </ol>
+
+    <h3 class="block-title">Как временно скрыть казино с сайта</h3>
+    <p>Откройте оффер → правая панель → <strong>Статус: Черновик</strong> → <strong>Обновить</strong>. Казино пропадёт с сайта, данные сохранятся.</p>
+  </section>
+
+  <!-- ══ 8. Статьи ════════════════════════════════════════════════ -->
+  <section id="s8">
+    <h2 class="section-title"><span class="num">8</span> Статьи и Новости</h2>
+
+    <div class="path">
+      <span>Записи</span>
+      <span class="sep">→</span>
+      <span>Все записи</span>
+    </div>
+
+    <div class="screenshot">
+      <span class="cam">📸</span>
+      <p class="label">СКРИНШОТ 11 — Редактор записи (статьи)</p>
+      <p class="hint">
+        Откройте любую статью или создайте новую (<strong>Записи → Добавить новую запись</strong>).<br>
+        Сделайте скриншот редактора с видимой правой панелью.<br>
+        Обозначьте: поле заголовка, область текста, «Изображение записи», «Рубрики».
+      </p>
+    </div>
+
+    <ol class="steps">
+      <li><strong>Создайте новую запись</strong><p>Записи → Добавить новую запись</p></li>
+      <li><strong>Введите заголовок</strong><p>Кликните в поле «Добавить заголовок» вверху</p></li>
+      <li><strong>Напишите текст</strong><p>Кликните ниже и начните печатать. Нажмите / чтобы вставить блок (заголовок, картинка, список и т.д.)</p></li>
+      <li><strong>Добавьте главное изображение</strong><p>Правая панель → Изображение записи → Задать изображение записи</p></li>
+      <li><strong>Выберите рубрику</strong><p>Правая панель → Рубрики → отметьте нужную</p></li>
+      <li><strong>Опубликуйте</strong><p>Синяя кнопка «Опубликовать» вверху справа</p></li>
+    </ol>
+  </section>
+
+  <!-- ══ 9. Справочник блоков ════════════════════════════════════ -->
+  <section>
+    <h2 class="section-title" style="margin-bottom:8px">📦 Справочник блоков</h2>
+    <p style="margin-bottom:24px">Описание всех кастомных блоков темы — что делает каждый блок и какие у него настройки.</p>
+
+    <!-- Age Disclaimer -->
+    <div class="block-card" id="b-disclaimer">
+      <div class="block-card-header">
+        <span class="bc-icon">⚠️</span>
+        <h3>Age Disclaimer</h3>
+        <span class="bc-slug">new-theme/age-disclaimer</span>
+      </div>
+      <div class="block-card-body">
+        <p class="block-desc">Тонкая полоса в самом верху сайта с предупреждением «+18» и ссылкой.</p>
+        <div class="screenshot">
+          <span class="cam">📸</span>
+          <p class="label">СКРИНШОТ — Age Disclaimer на сайте и в редакторе</p>
+          <p class="hint">Сделайте 2 скриншота: ① как выглядит на сайте (верхняя полоса) ② правая панель с полями Text, Link text, Link URL</p>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Параметр</th><th>Описание</th><th>Пример</th></tr></thead>
+            <tbody>
+              <tr><td class="col-param">Text</td><td>Основной текст</td><td>JOGA COM RESPONSABILIDADE</td></tr>
+              <tr><td class="col-param">Link text</td><td>Текст ссылки</td><td>INCLUI CONTEÚDO COMERCIAL</td></tr>
+              <tr><td class="col-param">Link URL</td><td>Адрес ссылки</td><td>/sobre-nos/</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- Hero -->
+    <div class="block-card" id="b-hero">
+      <div class="block-card-header">
+        <span class="bc-icon">🖼️</span>
+        <h3>Hero — Баннер / Герой страницы</h3>
+        <span class="bc-slug">new-theme/hero</span>
+      </div>
+      <div class="block-card-body">
+        <p class="block-desc">Первый большой блок страницы с фоновым изображением, заголовком H1 и подзаголовком.</p>
+        <div class="screenshot">
+          <span class="cam">📸</span>
+          <p class="label">СКРИНШОТ — Hero на главной и правая панель</p>
+          <p class="hint">Кликните на баннер главной страницы в редакторе. Сделайте скриншот правой панели с полями Title, Text, Image, Variant.</p>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Параметр</th><th>Описание</th><th>Значения</th></tr></thead>
+            <tbody>
+              <tr><td class="col-param">Title</td><td><strong>Заголовок H1</strong> — главный заголовок страницы. Обязательно заполнить!</td><td>Casinos Online Legais em Portugal</td></tr>
+              <tr><td class="col-param">Text</td><td>Подзаголовок / описание под H1</td><td>Comparamos o número de jogos...</td></tr>
+              <tr><td class="col-param">Image</td><td>Фоновое изображение баннера</td><td>— выберите файл</td></tr>
+              <tr><td class="col-param">Variant</td><td>Тема блока</td><td><code>dark</code> / <code>light</code></td></tr>
+              <tr><td class="col-param">Top Spacer</td><td>Отступ сверху в пикселях</td><td>48</td></tr>
+              <tr><td class="col-param">Overlay Color</td><td>Цвет затемнения поверх картинки</td><td>#000000</td></tr>
+              <tr><td class="col-param">Overlay Opacity</td><td>Прозрачность затемнения (0–90%)</td><td>0 = нет затемнения</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="alert alert-important">
+          <span class="icon">⚠️</span>
+          <p><strong>SEO:</strong> Поле <strong>Title</strong> = заголовок H1 страницы. Он должен быть заполнен на каждой странице — это важно для поисковиков.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Offer List -->
+    <div class="block-card" id="b-offerlist">
+      <div class="block-card-header">
+        <span class="bc-icon">🎰</span>
+        <h3>Offer List — Список казино</h3>
+        <span class="bc-slug">new-theme/offer-list</span>
+      </div>
+      <div class="block-card-body">
+        <p class="block-desc">Секция со списком карточек казино. В режиме <strong>query</strong> автоматически берёт данные из раздела Casino Offers.</p>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Параметр</th><th>Описание</th><th>Значения</th></tr></thead>
+            <tbody>
+              <tr><td class="col-param">Title</td><td>Заголовок над списком</td><td>CASAS COM LICENÇA</td></tr>
+              <tr><td class="col-param">Intro</td><td>Вступительный текст</td><td>—</td></tr>
+              <tr><td class="col-param">Source</td><td>Источник данных</td><td><span class="pill pill-green">query</span> — из базы (рекомендуется)<br><span class="pill pill-gray">attributes</span> — ручной список</td></tr>
+              <tr><td class="col-param">Limit</td><td>Максимум казино в списке</td><td>15</td></tr>
+              <tr><td class="col-param">Order By</td><td>Сортировка</td><td>menu_order / rating / bonus / date / title</td></tr>
+              <tr><td class="col-param">Order</td><td>Направление</td><td>ASC (↑) / DESC (↓)</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="alert alert-tip">
+          <span class="icon">💡</span>
+          <p>Оставьте <code>Source = query</code> и <code>Order By = menu_order</code>. Тогда порядок казино управляется через поле «Порядок» в разделе Casino Offers.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Offer Card -->
+    <div class="block-card" id="b-offercard">
+      <div class="block-card-header">
+        <span class="bc-icon">🃏</span>
+        <h3>Offer Card — Карточка казино</h3>
+        <span class="bc-slug">new-theme/offer-card</span>
+      </div>
+      <div class="block-card-body">
+        <p class="block-desc">Отдельная карточка казино. Обычно создаётся автоматически из данных Casino Offers. Ручное редактирование — только если нужна карточка вне списка.</p>
+        <div class="screenshot">
+          <span class="cam">📸</span>
+          <p class="label">СКРИНШОТ — Карточка казино на сайте</p>
+          <p class="hint">Сделайте скриншот одной карточки казино на фронтенде сайта. Обозначьте элементы: логотип, рейтинг, бонус, кнопки «Jogar» и «Análise», иконки оплаты, список преимуществ.</p>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Параметр</th><th>Описание</th></tr></thead>
+            <tbody>
+              <tr><td class="col-param">Name</td><td>Название казино</td></tr>
+              <tr><td class="col-param">Logo</td><td>Логотип</td></tr>
+              <tr><td class="col-param">Rating</td><td>Рейтинг 0–5 (через точку: 4.8)</td></tr>
+              <tr><td class="col-param">Bonus</td><td>Текст бонуса</td></tr>
+              <tr><td class="col-param">Features</td><td>Список преимуществ (каждое с новой строки)</td></tr>
+              <tr><td class="col-param">Payments</td><td>Иконки методов оплаты</td></tr>
+              <tr><td class="col-param">Offer URL</td><td>Аффилиат-ссылка для кнопки «Jogar»</td></tr>
+              <tr><td class="col-param">Review URL</td><td>Ссылка на обзор для кнопки «Análise»</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- Two Column Text -->
+    <div class="block-card" id="b-twocol">
+      <div class="block-card-header">
+        <span class="bc-icon">📝</span>
+        <h3>Two Column Text — Текст в две колонки</h3>
+        <span class="bc-slug">new-theme/two-column-text</span>
+      </div>
+      <div class="block-card-body">
+        <p class="block-desc">Секция с заголовком и текстом в двух колонках. Используется для SEO-текстов.</p>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Параметр</th><th>Описание</th></tr></thead>
+            <tbody>
+              <tr><td class="col-param">Title</td><td>Заголовок H2 (поддерживает HTML: <code>&lt;br&gt;</code>, <code>&lt;span&gt;</code>)</td></tr>
+              <tr><td class="col-param">Background</td><td>Цвет фона (например, <code>#f2f2f3</code>)</td></tr>
+              <tr><td class="col-param">Items</td><td>Список блоков текста</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p><strong>Каждый Item содержит:</strong></p>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Поле</th><th>Описание</th></tr></thead>
+            <tbody>
+              <tr><td class="col-param">Heading</td><td>Подзаголовок H3 внутри блока</td></tr>
+              <tr><td class="col-param">Left</td><td>Текст левой колонки (поддерживает HTML ссылки)</td></tr>
+              <tr><td class="col-param">Right</td><td>Текст правой колонки (поддерживает HTML ссылки)</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- About List -->
+    <div class="block-card" id="b-aboutlist">
+      <div class="block-card-header">
+        <span class="bc-icon">✅</span>
+        <h3>About List — Список с галочками</h3>
+        <span class="bc-slug">new-theme/about-list</span>
+      </div>
+      <div class="block-card-body">
+        <p class="block-desc">Список пунктов, каждый с зелёной галочкой, заголовком и описанием. Используется для «Как мы оцениваем казино» и похожих разделов.</p>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Параметр</th><th>Описание</th></tr></thead>
+            <tbody>
+              <tr><td class="col-param">Title</td><td>Заголовок секции H2</td></tr>
+              <tr><td class="col-param">Background</td><td>Цвет фона</td></tr>
+              <tr><td class="col-param">Items → Title</td><td>Заголовок пункта (жирный)</td></tr>
+              <tr><td class="col-param">Items → Description</td><td>Описание пункта (поддерживает ссылки)</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- Info Grid -->
+    <div class="block-card" id="b-infogrid">
+      <div class="block-card-header">
+        <span class="bc-icon">🗃️</span>
+        <h3>Info Grid — Информационные блоки</h3>
+        <span class="bc-slug">new-theme/info-grid</span>
+      </div>
+      <div class="block-card-body">
+        <p class="block-desc">Сетка блоков-ячеек с текстом и необязательной ссылкой «Узнать больше». Используется для объяснения терминов (RTP, Rollover и т.д.).</p>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Параметр</th><th>Описание</th></tr></thead>
+            <tbody>
+              <tr><td class="col-param">Title</td><td>Заголовок секции H2</td></tr>
+              <tr><td class="col-param">Background</td><td>Цвет фона</td></tr>
+              <tr><td class="col-param">Items → Text</td><td>Текст ячейки</td></tr>
+              <tr><td class="col-param">Items → Link Label</td><td>Текст ссылки (например, «Mais Sobre o RTP &gt;»)</td></tr>
+              <tr><td class="col-param">Items → Link URL</td><td>Адрес ссылки</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="alert alert-tip">
+          <span class="icon">💡</span>
+          <p>Если поле <strong>Link Label</strong> пустое — ссылка не отображается на сайте.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Related Links -->
+    <div class="block-card" id="b-rellinks">
+      <div class="block-card-header">
+        <span class="bc-icon">🔗</span>
+        <h3>Related Links — Связанные ссылки</h3>
+        <span class="bc-slug">new-theme/related-links</span>
+      </div>
+      <div class="block-card-body">
+        <p class="block-desc">Секция с карточками-ссылками. Три варианта отображения: карточки, сетка, компактный список.</p>
+
+        <div class="card-grid-3" style="margin-bottom:16px">
+          <div class="mini-card">
+            <div class="icon">🃏</div>
+            <h4>cards</h4>
+            <p>Карточки с картинкой, текстом и кнопкой</p>
+          </div>
+          <div class="mini-card">
+            <div class="icon">🔲</div>
+            <h4>grid</h4>
+            <p>Компактная сетка (иконка + заголовок)</p>
+          </div>
+          <div class="mini-card">
+            <div class="icon">≡</div>
+            <h4>footer</h4>
+            <p>Горизонтальный список для нижних секций</p>
+          </div>
+        </div>
+
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Параметр</th><th>Описание</th></tr></thead>
+            <tbody>
+              <tr><td class="col-param">Title</td><td>Заголовок секции H2</td></tr>
+              <tr><td class="col-param">Intro Text</td><td>Вступительный текст под заголовком</td></tr>
+              <tr><td class="col-param">Variant</td><td>Вариант: <code>cards</code> / <code>grid</code> / <code>footer</code></td></tr>
+              <tr><td class="col-param">Background</td><td>Цвет фона</td></tr>
+              <tr><td class="col-param">Items → Image</td><td>Иконка/картинка карточки</td></tr>
+              <tr><td class="col-param">Items → Title</td><td>Заголовок карточки</td></tr>
+              <tr><td class="col-param">Items → Text</td><td>Описание (для варианта cards)</td></tr>
+              <tr><td class="col-param">Items → URL</td><td>Адрес ссылки</td></tr>
+              <tr><td class="col-param">Items → Link Label</td><td>Текст кнопки (по умолчанию «Ler Mais»)</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- Data Table -->
+    <div class="block-card" id="b-table">
+      <div class="block-card-header">
+        <span class="bc-icon">📊</span>
+        <h3>Data Table — Таблица сравнения</h3>
+        <span class="bc-slug">new-theme/data-table</span>
+      </div>
+      <div class="block-card-body">
+        <p class="block-desc">Адаптивная таблица. На мобильных может показываться как горизонтальный скролл или как карточки.</p>
+        <div class="screenshot">
+          <span class="cam">📸</span>
+          <p class="label">СКРИНШОТ — Таблица в редакторе, правая панель</p>
+          <p class="hint">Кликните на любую таблицу на главной странице в редакторе. Сделайте скриншот правой панели с кнопками «★ Add Row», «Bulk Import», «Mobile Behavior».</p>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Параметр</th><th>Описание</th></tr></thead>
+            <tbody>
+              <tr><td class="col-param">Title</td><td>Заголовок таблицы H2</td></tr>
+              <tr><td class="col-param">Background</td><td>Цвет фона</td></tr>
+              <tr><td class="col-param">Mobile Behavior</td><td><code>scroll</code> — горизонтальный скролл (по умолчанию)<br><code>stacked</code> — карточки на мобильных</td></tr>
+              <tr><td class="col-param">Headers</td><td>Заголовки столбцов</td></tr>
+              <tr><td class="col-param">Rows</td><td>Строки таблицы</td></tr>
+              <tr><td class="col-param">Highlighted Rows</td><td>Номера строк для выделения цветом (0 = первая)</td></tr>
+              <tr><td class="col-param">Highlighted Cells</td><td>Отдельные ячейки для выделения (формат: «строка:столбец»)</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <h4 style="margin:12px 0 8px;font-size:13px">Быстрый ввод данных (Bulk Import)</h4>
+        <p style="font-size:13px">Вставьте данные в формате: каждая строка = строка таблицы, столбцы разделены <code>|</code>:</p>
+        <pre>Casino | RTP Mais Alto | Jogo
+Betano | 98.90% | JetX
+Solverde | 97.77% | White Rabbit</pre>
+      </div>
+    </div>
+
+    <!-- News Slider -->
+    <div class="block-card" id="b-newsslider">
+      <div class="block-card-header">
+        <span class="bc-icon">📰</span>
+        <h3>News Slider — Слайдер статей</h3>
+        <span class="bc-slug">new-theme/news-slider</span>
+      </div>
+      <div class="block-card-body">
+        <p class="block-desc">Горизонтальный слайдер с карточками статей. Два режима: автоматический (берёт статьи из WordPress) и ручной (список задаётся вручную).</p>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Параметр</th><th>Описание</th></tr></thead>
+            <tbody>
+              <tr><td class="col-param">Title</td><td>Заголовок секции</td></tr>
+              <tr><td class="col-param">Enable Slider</td><td>Включить/выключить слайдер</td></tr>
+              <tr><td class="col-param">Source</td><td><span class="pill pill-blue">query</span> — автоматически из статей<br><span class="pill pill-gray">manual</span> — ручной список</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p><strong>Если Source = query (автоматический):</strong></p>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Параметр</th><th>Описание</th></tr></thead>
+            <tbody>
+              <tr><td class="col-param">Post Type</td><td>Тип записей (оставьте <code>post</code>)</td></tr>
+              <tr><td class="col-param">Category Slug</td><td>Фильтр по рубрике (например, <code>casino</code>). Пустое = все рубрики</td></tr>
+              <tr><td class="col-param">Number of Posts</td><td>Количество статей (1–20)</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p><strong>Если Source = manual (ручной) — каждый Item:</strong></p>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Поле</th><th>Описание</th></tr></thead>
+            <tbody>
+              <tr><td class="col-param">URL</td><td>Адрес статьи</td></tr>
+              <tr><td class="col-param">Image</td><td>Главное изображение</td></tr>
+              <tr><td class="col-param">Title</td><td>Заголовок</td></tr>
+              <tr><td class="col-param">Date</td><td>Дата (например, <code>20 Maio 2026</code>)</td></tr>
+              <tr><td class="col-param">Category</td><td>Название рубрики</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- Live Odds -->
+    <div class="block-card" id="b-liveodds">
+      <div class="block-card-header">
+        <span class="bc-icon">⚽</span>
+        <h3>Live Odds — Виджет ставок</h3>
+        <span class="bc-slug">new-theme/live-odds</span>
+      </div>
+      <div class="block-card-body">
+        <p class="block-desc">Слайдер с актуальными спортивными прогнозами/ставками. Данные вводятся вручную. Матчи с прошедшими датами автоматически скрываются.</p>
+        <div class="screenshot">
+          <span class="cam">📸</span>
+          <p class="label">СКРИНШОТ — Live Odds виджет на сайте</p>
+          <p class="hint">Сделайте скриншот виджета Live Odds на главной странице. Обозначьте: заголовок, карточку матча (команды, лига, дата, коэффициент, кнопка), логотип букмекера.</p>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Параметр</th><th>Описание</th></tr></thead>
+            <tbody>
+              <tr><td class="col-param">Title</td><td>Заголовок виджета</td></tr>
+              <tr><td class="col-param">Enable Slider</td><td>Включить/выключить слайдер</td></tr>
+              <tr><td class="col-param">Provider Logo</td><td>Путь к логотипу букмекера</td></tr>
+              <tr><td class="col-param">Default CTA URL</td><td>Ссылка по умолчанию для всех матчей</td></tr>
+              <tr><td class="col-param">CTA Label</td><td>Текст кнопки внизу виджета</td></tr>
+              <tr><td class="col-param">CTA URL</td><td>Ссылка кнопки внизу виджета</td></tr>
+              <tr><td class="col-param">Items</td><td>Список матчей</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p><strong>Каждый матч (Item):</strong></p>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Поле</th><th>Описание</th><th>Пример</th></tr></thead>
+            <tbody>
+              <tr><td class="col-param">Team A</td><td>Первая команда</td><td>Benfica</td></tr>
+              <tr><td class="col-param">Team B</td><td>Вторая команда</td><td>Porto</td></tr>
+              <tr><td class="col-param">League</td><td>Лига / турнир</td><td>Liga Portugal</td></tr>
+              <tr><td class="col-param">Event Date</td><td>Дата и время матча (формат ISO 8601)</td><td>2026-06-10T20:00:00Z</td></tr>
+              <tr><td class="col-param">Market</td><td>Рынок ставки</td><td>Ambas Marcam: Sim</td></tr>
+              <tr><td class="col-param">Odd</td><td>Коэффициент</td><td>1.85</td></tr>
+              <tr><td class="col-param">CTA URL</td><td>Индивидуальная ссылка (если другая)</td><td>—</td></tr>
+              <tr><td class="col-param">Is Live Updates</td><td>Матч с Live-обновлениями</td><td>✓ / ✗</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="alert alert-warn">
+          <span class="icon">⏰</span>
+          <p><strong>Формат даты:</strong> <code>2026-06-10T20:00:00Z</code><br>
+          Расшифровка: <code>год-месяц-деньTчас:минута:секундаZ</code><br>
+          «Z» в конце = время UTC. Португалия летом = UTC+1, поэтому:<br>
+          матч в <strong>21:00 по Лиссабону</strong> = <code>2026-06-10T<strong>20</strong>:00:00Z</code></p>
+        </div>
+        <div class="alert alert-important">
+          <span class="icon">⚠️</span>
+          <p><strong>Матчи с прошедшими датами автоматически скрываются</strong> на сайте. Обновляйте список актуальными матчами — иначе виджет не будет виден посетителям.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- FAQ -->
+    <div class="block-card" id="b-faq">
+      <div class="block-card-header">
+        <span class="bc-icon">❓</span>
+        <h3>FAQ — Часто задаваемые вопросы</h3>
+        <span class="bc-slug">new-theme/faq + new-theme/faq-item</span>
+      </div>
+      <div class="block-card-body">
+        <p class="block-desc">Секция «вопрос–ответ». Блок <strong>FAQ</strong> — контейнер; блок <strong>FAQ Item</strong> — один вопрос.</p>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Блок</th><th>Параметр</th><th>Описание</th></tr></thead>
+            <tbody>
+              <tr><td>FAQ</td><td class="col-param">Title</td><td>Заголовок всей секции (по умолчанию «Perguntas frequentes»)</td></tr>
+              <tr><td>FAQ Item</td><td class="col-param">Question</td><td>Текст вопроса</td></tr>
+              <tr><td>FAQ Item</td><td class="col-param">Answer</td><td>Текст ответа</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card Grid -->
+    <div class="block-card" id="b-cardgrid">
+      <div class="block-card-header">
+        <span class="bc-icon">🔲</span>
+        <h3>Card Grid + Link Card — Сетка карточек</h3>
+        <span class="bc-slug">new-theme/card-grid + new-theme/link-card</span>
+      </div>
+      <div class="block-card-body">
+        <p class="block-desc">Сетка навигационных карточек-ссылок. <strong>Card Grid</strong> — контейнер; <strong>Link Card</strong> — одна карточка.</p>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Блок</th><th>Параметр</th><th>Описание</th></tr></thead>
+            <tbody>
+              <tr><td>Card Grid</td><td class="col-param">Title</td><td>Заголовок сетки</td></tr>
+              <tr><td>Link Card</td><td class="col-param">Title</td><td>Заголовок карточки</td></tr>
+              <tr><td>Link Card</td><td class="col-param">Text</td><td>Описание</td></tr>
+              <tr><td>Link Card</td><td class="col-param">Image</td><td>Картинка карточки</td></tr>
+              <tr><td>Link Card</td><td class="col-param">URL</td><td>Ссылка</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ 10. Частые задачи ════════════════════════════════════════ -->
+  <section id="tasks">
+    <h2 class="section-title"><span class="num">✔</span> Частые задачи — пошаговые инструкции</h2>
+
+    <div class="task-card">
+      <div class="task-header">
+        <h4>🎰 Изменить бонус у казино</h4>
+        <span class="tag">~1 минута</span>
+      </div>
+      <div class="task-body">
+        <ol class="steps">
+          <li><strong>Casino Offers</strong><p>Левое меню → Casino Offers</p></li>
+          <li><strong>Найдите казино и откройте</strong><p>Кликните на название</p></li>
+          <li><strong>Измените поле Bonus</strong><p>В блоке «Casino Offer Details»</p></li>
+          <li><strong>Нажмите «Обновить»</strong><p>Изменение видно на сайте сразу</p></li>
+        </ol>
+      </div>
+    </div>
+
+    <div class="task-card">
+      <div class="task-header">
+        <h4>🔢 Поменять порядок казино в списке</h4>
+        <span class="tag">~2 минуты</span>
+      </div>
+      <div class="task-body">
+        <ol class="steps">
+          <li><strong>Casino Offers → откройте нужный оффер</strong></li>
+          <li><strong>Правая панель → Атрибуты страницы → Порядок</strong><p>Введите число (1 = первое, 2 = второе...)</p></li>
+          <li><strong>«Обновить»</strong></li>
+        </ol>
+        <div class="alert alert-tip">
+          <span class="icon">💡</span>
+          <p>Чтобы поставить казино первым — введите <code>1</code>. Второе казино должно иметь <code>2</code>, третье — <code>3</code> и т.д.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="task-card">
+      <div class="task-header">
+        <h4>⚽ Обновить матчи в виджете Live Odds</h4>
+        <span class="tag">~5 минут</span>
+      </div>
+      <div class="task-body">
+        <ol class="steps">
+          <li><strong>Редактор → Шаблоны → Главная страница</strong></li>
+          <li><strong>Кликните на блок Live Odds</strong><p>Секция «Apostas Desportivas em Destaque»</p></li>
+          <li><strong>В правой панели → Items</strong><p>Нажмите <strong>Remove</strong> для устаревших матчей</p></li>
+          <li><strong>Нажмите «+ Add Item»</strong><p>Заполните: Team A, Team B, League, Event Date, Market, Odd</p></li>
+          <li><strong>«Сохранить»</strong></li>
+        </ol>
+      </div>
+    </div>
+
+    <div class="task-card">
+      <div class="task-header">
+        <h4>📝 Добавить статью в слайдер «Destaques» (ручной режим)</h4>
+        <span class="tag">~3 минуты</span>
+      </div>
+      <div class="task-body">
+        <ol class="steps">
+          <li><strong>Редактор → Шаблоны → Главная страница</strong></li>
+          <li><strong>Прокрутите вниз до News Slider</strong><p>Кликните на него</p></li>
+          <li><strong>Правая панель → Manual items → «+ Add Item»</strong></li>
+          <li><strong>Заполните поля</strong><p>URL, Image, Title, Date, Category</p></li>
+          <li><strong>«Сохранить»</strong></li>
+        </ol>
+      </div>
+    </div>
+
+    <div class="task-card">
+      <div class="task-header">
+        <h4>📋 Добавить строку в таблицу</h4>
+        <span class="tag">~2 минуты</span>
+      </div>
+      <div class="task-body">
+        <ol class="steps">
+          <li><strong>Редактор → Шаблоны → Главная страница</strong></li>
+          <li><strong>Кликните на нужную таблицу</strong></li>
+          <li><strong>Правая панель → «+ Add Row»</strong></li>
+          <li><strong>Заполните ячейки</strong><p>Или используйте <strong>Bulk Import</strong>: вставьте строки через <code>|</code></p></li>
+          <li><strong>«Сохранить»</strong></li>
+        </ol>
+      </div>
+    </div>
+
+    <div class="task-card">
+      <div class="task-header">
+        <h4>🧭 Добавить пункт в навигационное меню</h4>
+        <span class="tag">~3 минуты</span>
+      </div>
+      <div class="task-body">
+        <ol class="steps">
+          <li><strong>Редактор → Части шаблона → Header</strong></li>
+          <li><strong>Кликните на шапку</strong></li>
+          <li><strong>Правая панель → Navigation Menu</strong></li>
+          <li><strong>Найдите нужный раздел и нажмите «Add sub-item»</strong></li>
+          <li><strong>Заполните Label и URL</strong></li>
+          <li><strong>«Сохранить»</strong></li>
+        </ol>
+      </div>
+    </div>
+
+    <div class="task-card">
+      <div class="task-header">
+        <h4>📰 Опубликовать новую статью</h4>
+        <span class="tag">~5 минут</span>
+      </div>
+      <div class="task-body">
+        <ol class="steps">
+          <li><strong>Записи → Добавить новую запись</strong></li>
+          <li><strong>Введите заголовок</strong></li>
+          <li><strong>Напишите текст</strong><p>Нажмите <kbd>/</kbd> чтобы вставить блок (заголовок, картинка, список)</p></li>
+          <li><strong>Добавьте главное изображение</strong><p>Правая панель → Изображение записи</p></li>
+          <li><strong>Выберите рубрику</strong><p>Правая панель → Рубрики</p></li>
+          <li><strong>«Опубликовать»</strong></li>
+        </ol>
+      </div>
+    </div>
+
+    <div class="task-card">
+      <div class="task-header">
+        <h4>🖼️ Заменить логотип в шапке</h4>
+        <span class="tag">~2 минуты</span>
+      </div>
+      <div class="task-body">
+        <ol class="steps">
+          <li><strong>Редактор → Части шаблона → Header</strong></li>
+          <li><strong>Кликните на шапку → правая панель → Logo</strong></li>
+          <li><strong>Dark logo → кнопка выбора → загрузите файл</strong></li>
+          <li><strong>Повторите для Light logo</strong></li>
+          <li><strong>«Сохранить»</strong></li>
+        </ol>
+      </div>
+    </div>
+
+    <div class="task-card">
+      <div class="task-header">
+        <h4>📊 Скрыть казино без удаления</h4>
+        <span class="tag">~1 минута</span>
+      </div>
+      <div class="task-body">
+        <ol class="steps">
+          <li><strong>Casino Offers → откройте нужное казино</strong></li>
+          <li><strong>Правая панель → Статус → «Черновик»</strong></li>
+          <li><strong>«Обновить»</strong><p>Казино исчезнет с сайта. Данные сохранятся.</p></li>
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ Шпаргалка ════════════════════════════════════════════════ -->
+  <section>
+    <h2 class="section-title">⚡ Быстрая шпаргалка</h2>
+
+    <div class="card-grid-2">
+      <div class="card">
+        <h4 style="margin-bottom:10px;font-size:14px">🎨 Стандартные цвета фона</h4>
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px">
+          <div style="width:32px;height:32px;border-radius:6px;background:#ffffff;border:1px solid #e4e6ea;flex-shrink:0"></div>
+          <div><code style="font-size:12px">(пусто)</code><br><span style="font-size:12px;color:#9ba8b5">Белый / прозрачный</span></div>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px">
+          <div style="width:32px;height:32px;border-radius:6px;background:#f2f2f3;border:1px solid #e4e6ea;flex-shrink:0"></div>
+          <div><code style="font-size:12px">#f2f2f3</code><br><span style="font-size:12px;color:#9ba8b5">Светло-серый (чередование)</span></div>
+        </div>
+      </div>
+      <div class="card">
+        <h4 style="margin-bottom:10px;font-size:14px">💾 Когда изменения видны</h4>
+        <table style="box-shadow:none;font-size:13px">
+          <tbody>
+            <tr><td style="padding:5px 8px;border:none">Casino Offers</td><td style="padding:5px 8px;border:none"><span class="pill pill-green">сразу</span></td></tr>
+            <tr><td style="padding:5px 8px;border:none">Статьи</td><td style="padding:5px 8px;border:none"><span class="pill pill-green">сразу</span></td></tr>
+            <tr><td style="padding:5px 8px;border:none">Редактор сайта</td><td style="padding:5px 8px;border:none"><span class="pill pill-orange">после «Сохранить»</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="card">
+      <h4 style="margin-bottom:10px;font-size:14px">🔗 Правила для ссылок</h4>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;font-size:13px">
+        <div>
+          <p style="font-weight:700;color:#155724;margin-bottom:4px">✅ Правильно</p>
+          <code>/betano-portugal/</code> — внутренняя<br>
+          <code>https://example.com/</code> — внешняя<br>
+          <code>#</code> — якорь/заглушка
+        </div>
+        <div>
+          <p style="font-weight:700;color:#721c24;margin-bottom:4px">❌ Неправильно</p>
+          <code>betano-portugal</code> — без слэша<br>
+          <code>example.com</code> — без https://<br>
+          <code>localhost.com/...</code> — тестовый URL
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h4 style="margin-bottom:10px;font-size:14px">📝 HTML в текстовых полях</h4>
+      <p style="font-size:13px;margin-bottom:8px">Некоторые поля поддерживают HTML-теги:</p>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;font-size:13px">
+        <div><code>&lt;strong&gt;текст&lt;/strong&gt;</code><br><span style="color:#9ba8b5">→ <strong>жирный текст</strong></span></div>
+        <div><code>&lt;a href="/путь/"&gt;текст&lt;/a&gt;</code><br><span style="color:#9ba8b5">→ ссылка</span></div>
+        <div><code>&lt;br&gt;</code><br><span style="color:#9ba8b5">→ перенос строки</span></div>
+        <div><code>&lt;span class="text--main-color"&gt;текст&lt;/span&gt;</code><br><span style="color:#15a96a">→ зелёный текст</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ Список скриншотов ════════════════════════════════════════ -->
+  <section>
+    <h2 class="section-title">📸 Список всех скриншотов для этого гайда</h2>
+    <div class="card">
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>#</th><th>Скриншот</th><th>Где сделать</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>1</td><td>Страница входа в WP Admin</td><td><code>/wp-admin/</code> — форма логин/пароль</td></tr>
+            <tr><td>2</td><td>Главная панель (Dashboard)</td><td>После входа — выделить левое меню</td></tr>
+            <tr><td>3</td><td>Интерфейс Редактора сайта</td><td>Внешний вид → Редактор → Главная страница — подписать 4 зоны</td></tr>
+            <tr><td>4</td><td>Header в редакторе + правая панель</td><td>Части шаблона → Header → кликнуть на шапку</td></tr>
+            <tr><td>5</td><td>Панель логотипа (правая панель)</td><td>Та же страница, раздел Logo в правой панели</td></tr>
+            <tr><td>6</td><td>Редактор пунктов меню</td><td>Правая панель → Navigation Menu → развернуть «Bónus»</td></tr>
+            <tr><td>7</td><td>Footer в редакторе + правая панель</td><td>Части шаблона → Footer → кликнуть на подвал</td></tr>
+            <tr><td>8</td><td>Главная страница в редакторе</td><td>Шаблоны → Главная страница — вся страница с блоками</td></tr>
+            <tr><td>9</td><td>Список Casino Offers</td><td>Левое меню → Casino Offers</td></tr>
+            <tr><td>10</td><td>Страница редактирования оффера</td><td>Casino Offers → открыть любое казино</td></tr>
+            <tr><td>11</td><td>Редактор записи (статьи)</td><td>Записи → открыть любую статью</td></tr>
+            <tr><td>12</td><td>Карточка казино на сайте</td><td>Фронтенд главной страницы — одна карточка</td></tr>
+            <tr><td>13</td><td>Таблица в редакторе + правая панель</td><td>Главная страница → кликнуть на таблицу</td></tr>
+            <tr><td>14</td><td>Live Odds виджет на сайте</td><td>Фронтенд главной страницы — виджет ставок</td></tr>
+            <tr><td>15</td><td>Age Disclaimer на сайте и в редакторе</td><td>Фронтенд (верхняя полоса) + правая панель в редакторе</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <div class="guide-footer">
+    <p>Руководство редактора контента · New Theme · Версия 2026-06</p>
+    <p style="margin-top:4px">Документ: <code>docs/EDITOR-GUIDE.html</code></p>
+  </div>
+
+</div><!-- /#main -->
+
+<script>
+  // Highlight active nav link on scroll
+  const sections = document.querySelectorAll('section[id], div[id^="b-"], div[id="tasks"]');
+  const navLinks = document.querySelectorAll('#sidebar nav a');
+  window.addEventListener('scroll', () => {
+    let current = '';
+    sections.forEach(s => {
+      if (window.scrollY >= s.offsetTop - 80) current = s.id;
+    });
+    navLinks.forEach(a => {
+      a.classList.toggle('active', a.getAttribute('href') === '#' + current);
+    });
+  }, { passive: true });
+</script>
+</body>
+</html>

@@ -1,0 +1,24 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "new-theme/offer-card",
+	"title": "Казино-оффер Card",
+	"category": "new-theme",
+	"icon": "tickets-alt",
+	"parent": [ "new-theme/offer-list" ],
+	"textdomain": "new-theme",
+	"attributes": {
+		"name": { "type": "string" },
+		"logo": { "type": "string" },
+		"logoId": { "type": "number" },
+		"rating": { "type": "string" },
+		"bonus": { "type": "string" },
+		"features": { "type": "string" },
+		"payments": { "type": "string" },
+		"offerUrl": { "type": "string" },
+		"reviewUrl": { "type": "string" }
+	},
+	"supports": {
+		"html": false
+	}
+}

@@ -1,0 +1,40 @@
+/*
+ * Offer list block-local layer.
+ * Legacy visual parity still lives in assets/css/legacy-reference.css.
+ */
+
+.offers {
+	position: relative;
+}
+
+.offers__list {
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+}
+
+.offer-card {
+	overflow: visible;
+}
+
+.offer-card__thumb {
+	align-items: center;
+	display: flex;
+	justify-content: center;
+}
+
+.offer-card__thumb img {
+	object-fit: contain;
+}
+
+.payment-list__group {
+	align-items: center;
+	display: flex;
+	flex-wrap: wrap;
+}
+
+.payment-list__img-wrapper {
+	align-items: center;
+	display: inline-flex;
+	justify-content: center;
+}

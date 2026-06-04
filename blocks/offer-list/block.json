@@ -1,0 +1,44 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "new-theme/offer-list",
+	"title": "Казино-оффер List",
+	"category": "new-theme",
+	"icon": "list-view",
+	"textdomain": "new-theme",
+	"style": "file:./style.css",
+	"attributes": {
+		"title": { "type": "string" },
+		"intro": { "type": "string" },
+		"source": {
+			"type": "string",
+			"default": "attributes",
+			"enum": [ "attributes", "query" ]
+		},
+		"limit": {
+			"type": "number",
+			"default": 15
+		},
+		"orderBy": {
+			"type": "string",
+			"default": "menu_order",
+			"enum": [ "menu_order", "date", "title", "rating", "bonus" ]
+		},
+		"order": {
+			"type": "string",
+			"default": "ASC",
+			"enum": [ "ASC", "DESC" ]
+		},
+		"showLegalLabel": {
+			"type": "boolean",
+			"default": true
+		},
+		"cards": {
+			"type": "array",
+			"items": { "type": "object" }
+		}
+	},
+	"supports": {
+		"html": false
+	}
+}

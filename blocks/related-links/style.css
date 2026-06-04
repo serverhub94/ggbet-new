@@ -1,0 +1,65 @@
+/*
+ * Related links block-local layer.
+ * Legacy visual parity still lives in assets/css/legacy-reference.css.
+ */
+
+.related-links {
+	position: relative;
+}
+
+.related-links__intro {
+	margin-top: 0.5em;
+	color: inherit;
+}
+
+.related-links__link img {
+	object-fit: contain;
+}
+
+.related-links__link h3 {
+	font-family: var(--new-theme-font-heading);
+}
+
+.related-links__url {
+	display: inline-flex;
+	width: fit-content;
+}
+
+/* Grid variant */
+.related-links--grid .row {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+	gap: 1rem;
+}
+
+.related-links--grid .related-links__heading {
+	grid-column: 1 / -1;
+}
+
+/* Footer group variant */
+.related-links--footer .related-links__group {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.5rem 1.5rem;
+	align-items: center;
+}
+
+.related-links--footer .related-links__link {
+	display: flex;
+	align-items: center;
+	gap: 0.5rem;
+}
+
+.related-links--footer .related-links__link h3 {
+	font-size: 0.875rem;
+	margin: 0;
+}
+
+.related-links--footer .related-links__link img {
+	width: 32px;
+	height: 32px;
+}
+
+.related-links--footer .related-links__link p {
+	display: none;
+}

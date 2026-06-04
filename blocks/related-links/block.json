@@ -1,0 +1,23 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "new-theme/related-links",
+	"title": "Редактируемые связанные ссылки",
+	"category": "new-theme",
+	"icon": "admin-links",
+	"textdomain": "new-theme",
+	"style": "file:./style.css",
+	"attributes": {
+		"title": { "type": "string" },
+		"introText": { "type": "string" },
+		"variant": { "type": "string", "default": "cards" },
+		"background": { "type": "string" },
+		"items": {
+			"type": "array",
+			"items": { "type": "object" }
+		}
+	},
+	"supports": {
+		"html": false
+	}
+}

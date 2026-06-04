@@ -1,0 +1,20 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "new-theme/link-card",
+	"title": "Карточка-ссылка",
+	"category": "new-theme",
+	"icon": "admin-links",
+	"parent": [ "new-theme/card-grid" ],
+	"textdomain": "new-theme",
+	"attributes": {
+		"title": { "type": "string" },
+		"text": { "type": "string" },
+		"image": { "type": "string" },
+		"imageId": { "type": "number" },
+		"url": { "type": "string" }
+	},
+	"supports": {
+		"html": false
+	}
+}

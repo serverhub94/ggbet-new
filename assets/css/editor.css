@@ -1,0 +1,17 @@
+.editor-styles-wrapper .nt-page {
+	background: #f2f2f3;
+	padding: 0;
+}
+
+.editor-styles-wrapper .nt-offer-list,
+.editor-styles-wrapper .nt-card-grid,
+.editor-styles-wrapper .nt-faq {
+	border: 1px dashed #b8bcc4;
+	padding: 12px;
+}
+
+.editor-styles-wrapper .nt-offer-card,
+.editor-styles-wrapper .nt-link-card,
+.editor-styles-wrapper .nt-faq-item {
+	outline: 1px solid rgba(18, 169, 106, .25);
+}

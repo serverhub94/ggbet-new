@@ -1,0 +1,15 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "new-theme/faq",
+	"title": "FAQ",
+	"category": "new-theme",
+	"icon": "editor-help",
+	"textdomain": "new-theme",
+	"attributes": {
+		"title": { "type": "string" }
+	},
+	"supports": {
+		"html": false
+	}
+}

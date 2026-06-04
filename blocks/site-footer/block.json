@@ -1,0 +1,35 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "new-theme/site-footer",
+	"title": "Футер сайта",
+	"category": "new-theme",
+	"icon": "align-wide",
+	"textdomain": "new-theme",
+	"attributes": {
+		"logo": { "type": "string" },
+		"logoId": { "type": "number" },
+		"logoAlt": { "type": "string" },
+		"disclaimerText": { "type": "string" },
+		"infoLinks": {
+			"type": "array",
+			"items": { "type": "object" }
+		},
+		"moreLinks": {
+			"type": "array",
+			"items": { "type": "object" }
+		},
+		"externalLinks": {
+			"type": "array",
+			"items": { "type": "object" }
+		},
+		"footerLinks": {
+			"type": "array",
+			"items": { "type": "object" }
+		},
+		"copyright": { "type": "string" }
+	},
+	"supports": {
+		"html": false
+	}
+}

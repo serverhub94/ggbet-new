@@ -1,0 +1,20 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "new-theme/site-header",
+	"title": "Шапка сайта",
+	"category": "new-theme",
+	"icon": "menu",
+	"textdomain": "new-theme",
+	"attributes": {
+		"logo": { "type": "string" },
+		"logoId": { "type": "number" },
+		"logoLight": { "type": "string" },
+		"logoLightId": { "type": "number" },
+		"logoAlt": { "type": "string" },
+		"menuItems": { "type": "array", "default": [] }
+	},
+	"supports": {
+		"html": false
+	}
+}

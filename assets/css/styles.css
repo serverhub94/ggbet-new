@@ -1,0 +1,9 @@
+/*
+ * Compatibility shim for older references.
+ *
+ * WordPress now enqueues the split layers directly:
+ * global.css -> legacy-reference.css -> block-theme.css.
+ */
+@import url("./global.css");
+@import url("./legacy-reference.css");
+@import url("./block-theme.css");

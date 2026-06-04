@@ -1,0 +1,17 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "new-theme/faq-item",
+	"title": "Элемент FAQ",
+	"category": "new-theme",
+	"icon": "editor-help",
+	"parent": [ "new-theme/faq" ],
+	"textdomain": "new-theme",
+	"attributes": {
+		"question": { "type": "string" },
+		"answer": { "type": "string" }
+	},
+	"supports": {
+		"html": false
+	}
+}
