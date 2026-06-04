@@ -10,13 +10,13 @@
 
 /* Highlighted row */
 .table-responsive tbody tr.is-highlighted {
-	background-color: var(--wp--preset--color--accent, #f8f4e5);
+	background-color: var(--wp--preset--color--accent, rgba(18, 169, 106, .08));
 	font-weight: 600;
 }
 
 /* Highlighted cell */
 .table-responsive td.is-highlighted {
-	background-color: var(--wp--preset--color--accent, #f8f4e5);
+	background-color: var(--wp--preset--color--accent, rgba(18, 169, 106, .08));
 	font-weight: 600;
 }
 

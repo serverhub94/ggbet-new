@@ -6,6 +6,7 @@
 	"category": "new-theme",
 	"icon": "list-view",
 	"textdomain": "new-theme",
+	"style": "file:./style.css",
 	"attributes": {
 		"title": { "type": "string" },
 		"background": { "type": "string" },

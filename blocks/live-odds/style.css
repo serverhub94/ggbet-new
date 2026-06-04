@@ -13,10 +13,6 @@
 	overflow: hidden;
 }
 
-.odds-tips .tip-match {
-	box-sizing: border-box;
-}
-
 .odds-tips .odd-provider img {
 	object-fit: contain;
 }
