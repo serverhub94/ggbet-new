@@ -108,3 +108,8 @@ textarea {
 .wp-block-post-content a:where(:not(.button):not(.wp-block-button__link)) {
 	color: var(--new-theme-color-green);
 }
+
+.skip-link,
+#wp--skip-link--target {
+	display: none !important;
+}

@@ -9,10 +9,25 @@ if (!defined("ABSPATH")) {
     exit();
 }
 
-add_action("wp_enqueue_scripts", function (): void {
-    wp_dequeue_script("wp-block-template-skip-link");
-}, 100);
+add_action(
+    "wp_enqueue_scripts",
+    function (): void {
+        wp_dequeue_script("wp-block-template-skip-link");
+    },
+    100,
+);
 
+add_action("after_setup_theme", function (): void {
+    remove_action("wp_body_open", "wp_skip_link");
+});
+
+add_action(
+    "init",
+    function (): void {
+        remove_action("wp_body_open", "wp_skip_link");
+    },
+    999,
+);
 
 add_action("after_setup_theme", "new_theme_setup");
 function new_theme_setup(): void
@@ -446,7 +461,7 @@ function new_theme_normalize_source_html(string $html): string
         "assets/img/2021/08/betano-logo.svg",
         $html,
     );
-    $theme_path = str_replace('/', '\\/', rtrim(wp_make_link_relative(get_template_directory_uri()), '/'));
+    $theme_path = str_replace("/", "\\/", rtrim(wp_make_link_relative(get_template_directory_uri()), "/"));
     $html = str_replace("assets\\/", $theme_path . "\\/assets\\/", $html);
     $html = str_replace("assets/", get_template_directory_uri() . "/assets/", $html);
     $html = str_replace("localhost.com/", home_url("/"), $html);
@@ -777,8 +792,8 @@ function new_theme_query_offer_cards(array $attributes): array
     if ("bonus" === ($attributes["orderBy"] ?? "") && count($cards) > 1) {
         $desc = "DESC" === strtoupper((string) ($attributes["order"] ?? "ASC"));
         usort($cards, static function (array $a, array $b) use ($desc): int {
-            $av = (float) preg_replace('/[^0-9.]/', '', $a["bonus"]);
-            $bv = (float) preg_replace('/[^0-9.]/', '', $b["bonus"]);
+            $av = (float) preg_replace("/[^0-9.]/", "", $a["bonus"]);
+            $bv = (float) preg_replace("/[^0-9.]/", "", $b["bonus"]);
             return $desc ? $bv <=> $av : $av <=> $bv;
         });
     }
@@ -874,7 +889,8 @@ function new_theme_render_site_header(array $attributes): string
     $items = array_values(array_filter((array) ($attributes["menuItems"] ?? []), "is_array"));
 
     if (empty($items)) {
-        static $sidebar_nav_cache = null, $primary_nav_cache = null;
+        static $sidebar_nav_cache = null,
+            $primary_nav_cache = null;
         if (null === $sidebar_nav_cache) {
             $dir = get_template_directory();
             $sidebar_nav_cache = new_theme_normalize_source_html((string) file_get_contents($dir . "/parts/header-sidebar-nav.html"));
@@ -1118,7 +1134,7 @@ function new_theme_render_offer_list(array $attributes, string $content): string
         $html .= new_theme_render_offer_card(is_array($card) ? $card : []);
     }
     if (empty($cards) && current_user_can("edit_posts")) {
-        $html .= '<p class="offers__empty">' . esc_html__("Oferu nerasta. Patikrinkite filtrus arba pridekite nauju kazino pasiulymu.", "new-theme") . "</p>";
+        $html .= '<p class="offers__empty">' . esc_html__("", "new-theme") . "</p>";
     }
     $html .= "</div>";
     $html .= "</div></section>";
@@ -1169,13 +1185,19 @@ function new_theme_render_offer_card(array $attributes): string
         esc_url($offer_url) .
         '" target="_blank" rel="sponsored noopener noreferrer"><span class="offer-card__bonus-value"><span class="bonus">' .
         esc_html($bonus) .
-        '</span></span><span class="button__label">' . esc_html__("Premija", "new-theme") . '</span></a></div>';
+        '</span></span><span class="button__label">' .
+        esc_html__("Premija", "new-theme") .
+        "</span></a></div>";
     $html .=
         '<div class="offer-card__links"><div class="offer-card__button-wrapper"><a class="button button--primary" href="' .
         esc_url($offer_url) .
-        '" target="_blank" rel="sponsored noopener noreferrer"><span>' . esc_html__("Zaisti", "new-theme") . '</span></a></div><div class="offer-card__button-wrapper"><a class="button button--secondary" href="' .
+        '" target="_blank" rel="sponsored noopener noreferrer"><span>' .
+        esc_html__("Zaisti", "new-theme") .
+        '</span></a></div><div class="offer-card__button-wrapper"><a class="button button--secondary" href="' .
         esc_url($review_url) .
-        '"><span>' . esc_html__("Apzvalga", "new-theme") . '</span></a></div></div></div>';
+        '"><span>' .
+        esc_html__("Apzvalga", "new-theme") .
+        "</span></a></div></div></div>";
     $html .= "</div>";
 
     return $html;
@@ -1476,7 +1498,7 @@ function new_theme_render_news_slider(array $attributes): string
         }
         $html .= '<time class="news-slider-item__date">' . esc_html($item["date"] ?? "") . "</time>";
         $html .= '<h3 class="news-slider-item__title">' . new_theme_content_html($item["title"] ?? "") . "</h3>";
-        $html .= '<span class="news-slider-item__link">' . esc_html__("Skaityti daugiau", "new-theme") . '</span></a></div>';
+        $html .= '<span class="news-slider-item__link">' . esc_html__("Skaityti daugiau", "new-theme") . "</span></a></div>";
     }
 
     if (!$items) {
@@ -1568,7 +1590,7 @@ function new_theme_render_site_footer(array $attributes): string
     $html .= '<div class="site-footer__link-groups layout__row-item-padding">';
 
     $html .= '<div class="related-links__group">';
-    $html .= '<div class="related-links__group-title">' . esc_html__("INFORMACIJA", "new-theme") . '</div>';
+    $html .= '<div class="related-links__group-title">' . esc_html__("INFORMACIJA", "new-theme") . "</div>";
     foreach ($info_links as $link) {
         $link = is_array($link) ? $link : [];
         $html .= sprintf('<a class="related-links__group-link" href="%s"><span>%s</span></a>', esc_url(new_theme_normalize_url($link["url"] ?? "#")), esc_html($link["label"] ?? ""));
@@ -1576,7 +1598,7 @@ function new_theme_render_site_footer(array $attributes): string
     $html .= "</div>";
 
     $html .= '<div class="related-links__group">';
-    $html .= '<div class="related-links__group-title">' . esc_html__("Suzinoti daugiau", "new-theme") . '</div>';
+    $html .= '<div class="related-links__group-title">' . esc_html__("Suzinoti daugiau", "new-theme") . "</div>";
     foreach ($more_links as $link) {
         $link = is_array($link) ? $link : [];
         $html .= sprintf('<a class="related-links__group-link" href="%s"><span>%s</span></a>', esc_url(new_theme_normalize_url($link["url"] ?? "#")), esc_html($link["label"] ?? ""));
