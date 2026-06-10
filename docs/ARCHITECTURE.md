@@ -8,9 +8,7 @@
 blocks/<block-slug>/block.json
 ```
 
-PHP всё ещё хранит render callbacks в `functions.php`, но регистрация идёт через `register_block_type( $metadata_path, ... )`. Это сохраняет текущий SSR-рендер и совместимость шаблонов, при этом переводит блоки на production-структуру из ТЗ.
-
-`new-theme/source-section` оставлен как legacy block для обратной совместимости, но скрыт из inserter и не используется в текущих шаблонах.
+PHP хранит render callbacks в `functions.php`, регистрация идёт через `register_block_type( $metadata_path, ... )`.
 
 ## Block Types
 
@@ -21,14 +19,8 @@ PHP render callback → REST API → editor preview = frontend output.
 |------|--------------------|
 | `age-disclaimer` | text, linkText, linkUrl |
 | `site-header` | logo, logoId, logoLight, logoLightId, logoAlt |
-| `hero` | title, text, image, imageId, overlayColor, overlayOpacity, topSpacer, variant |
 | `offer-card` | name, logo, logoId, rating, bonus, features, payments, offerUrl, reviewUrl |
-| `content-section` | kind, title, text, image, imageId, background, items[] |
-| `related-links` | title, background, items[]{title, text, image, url} |
-| `data-table` | title, background, headersText, rowsText |
 | `news-slider` | title, items[]{url, image, title, category, date} |
-| `link-card` | title, text, image, imageId, url |
-| `faq-item` | question, answer |
 | `site-footer` | logo, logoId, logoAlt, disclaimerText, infoLinks[], moreLinks[], externalLinks[], footerLinks[], copyright |
 
 ### File-based Blocks (HTML read from parts/)
@@ -46,9 +38,14 @@ Too large for REST GET — PHP reads HTML file and normalises paths.
 | Блок | Дочерние блоки |
 |------|----------------|
 | `page-main` | Любые блоки |
+| `section` | Произвольные core-блоки и функциональные блоки темы |
 | `offer-list` | `offer-card` |
-| `card-grid` | `link-card` |
-| `faq` | `faq-item` |
+
+`new-theme/section` — универсальная динамическая оболочка для контента. Она хранит только настройки фона, контейнера, отступов и адаптивного поведения. Сам контент сохраняется через `InnerBlocks.Content` и рендерится обычными блоками Gutenberg. Двухколоночный режим вставляет `core/columns`, не создавая отдельную модель контента.
+
+## Internal Links Tracking
+
+Маркеры аналитики (бывший `related-links`) хранятся как классы `nt-internal-links` и `nt-internal-link`. Render-фильтры добавляют к итоговой разметке `data-location="internal-links"` и `data-internal-link="true"` без изменения HTML core-блоков.
 
 ## Path Normalisation
 
@@ -60,9 +57,7 @@ Too large for REST GET — PHP reads HTML file and normalises paths.
 - Относительный путь → абсолютный URL темы
 - Уже абсолютный URL → без изменений
 
-`new-theme/hero` сохраняет выбранный Media Library URL в `image` и attachment ID в `imageId`. Старые theme-relative значения `image` продолжают работать через `new_theme_asset_url()`. Overlay, top spacer и dark/light variant рендерятся одинаково в editor preview и на фронте.
-
-Для новых изображений editor UI больше не показывает ручные path-поля. Header/footer logos, offer logos, payment icons, content-section images, related/news/link-card images и CPT `casino_offer` logo/payments выбираются через WordPress Media Library. Старые theme-relative paths остаются читаемыми только как backward compatibility для импортированного контента.
+Для новых изображений editor UI использует WordPress Media Library. Header/footer logos, offer logos, payment icons и CPT `casino_offer` logo/payments выбираются через Медиафайлы. Старые theme-relative paths остаются читаемыми через `new_theme_asset_url()` только как backward compatibility для импортированного контента.
 
 ## Template Structure
 
@@ -99,18 +94,19 @@ docker exec wordpress_nginx sh -c 'find /var/cache/nginx -type f -delete'
 
 ## Asset Loading
 
-Базовый визуальный слой `assets/css/styles.css` подключается на фронте и в editor styles, потому что текущий HTML зависит от legacy-классов.
+CSS загружается в следующем порядке: `global.css` → `legacy-reference.css` → `block-theme.css`. Те же три файла плюс `editor.css` подключаются в editor styles через `add_editor_style`. `styles.css` является совместимым шимом для прямых ссылок; основной frontend стилизации он больше не несёт.
 
-Фронтовые JS-файлы регистрируются заранее, но часть подключается только при рендере нужных блоков:
+Фронтовые JS-файлы регистрируются заранее, но подключаются только при рендере нужных блоков:
 
 | Script | Когда подключается |
 |--------|--------------------|
-| `offer-list.js` | `new-theme/offer-list` |
-| `internal-links.js` | `new-theme/related-links` |
-| `news-slider.js` + `slick.js` | `new-theme/news-slider` |
-| `liveodds-tips.js` | `new-theme/live-odds` |
+| `header.js` | `new-theme/site-header` render callback |
+| `offer-list.js` | `new-theme/offer-list` render callback |
+| `internal-links.js` | `render_block` filter для `new-theme/section` с классом `nt-internal-links` или `render_block_core/button` с классом `nt-internal-link` |
+| `news-slider.js` + `slick.js` | `new-theme/news-slider` render callback |
+| `liveodds-tips.js` | `new-theme/live-odds` render callback |
 
-`main.js` остаётся глобальным, потому что header/template parts присутствуют во всех основных шаблонах и текущие меню завязаны на legacy frontend logic.
+`main.js` удалён: глобального фронтового скрипта нет. Все JS подключаются только если соответствующий блок присутствует на странице.
 
 ## Offer Data Model
 

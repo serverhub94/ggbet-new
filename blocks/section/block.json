@@ -1,0 +1,42 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "new-theme/section",
+	"title": "Универсальная секция",
+	"category": "new-theme",
+	"icon": "layout",
+	"description": "Контейнер с фоном, отступами и произвольными вложенными блоками Gutenberg.",
+	"textdomain": "new-theme",
+	"style": "file:./style.css",
+	"attributes": {
+		"backgroundType": { "type": "string", "default": "none", "enum": [ "none", "color", "image" ] },
+		"backgroundColor": { "type": "string", "default": "" },
+		"backgroundImageId": { "type": "number" },
+		"backgroundImageUrl": { "type": "string", "default": "" },
+		"backgroundPosition": {
+			"type": "object",
+			"default": { "x": 0.5, "y": 0.5 }
+		},
+		"backgroundSize": { "type": "string", "default": "cover", "enum": [ "cover", "contain", "auto" ] },
+		"overlayColor": { "type": "string", "default": "#000000" },
+		"overlayOpacity": { "type": "number", "default": 0 },
+		"contentWidth": { "type": "string", "default": "content", "enum": [ "content", "wide", "full" ] },
+		"paddingTop": { "type": "string", "default": "l", "enum": [ "none", "s", "m", "l", "xl" ] },
+		"paddingBottom": { "type": "string", "default": "l", "enum": [ "none", "s", "m", "l", "xl" ] },
+		"minHeight": { "type": "string", "default": "auto", "enum": [ "auto", "s", "m", "l", "screen" ] },
+		"verticalAlign": { "type": "string", "default": "start", "enum": [ "start", "center", "end" ] },
+		"layout": { "type": "string", "default": "stack", "enum": [ "stack", "split" ] },
+		"stackOnMobile": { "type": "boolean", "default": true },
+		"reverseOnMobile": { "type": "boolean", "default": false }
+	},
+	"supports": {
+		"align": [ "wide", "full" ],
+		"anchor": true,
+		"color": {
+			"text": true,
+			"link": true
+		},
+		"html": false,
+		"reusable": true
+	}
+}

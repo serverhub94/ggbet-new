@@ -489,3 +489,57 @@ All inner-page templates use `wp:template-part` for header and footer, and wrap 
 - `assets/css/editor.css`
 - `theme.json`
 - `style.css`
+## 2026-06-11 Staging Migration
+
+Fresh WordPress 6.x / PHP 8.3 environment (`ggbet_section_wp` container, bind-mounted theme).
+
+- WP-CLI installed; `wp new-theme sections self_test` → **13 fixtures passed**.
+- `audit` on fresh DB → 0 legacy blocks in DB and theme files (file-based templates already migrated).
+- Inserted 9 test pages covering every legacy block type (hero, content-section, two-column-text, about-list, info-grid, data-table, card-grid+link-card, faq+faq-item, related-links).
+- `audit` → detected all 11 legacy block types across the 9 posts.
+- `migrate --dry-run` → 9 records would be migrated.
+- `migrate` → 9 records updated.
+- `migrate --dry-run` second pass → **0 records** (idempotent confirmed).
+- `verify` → **Verification passed**.
+- Rendered all 9 migrated posts via PHP:
+  - `core/details` renders in FAQ post.
+  - `wp-block-table` renders in data-table post.
+  - `data-location="internal-links"` injected on related-links section.
+- `restore --dry-run` → 9 backup records available with SHA-256 hashes.
+- `restore --post_id=4` → restored hero post to legacy content; re-ran `migrate` → converted again successfully.
+- Final `verify` → **Verification passed**.
+
+## 2026-06-11 Stage 6 — Physical Legacy Cleanup
+
+Deleted all replaced legacy blocks after `verify` confirmed 0 usages in DB and theme files.
+
+**Removed block directories** (`blocks/<slug>/`):
+`hero`, `content-section`, `two-column-text`, `about-list`, `info-grid`, `related-links`, `data-table`, `card-grid`, `link-card`, `faq`, `faq-item`
+
+**Removed from `functions.php`:**
+- 11 entries from `$blocks` array
+- `new_theme_render_hero`, `new_theme_render_two_column_text`, `new_theme_render_about_list`, `new_theme_render_info_grid`, `new_theme_render_content_section`, `new_theme_render_related_links`, `new_theme_render_data_table`, `new_theme_render_card_grid`, `new_theme_render_link_card`, `new_theme_render_faq`, `new_theme_render_faq_item`
+
+**Removed from `assets/js/blocks.js`:**
+- `registerBlockType` sections for all 11 legacy blocks (1060 lines removed)
+
+**Remaining registered blocks:** `age-disclaimer`, `site-header`, `page-main`, `section`, `offer-list`, `offer-card`, `news-slider`, `site-footer`, `live-odds`
+
+**Updated docs:** `ARCHITECTURE.md` (removed legacy block tables, CLI migration section), `EDITOR-GUIDE.md` (date).
+
+## 2026-06-11 Post-review Fixes
+
+- `render_block_new-theme/section` filter now also enqueues `internal-links.js` when the section carries the `nt-internal-links` class; previously the script was only enqueued by the legacy `related-links` render callback, so migrated sections would lose the tracking behaviour.
+- Updated `ARCHITECTURE.md`: removed stale note that `main.js` is a global script (it was removed in the JS Split stage), updated CSS loading description to reflect the split into `global.css` / `legacy-reference.css` / `block-theme.css`.
+
+## 2026-06-10 Flexible Section Migration Tooling
+
+- Added `new-theme/section` with token-based spacing, background image, overlay, content width, minimum height, and responsive column controls.
+- Added all 12 required Section patterns and migrated file-based front-page/legal-page compositions to Section plus core blocks.
+- Hid replaceable legacy content blocks from the inserter while preserving their registrations and render callbacks.
+- Added `wp new-theme sections audit|migrate|verify|restore|self-test` with recursive block parsing, theme-file auditing, post-content backups, rollback, and fixtures.
+- Preserved related-links tracking markers after conversion to core blocks.
+- Synced editor block supports with metadata, blocked unsafe structural children, and added a color contrast warning below `4.5:1`.
+- Updated the editor guide for Section, patterns, core Table, and core Details workflows.
+- Hardened migration rollback safety: stale backups block writes, restore verifies SHA-256, and fixtures assert exact recursive conversion counts.
+- Added Section background fallback from attachment ID when a saved background URL is unavailable.

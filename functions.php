@@ -9,6 +9,10 @@ if (!defined("ABSPATH")) {
     exit();
 }
 
+if (defined("WP_CLI") && WP_CLI) {
+    require_once get_template_directory() . "/inc/sections-migration.php";
+}
+
 add_action(
     "wp_enqueue_scripts",
     function (): void {
@@ -108,7 +112,7 @@ function new_theme_register_blocks(): void
     wp_register_script(
         "new-theme-blocks",
         $asset_uri . "/js/blocks.js",
-        ["wp-blocks", "wp-block-editor", "wp-components", "wp-element", "wp-i18n", "wp-server-side-render"],
+        ["wp-blocks", "wp-block-editor", "wp-components", "wp-data", "wp-element", "wp-i18n", "wp-server-side-render"],
         file_exists($asset_dir . "/js/blocks.js") ? (string) filemtime($asset_dir . "/js/blocks.js") : wp_get_theme()->get("Version"),
         true,
     );
@@ -122,20 +126,10 @@ function new_theme_register_blocks(): void
         "age-disclaimer" => "new_theme_render_age_disclaimer",
         "site-header" => "new_theme_render_site_header",
         "page-main" => "new_theme_render_page_main",
-        "hero" => "new_theme_render_hero",
+        "section" => "new_theme_render_section",
         "offer-list" => "new_theme_render_offer_list",
         "offer-card" => "new_theme_render_offer_card",
-        "two-column-text" => "new_theme_render_two_column_text",
-        "about-list" => "new_theme_render_about_list",
-        "info-grid" => "new_theme_render_info_grid",
-        "content-section" => "new_theme_render_content_section",
-        "related-links" => "new_theme_render_related_links",
-        "data-table" => "new_theme_render_data_table",
         "news-slider" => "new_theme_render_news_slider",
-        "card-grid" => "new_theme_render_card_grid",
-        "link-card" => "new_theme_render_link_card",
-        "faq" => "new_theme_render_faq",
-        "faq-item" => "new_theme_render_faq_item",
         "site-footer" => "new_theme_render_site_footer",
         "live-odds" => "new_theme_render_live_odds",
     ];
@@ -146,9 +140,6 @@ function new_theme_register_blocks(): void
         register_block_type($metadata_path, [
             "editor_script" => "new-theme-blocks",
             "render_callback" => $callback,
-            "supports" => [
-                "html" => false,
-            ],
         ]);
     }
 }
@@ -865,6 +856,146 @@ function new_theme_render_page_main(array $attributes, string $content): string
     return $html;
 }
 
+function new_theme_render_section(array $attributes, string $content): string
+{
+    $background_type_value = $attributes["backgroundType"] ?? "none";
+    $background_type = in_array($background_type_value, ["none", "color", "image"], true) ? $background_type_value : "none";
+    $content_width_value = $attributes["contentWidth"] ?? "content";
+    $content_width = in_array($content_width_value, ["content", "wide", "full"], true) ? $content_width_value : "content";
+    $vertical_align_value = $attributes["verticalAlign"] ?? "start";
+    $vertical_align = in_array($vertical_align_value, ["start", "center", "end"], true) ? $vertical_align_value : "start";
+    $layout = ($attributes["layout"] ?? "stack") === "split" ? "split" : "stack";
+
+    $spacing = [
+        "none" => "0px",
+        "s" => "16px",
+        "m" => "32px",
+        "l" => "48px",
+        "xl" => "64px",
+    ];
+    $min_heights = [
+        "auto" => "auto",
+        "s" => "240px",
+        "m" => "360px",
+        "l" => "520px",
+        "screen" => "100vh",
+    ];
+
+    $padding_top = $spacing[$attributes["paddingTop"] ?? "l"] ?? $spacing["l"];
+    $padding_bottom = $spacing[$attributes["paddingBottom"] ?? "l"] ?? $spacing["l"];
+    $min_height = $min_heights[$attributes["minHeight"] ?? "auto"] ?? $min_heights["auto"];
+    $background_color = sanitize_hex_color((string) ($attributes["backgroundColor"] ?? ""));
+
+    $classes = [
+        "nt-content-section",
+        "nt-content-section--width-" . $content_width,
+        "nt-content-section--align-" . $vertical_align,
+        "nt-content-section--layout-" . $layout,
+    ];
+
+    if (!array_key_exists("stackOnMobile", $attributes) || (bool) $attributes["stackOnMobile"]) {
+        $classes[] = "nt-content-section--stack-mobile";
+    }
+    if (!empty($attributes["reverseOnMobile"])) {
+        $classes[] = "nt-content-section--reverse-mobile";
+    }
+
+    $style = [
+        "--nt-section-padding-top:" . $padding_top,
+        "--nt-section-padding-bottom:" . $padding_bottom,
+        "--nt-section-min-height:" . $min_height,
+    ];
+    if ("color" === $background_type && $background_color) {
+        $style[] = "--nt-section-background-color:" . $background_color;
+    }
+
+    $wrapper_attributes = get_block_wrapper_attributes([
+        "class" => implode(" ", $classes),
+        "style" => implode(";", $style),
+    ]);
+
+    $background_html = "";
+    $background_image_url = trim((string) ($attributes["backgroundImageUrl"] ?? ""));
+    if ("" === $background_image_url && !empty($attributes["backgroundImageId"])) {
+        $attachment_url = wp_get_attachment_image_url(absint($attributes["backgroundImageId"]), "full");
+        $background_image_url = is_string($attachment_url) ? $attachment_url : "";
+    }
+    if ("image" === $background_type && "" !== $background_image_url) {
+        $position = is_array($attributes["backgroundPosition"] ?? null) ? $attributes["backgroundPosition"] : [];
+        $position_x = max(0, min(1, (float) ($position["x"] ?? 0.5))) * 100;
+        $position_y = max(0, min(1, (float) ($position["y"] ?? 0.5))) * 100;
+        $background_size = in_array($attributes["backgroundSize"] ?? "cover", ["cover", "contain", "auto"], true)
+            ? $attributes["backgroundSize"]
+            : "cover";
+        $background_style = sprintf(
+            "background-image:url('%s');background-position:%.2f%% %.2f%%;background-size:%s",
+            esc_url(new_theme_asset_url($background_image_url)),
+            $position_x,
+            $position_y,
+            $background_size,
+        );
+        $background_html = '<div class="nt-content-section__background" aria-hidden="true" style="' . esc_attr($background_style) . '"></div>';
+    }
+
+    $overlay_html = "";
+    $overlay_opacity = min(100, max(0, absint($attributes["overlayOpacity"] ?? 0)));
+    if ($overlay_opacity > 0 && in_array($background_type, ["color", "image"], true)) {
+        $overlay_color = sanitize_hex_color((string) ($attributes["overlayColor"] ?? "#000000")) ?: "#000000";
+        $overlay_html = '<div class="nt-content-section__overlay" aria-hidden="true" style="background-color:' .
+            esc_attr(new_theme_hex_to_rgba($overlay_color, $overlay_opacity / 100)) .
+            '"></div>';
+    }
+
+    return '<section ' . $wrapper_attributes . '>' .
+        $background_html .
+        $overlay_html .
+        '<div class="nt-content-section__container">' . $content . "</div></section>";
+}
+
+add_filter("render_block_new-theme/section", "new_theme_add_internal_links_section_tracking", 10, 2);
+function new_theme_add_internal_links_section_tracking(string $block_content, array $block): string
+{
+    $class_name = (string) ($block["attrs"]["className"] ?? "");
+    if (!str_contains(" " . $class_name . " ", " nt-internal-links ")) {
+        return $block_content;
+    }
+
+    wp_enqueue_script("new-theme-internal-links");
+
+    return new_theme_set_first_html_tag_attribute($block_content, "data-location", "internal-links");
+}
+
+add_filter("render_block_core/button", "new_theme_add_internal_link_tracking", 10, 2);
+function new_theme_add_internal_link_tracking(string $block_content, array $block): string
+{
+    $class_name = (string) ($block["attrs"]["className"] ?? "");
+    if (!str_contains(" " . $class_name . " ", " nt-internal-link ")) {
+        return $block_content;
+    }
+
+    return new_theme_set_first_html_tag_attribute($block_content, "data-internal-link", "true", "a");
+}
+
+function new_theme_set_first_html_tag_attribute(string $html, string $attribute, string $value, ?string $tag_name = null): string
+{
+    if (class_exists("WP_HTML_Tag_Processor")) {
+        $processor = new WP_HTML_Tag_Processor($html);
+        $query = $tag_name ? ["tag_name" => strtoupper($tag_name)] : [];
+        if ($processor->next_tag($query)) {
+            $processor->set_attribute($attribute, $value);
+            return $processor->get_updated_html();
+        }
+    }
+
+    $tag_pattern = $tag_name ? preg_quote($tag_name, "/") : "[a-zA-Z][a-zA-Z0-9:-]*";
+    return (string) preg_replace(
+        "/<(" . $tag_pattern . ")\\b/",
+        '<$1 ' . $attribute . '="' . esc_attr($value) . '"',
+        $html,
+        1,
+    );
+}
+
 function new_theme_render_age_disclaimer(array $attributes): string
 {
     $text = $attributes["text"] ?? "ZAISKITE ATSAKINGAI";
@@ -932,35 +1063,6 @@ function new_theme_render_site_header(array $attributes): string
     $html .= "</div></div></header>";
 
     return $html;
-}
-
-function new_theme_render_hero(array $attributes): string
-{
-    $image_path = trim((string) ($attributes["image"] ?? ""));
-    if ("" === $image_path) {
-        $image_path = "assets/img/2022/01/roleta-casino-online.png";
-    }
-
-    $image = new_theme_asset_url($image_path);
-    $title = $attributes["title"] ?? "Legalus internetiniai kazino Lietuvoje";
-    $text = $attributes["text"] ?? "";
-    $variant = ($attributes["variant"] ?? "dark") === "light" ? "light" : "dark";
-    $top_spacer = array_key_exists("topSpacer", $attributes) ? min(160, absint($attributes["topSpacer"])) : 48;
-    $overlay_opacity = array_key_exists("overlayOpacity", $attributes) ? min(90, absint($attributes["overlayOpacity"])) : 0;
-    $overlay_style = "background:url(" . esc_url($image) . ") no-repeat top center;background-size:cover;";
-
-    if ($overlay_opacity > 0) {
-        $overlay_style .= "box-shadow:inset 0 0 0 9999px " . new_theme_hex_to_rgba((string) ($attributes["overlayColor"] ?? "#000000"), $overlay_opacity / 100) . ";";
-    }
-
-    return sprintf(
-        '<header class="page-hero page-hero--%s"><div class="overlay" style="%s"></div><div class="container"><div style="height:%dpx;">&nbsp;</div><div class="row"><div class="page-hero__title layout__row-item-padding"><h1>%s</h1></div><div class="page-hero__text layout__row-item-padding"><p>%s</p></div></div></div></header>',
-        esc_attr($variant),
-        esc_attr($overlay_style),
-        $top_spacer,
-        new_theme_content_html($title),
-        new_theme_content_html($text),
-    );
 }
 
 function new_theme_render_live_odds(array $attributes): string
@@ -1203,234 +1305,6 @@ function new_theme_render_offer_card(array $attributes): string
     return $html;
 }
 
-function new_theme_render_two_column_text(array $attributes): string
-{
-    $title = $attributes["title"] ?? "";
-    $items = new_theme_array_items($attributes["items"] ?? []);
-    $style = !empty($attributes["background"]) ? ' style="background-color:' . esc_attr($attributes["background"]) . '"' : "";
-
-    $html = '<section class="text-block--two-column"' . $style . '><div class="container"><div class="row">';
-    if ($title) {
-        $html .= '<div class="layout__row-item-padding"><h2>' . new_theme_content_html($title) . "</h2></div>";
-    }
-    foreach ($items as $item) {
-        $item = is_array($item) ? $item : [];
-        if (!empty($item["heading"])) {
-            $html .=
-                '<h3 class="layout__row-item-padding"><img decoding="async" src="' .
-                esc_url(new_theme_asset_url("assets/img/theme/green-check.svg")) .
-                '" class="mr-2" width="16" height="16" alt="Check">' .
-                new_theme_content_html($item["heading"]) .
-                "</h3>";
-        }
-        foreach (["left", "right"] as $col) {
-            if (!empty($item[$col])) {
-                $html .= '<div class="text-block layout__row-item-padding">' . new_theme_content_html($item[$col]) . "</div>";
-            }
-        }
-    }
-    $html .= "</div></div></section>";
-    return $html;
-}
-
-function new_theme_render_about_list(array $attributes): string
-{
-    $title = $attributes["title"] ?? "";
-    $items = new_theme_array_items($attributes["items"] ?? []);
-    $style = !empty($attributes["background"]) ? ' style="background-color:' . esc_attr($attributes["background"]) . '"' : "";
-
-    $icon =
-        '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="8" fill="#15A96A"/><path d="M5 8L7 10L11 6" stroke="white"/></svg>';
-
-    $html = '<section class="about"' . $style . '><div class="container"><div class="row">';
-    if ($title) {
-        $html .= '<div class="about__heading layout__row-item-padding"><h2>' . new_theme_content_html($title) . "</h2></div>";
-    }
-    $html .= '<div class="about__list layout__row-item-padding"><div>';
-    foreach ($items as $item) {
-        $item = is_array($item) ? $item : [];
-        $item_title = $item["title"] ?? "";
-        $item_desc = $item["description"] ?? "";
-        $html .= '<div class="about__list-item">';
-        $html .= $icon;
-        if ($item_title) {
-            $html .= "<h3>" . esc_html($item_title) . "</h3>";
-        }
-        if ($item_desc) {
-            $html .= "<p>" . new_theme_content_html($item_desc) . "</p>";
-        }
-        $html .= "</div>";
-    }
-    $html .= "</div></div></div></div></section>";
-    return $html;
-}
-
-function new_theme_render_info_grid(array $attributes): string
-{
-    $title = $attributes["title"] ?? "";
-    $items = new_theme_array_items($attributes["items"] ?? []);
-    $style = !empty($attributes["background"]) ? ' style="background-color:' . esc_attr($attributes["background"]) . '"' : "";
-
-    $html = '<section class="info info--top-left"' . $style . '><div class="container"><div class="row">';
-    if ($title) {
-        $html .= '<div class="info__heading layout__row-item-padding"><h2>' . new_theme_content_html($title) . "</h2></div>";
-    }
-    $html .= '<div class="info__list layout__row-item-padding">';
-    foreach ($items as $item) {
-        $item = is_array($item) ? $item : [];
-        $text = $item["text"] ?? "";
-        $link_label = $item["linkLabel"] ?? "";
-        $link_url = $item["linkUrl"] ?? "";
-        if ($link_url) {
-            $link_url = new_theme_normalize_url($link_url);
-        }
-        $html .= '<div class="info__block">';
-        $html .= "<p>" . new_theme_content_html($text);
-        if ($link_url && $link_label) {
-            $html .= '<br><br><a href="' . esc_url($link_url) . '" style="font-weight:bold;color:#15a96a;">' . esc_html($link_label) . "</a>";
-        }
-        $html .= "</p></div>";
-    }
-    $html .= "</div></div></div></section>";
-    return $html;
-}
-
-function new_theme_render_content_section(array $attributes): string
-{
-    $kind = $attributes["kind"] ?? "text";
-    $title = $attributes["title"] ?? "";
-    $text = $attributes["text"] ?? "";
-    $image = $attributes["image"] ?? "";
-    $items = new_theme_array_items($attributes["items"] ?? []);
-    $style = !empty($attributes["background"]) ? ' style="background-color:' . esc_attr($attributes["background"]) . '"' : "";
-    $classes = [
-        "text" => "text-block--two-column",
-        "about" => "about",
-        "info" => "info info--top-left",
-    ];
-    $class = $classes[$kind] ?? "text-block--two-column";
-
-    $html = '<section class="' . esc_attr($class) . '"' . $style . '><div class="container"><div class="row">';
-    if ($title) {
-        $html .= '<div class="layout__row-item-padding"><h2>' . new_theme_content_html($title) . "</h2></div>";
-    }
-
-    if (in_array($kind, ["about", "info"], true)) {
-        if ($image) {
-            $html .= '<div class="' . esc_attr($kind) . '__image layout__row-item-padding"><img src="' . esc_url(new_theme_asset_url($image)) . '" alt=""></div>';
-        }
-        $html .= '<div class="' . esc_attr($kind) . '__content layout__row-item-padding">' . new_theme_content_html($text) . "</div>";
-        $html .= "</div></div></section>";
-        return $html;
-    }
-
-    foreach ($items as $item) {
-        $item = is_array($item) ? $item : [];
-        if (!empty($item["heading"])) {
-            $html .=
-                '<h3 class="layout__row-item-padding"><img decoding="async" src="' .
-                esc_url(new_theme_asset_url("assets/img/theme/green-check.svg")) .
-                '" class="mr-2" width="16" height="16" alt="Check">' .
-                new_theme_content_html($item["heading"]) .
-                "</h3>";
-        }
-        foreach (["left", "right"] as $column) {
-            if (!empty($item[$column])) {
-                $html .= '<div class="text-block layout__row-item-padding">' . new_theme_content_html($item[$column]) . "</div>";
-            }
-        }
-    }
-
-    $html .= "</div></div></section>";
-    return $html;
-}
-
-function new_theme_render_related_links(array $attributes): string
-{
-    wp_enqueue_script("new-theme-internal-links");
-
-    $title = $attributes["title"] ?? "";
-    $intro_text = $attributes["introText"] ?? "";
-    $variant = $attributes["variant"] ?? "cards";
-    $items = new_theme_array_items($attributes["items"] ?? []);
-    $style = !empty($attributes["background"]) ? ' style="background-color:' . esc_attr($attributes["background"]) . '"' : "";
-
-    $variant_class = "cards" === $variant ? "related-links" : "related-links related-links--" . esc_attr($variant);
-
-    $html = '<section class="' . $variant_class . '"' . $style . ' data-location="internal-links"><div class="container"><div class="row">';
-    if ($title || $intro_text) {
-        $html .= '<div class="related-links__heading layout__row-item-padding">';
-        if ($title) {
-            $html .= "<h2>" . new_theme_content_html($title) . "</h2>";
-        }
-        if ($intro_text) {
-            $html .= '<p class="related-links__intro">' . new_theme_content_html($intro_text) . "</p>";
-        }
-        $html .= "</div>";
-    }
-
-    $wrapper_open = "footer" === $variant ? '<div class="related-links__group">' : "";
-    $wrapper_close = "footer" === $variant ? "</div>" : "";
-    $html .= $wrapper_open;
-
-    foreach ($items as $item) {
-        $item = is_array($item) ? $item : [];
-        $url = new_theme_normalize_url($item["url"] ?? "#");
-        $image = $item["image"] ?? "";
-        $link_label = !empty($item["linkLabel"]) ? $item["linkLabel"] : __("Skaityti daugiau", "new-theme");
-
-        $html .= '<div class="related-links__link layout__row-item-padding">';
-        if ($image) {
-            $html .= '<img decoding="async" width="60" height="60" src="' . esc_url(new_theme_asset_url($image)) . '" alt="' . esc_attr($item["title"] ?? "") . '">';
-        }
-        $html .= "<h3>" . new_theme_content_html($item["title"] ?? "") . "</h3>";
-        $html .= !empty($item["text"]) ? "<p>" . new_theme_content_html($item["text"]) . "</p>" : "";
-        $html .= '<a href="' . esc_url($url) . '" class="related-links__url" data-internal-link="true">' . esc_html($link_label) . "</a>";
-        $html .= "</div>";
-    }
-
-    $html .= $wrapper_close . "</div></div></section>";
-
-    return $html;
-}
-
-function new_theme_render_data_table(array $attributes): string
-{
-    $title = $attributes["title"] ?? "";
-    $headers = new_theme_array_items($attributes["headers"] ?? []);
-    $rows = new_theme_array_items($attributes["rows"] ?? []);
-    $mobile_behavior = $attributes["mobileBehavior"] ?? "scroll";
-    $highlighted_rows = array_map("intval", (array) ($attributes["highlightedRows"] ?? []));
-    $highlighted_cells = array_map("strval", (array) ($attributes["highlightedCells"] ?? []));
-    $style = !empty($attributes["background"]) ? ' style="background-color:' . esc_attr($attributes["background"]) . '"' : "";
-
-    $section_class = "table-responsive" . ("stacked" === $mobile_behavior ? " table-responsive--stacked" : "");
-
-    $html = '<section class="' . esc_attr($section_class) . '"' . $style . ' data-location="table-responsive"><div class="container">';
-    if ($title) {
-        $html .= '<div class="table-responsive__heading"><h2>' . new_theme_content_html($title) . "</h2></div>";
-    }
-    $html .= '<div class="table-responsive__wrapper"><table><thead><tr>';
-    foreach ($headers as $header) {
-        $html .= "<th>" . esc_html((string) $header) . "</th>";
-    }
-    $html .= "</tr></thead><tbody>";
-    foreach ($rows as $row_index => $row) {
-        $row_class = in_array($row_index, $highlighted_rows, true) ? ' class="is-highlighted"' : "";
-        $html .= "<tr" . $row_class . ">";
-        foreach (new_theme_array_items($row) as $col_index => $cell) {
-            $cell_key = $row_index . ":" . $col_index;
-            $cell_class = in_array($cell_key, $highlighted_cells, true) ? ' class="is-highlighted"' : "";
-            $data_label = isset($headers[$col_index]) ? ' data-label="' . esc_attr((string) $headers[$col_index]) . '"' : "";
-            $html .= "<td" . $cell_class . $data_label . ">" . new_theme_content_html((string) $cell) . "</td>";
-        }
-        $html .= "</tr>";
-    }
-    $html .= "</tbody></table></div></div></section>";
-
-    return $html;
-}
-
 function new_theme_render_news_slider(array $attributes): string
 {
     $title = $attributes["title"] ?? "Naujausi straipsniai";
@@ -1508,41 +1382,6 @@ function new_theme_render_news_slider(array $attributes): string
 
     $html .= "</div></div></div></section>";
     return $html;
-}
-
-function new_theme_render_card_grid(array $attributes, string $content): string
-{
-    $title = $attributes["title"] ?? "";
-
-    return '<section class="nt-section"><div class="nt-section__inner">' . ($title ? "<h2>" . esc_html($title) . "</h2>" : "") . '<div class="nt-card-grid">' . $content . "</div></div></section>";
-}
-
-function new_theme_render_link_card(array $attributes): string
-{
-    $image = new_theme_asset_url($attributes["image"] ?? "");
-    $title = $attributes["title"] ?? "";
-    $text = $attributes["text"] ?? "";
-    $url = $attributes["url"] ?? "#";
-
-    $html = '<a class="nt-link-card" href="' . esc_url(new_theme_normalize_url($url)) . '">';
-    $html .= $image ? '<img class="nt-link-card__image" src="' . esc_url($image) . '" alt="' . esc_attr($title) . '">' : '<span class="nt-link-card__image"></span>';
-    $html .= '<span class="nt-link-card__body"><h3>' . esc_html($title) . "</h3>";
-    $html .= $text ? "<p>" . esc_html($text) . "</p>" : "";
-    $html .= "</span></a>";
-
-    return $html;
-}
-
-function new_theme_render_faq(array $attributes, string $content): string
-{
-    $title = $attributes["title"] ?? "Dazniausiai uzduodami klausimai";
-
-    return '<section class="nt-section"><div class="nt-section__inner"><h2>' . esc_html($title) . '</h2><div class="nt-faq">' . $content . "</div></div></section>";
-}
-
-function new_theme_render_faq_item(array $attributes): string
-{
-    return '<article class="nt-faq-item"><h3>' . esc_html($attributes["question"] ?? "") . "</h3><p>" . new_theme_content_html($attributes["answer"] ?? "") . "</p></article>";
 }
 
 function new_theme_render_site_footer(array $attributes): string
