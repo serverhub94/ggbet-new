@@ -132,6 +132,158 @@
 	margin: 0 0 16px;
 }
 
+:where(.nt-content-section__container, .page-hero__content) :where(.wp-block-heading) {
+	font-family: var(--new-theme-font-heading);
+	font-weight: 700;
+	letter-spacing: -.01em;
+}
+
+:where(.nt-content-section__container, .page-hero__content) :where(h2.wp-block-heading) {
+	font-size: clamp(30px, 4vw, 48px);
+	line-height: 1.08;
+	margin-block: 0 24px;
+}
+
+:where(.nt-content-section__container, .page-hero__content) :where(h3.wp-block-heading) {
+	font-size: 18px;
+	line-height: 1.35;
+	margin-block: 28px 12px;
+}
+
+:where(.nt-content-section__container, .page-hero__content) :where(p, li) {
+	font-size: 17px;
+	line-height: 1.65;
+}
+
+:where(.nt-content-section__container, .page-hero__content) :where(ul, ol):not([class*="wp-block-navigation"]) {
+	margin-block: 0 24px;
+	padding-inline-start: 24px;
+}
+
+:where(.nt-content-section__container, .page-hero__content) :where(li + li) {
+	margin-top: 8px;
+}
+
+.nt-content-section__container :where(a):not(.wp-block-button__link) {
+	color: var(--new-theme-color-green);
+	text-decoration: underline;
+	text-decoration-thickness: 1px;
+	text-underline-offset: 3px;
+}
+
+:where(.nt-content-section__container, .page-hero__content) :where(li)::marker {
+	color: var(--new-theme-color-green);
+	font-weight: 700;
+}
+
+:where(.nt-content-section__container, .page-hero__content) :where(.wp-block-image img) {
+	border-radius: 6px;
+}
+
+:where(.nt-content-section__container, .page-hero__content) :where(.wp-block-quote) {
+	border-left: 4px solid var(--new-theme-color-green);
+	margin: 32px 0;
+	padding: 8px 0 8px 24px;
+}
+
+:where(.nt-content-section__container, .page-hero__content) :where(.wp-block-quote p) {
+	font-size: 20px;
+	font-style: italic;
+	margin: 0;
+}
+
+:where(.nt-content-section__container, .page-hero__content) :where(.wp-block-table) {
+	margin: 32px 0;
+	overflow-x: auto;
+	width: 100%;
+}
+
+:where(.nt-content-section__container, .page-hero__content) :where(.wp-block-table table) {
+	border-collapse: collapse;
+	min-width: 640px;
+	width: 100%;
+}
+
+:where(.nt-content-section__container, .page-hero__content) :where(.wp-block-table th) {
+	background: var(--new-theme-color-ink);
+	color: var(--new-theme-color-white);
+	font-family: var(--new-theme-font-heading);
+	font-size: 14px;
+	font-weight: 700;
+	letter-spacing: .02em;
+	text-align: left;
+	text-transform: uppercase;
+}
+
+:where(.nt-content-section__container, .page-hero__content) :where(.wp-block-table th, .wp-block-table td) {
+	border: 1px solid #d9dce1;
+	padding: 14px 16px;
+	vertical-align: top;
+}
+
+:where(.nt-content-section__container, .page-hero__content) :where(.wp-block-table:not(.is-style-stripes) tbody tr:nth-child(even) td),
+:where(.nt-content-section__container, .page-hero__content) :where(.wp-block-table.is-style-stripes tbody tr:nth-child(odd) td) {
+	background: var(--new-theme-color-soft-gray);
+}
+
+:where(.nt-content-section__container, .page-hero__content) :where(.wp-block-table figcaption) {
+	color: #5d6066;
+	font-size: 13px;
+	margin-top: 8px;
+	text-align: left;
+}
+
+:where(.nt-content-section__container, .page-hero__content) :where(.wp-block-details) {
+	border-bottom: 1px solid #bebec7;
+	padding: 16px 0;
+}
+
+:where(.nt-content-section__container, .page-hero__content) :where(.wp-block-details summary) {
+	cursor: pointer;
+	font-family: var(--new-theme-font-heading);
+	font-size: 18px;
+	font-weight: 700;
+}
+
+:where(.nt-content-section__container, .page-hero__content) :where(.wp-block-details[open] summary) {
+	color: var(--new-theme-color-green);
+	margin-bottom: 12px;
+}
+
+:where(.nt-content-section__container, .page-hero__content) :where(.wp-block-button__link) {
+	font-family: var(--new-theme-font-heading);
+	font-weight: 700;
+	min-height: 44px;
+	padding: 12px 20px;
+	text-transform: uppercase;
+}
+
+:where(.nt-content-section__container, .page-hero__content) :where(.wp-block-separator) {
+	border-color: #d9dce1;
+	margin-block: 32px;
+}
+
+:where(.nt-content-section__container, .page-hero__content) :where(code) {
+	background: var(--new-theme-color-soft-gray);
+	border-radius: 3px;
+	font-size: .9em;
+	padding: 2px 5px;
+}
+
+:where(.nt-content-section__container, .page-hero__content) :where(.wp-block-code, .wp-block-preformatted) {
+	background: var(--new-theme-color-ink);
+	border-radius: 6px;
+	color: var(--new-theme-color-white);
+	overflow-x: auto;
+	padding: 20px;
+}
+
+:where(.nt-content-section__container, .page-hero__content) :where(.wp-block-code code) {
+	background: transparent;
+	color: inherit;
+	padding: 0;
+}
+
 .nt-offer-list {
 	display: grid;
 	gap: 16px;

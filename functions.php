@@ -126,6 +126,7 @@ function new_theme_register_blocks(): void
         "age-disclaimer" => "new_theme_render_age_disclaimer",
         "site-header" => "new_theme_render_site_header",
         "page-main" => "new_theme_render_page_main",
+        "hero" => "new_theme_render_hero",
         "section" => "new_theme_render_section",
         "offer-list" => "new_theme_render_offer_list",
         "offer-card" => "new_theme_render_offer_card",
@@ -950,6 +951,47 @@ function new_theme_render_section(array $attributes, string $content): string
         $background_html .
         $overlay_html .
         '<div class="nt-content-section__container">' . $content . "</div></section>";
+}
+
+function new_theme_render_hero(array $attributes, string $content): string
+{
+    $variant = ($attributes["variant"] ?? "dark") === "light" ? "light" : "dark";
+    $image_url = trim((string) ($attributes["image"] ?? ""));
+    if ("" === $image_url && !empty($attributes["imageId"])) {
+        $attachment_url = wp_get_attachment_image_url(absint($attributes["imageId"]), "full");
+        $image_url = is_string($attachment_url) ? $attachment_url : "";
+    }
+    if ("" === $image_url) {
+        $image_url = "assets/img/2022/01/roleta-casino-online.png";
+    }
+
+    $position = is_array($attributes["backgroundPosition"] ?? null) ? $attributes["backgroundPosition"] : [];
+    $position_x = max(0, min(1, (float) ($position["x"] ?? 0.5))) * 100;
+    $position_y = max(0, min(1, (float) ($position["y"] ?? 0))) * 100;
+    $background_style = sprintf(
+        "background-image:url('%s');background-position:%.2f%% %.2f%%",
+        esc_url(new_theme_asset_url($image_url)),
+        $position_x,
+        $position_y,
+    );
+
+    $overlay_color = sanitize_hex_color((string) ($attributes["overlayColor"] ?? "#09101f")) ?: "#09101f";
+    $overlay_opacity = min(90, max(0, absint($attributes["overlayOpacity"] ?? 35)));
+    $overlay_style = "background-color:" . new_theme_hex_to_rgba($overlay_color, $overlay_opacity / 100);
+
+    if ("" === trim($content) && (!empty($attributes["title"]) || !empty($attributes["text"]))) {
+        $content = !empty($attributes["title"]) ? "<h1>" . new_theme_content_html((string) $attributes["title"]) . "</h1>" : "";
+        $content .= !empty($attributes["text"]) ? "<p>" . new_theme_content_html((string) $attributes["text"]) . "</p>" : "";
+    }
+
+    $wrapper_attributes = get_block_wrapper_attributes([
+        "class" => "page-hero page-hero--" . $variant,
+    ]);
+
+    return '<header ' . $wrapper_attributes . '>' .
+        '<div class="page-hero__background" aria-hidden="true" style="' . esc_attr($background_style) . '"></div>' .
+        '<div class="page-hero__overlay" aria-hidden="true" style="' . esc_attr($overlay_style) . '"></div>' .
+        '<div class="container"><div class="page-hero__content">' . $content . "</div></div></header>";
 }
 
 add_filter("render_block_new-theme/section", "new_theme_add_internal_links_section_tracking", 10, 2);

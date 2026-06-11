@@ -57,7 +57,7 @@ final class New_Theme_Sections_Migrator
     {
         foreach ($blocks as $block) {
             $name = $block["blockName"] ?? null;
-            if (is_string($name) && array_key_exists($name, $counts)) {
+            if (is_string($name) && array_key_exists($name, $counts) && self::is_legacy_block($block)) {
                 $counts[$name]++;
             }
 
@@ -73,7 +73,7 @@ final class New_Theme_Sections_Migrator
 
         foreach ($blocks as $block) {
             $name = $block["blockName"] ?? null;
-            if (is_string($name) && in_array($name, self::LEGACY_BLOCKS, true)) {
+            if (is_string($name) && in_array($name, self::LEGACY_BLOCKS, true) && self::is_legacy_block($block)) {
                 $changes[$name]++;
                 $result[] = self::transform_legacy_block($block, $changes);
                 continue;
@@ -87,6 +87,21 @@ final class New_Theme_Sections_Migrator
         }
 
         return $result;
+    }
+
+    private static function is_legacy_block(array $block): bool
+    {
+        $name = $block["blockName"] ?? null;
+        if (!is_string($name) || !in_array($name, self::LEGACY_BLOCKS, true)) {
+            return false;
+        }
+
+        if ("new-theme/hero" !== $name) {
+            return true;
+        }
+
+        $attributes = is_array($block["attrs"] ?? null) ? $block["attrs"] : [];
+        return array_key_exists("title", $attributes) || array_key_exists("text", $attributes);
     }
 
     private static function transform_legacy_block(array $block, array &$changes): array
@@ -115,29 +130,24 @@ final class New_Theme_Sections_Migrator
         if ("" === $image) {
             $image = "assets/img/2022/01/roleta-casino-online.png";
         }
-        $section_attributes = [
-            "backgroundType" => "image",
-            "backgroundImageUrl" => new_theme_asset_url($image),
+        $hero_attributes = [
+            "image" => new_theme_asset_url($image),
             "overlayColor" => (string) ($attributes["overlayColor"] ?? "#000000"),
-            "overlayOpacity" => min(100, max(0, (int) ($attributes["overlayOpacity"] ?? 0))),
-            "paddingTop" => self::spacing_token((int) ($attributes["topSpacer"] ?? 48)),
-            "paddingBottom" => "xl",
-            "minHeight" => "l",
-            "verticalAlign" => "center",
+            "overlayOpacity" => min(90, max(0, (int) ($attributes["overlayOpacity"] ?? 35))),
+            "variant" => ($attributes["variant"] ?? "dark") === "light" ? "light" : "dark",
         ];
 
         if (!empty($attributes["imageId"])) {
-            $section_attributes["backgroundImageId"] = (int) $attributes["imageId"];
+            $hero_attributes["imageId"] = (int) $attributes["imageId"];
         }
 
-        $text_color = ($attributes["variant"] ?? "dark") === "dark" ? "white" : "ink";
         $title = (string) ($attributes["title"] ?? "Legalus internetiniai kazino Lietuvoje");
-        $children = [self::heading($title, 1, ["textColor" => $text_color])];
+        $children = [self::heading($title, 1)];
         if (!empty($attributes["text"])) {
-            $children = array_merge($children, self::rich_text_blocks((string) $attributes["text"], ["textColor" => $text_color]));
+            $children = array_merge($children, self::rich_text_blocks((string) $attributes["text"]));
         }
 
-        return self::section($children, $section_attributes);
+        return self::container("new-theme/hero", $hero_attributes, "", "", $children);
     }
 
     private static function content_section(array $attributes): array

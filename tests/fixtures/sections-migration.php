@@ -7,7 +7,7 @@ return [
     "hero-unicode-media" => [
         "content" => '<!-- wp:new-theme/hero {"title":"Kazino Lietuvoje – 2026","text":"<p>Turinys su lietuviškomis raidėmis.</p>","image":"assets/img/2025/01/casinos-com-10-gratis-de-bonus.jpg","imageId":101,"overlayOpacity":35} /-->',
         "changes" => ["new-theme/hero" => 1],
-        "contains" => ["Kazino Lietuvoje – 2026", "lietuviškomis", "casinos-com-10-gratis-de-bonus.jpg", '"backgroundImageId":101'],
+        "contains" => ["wp:new-theme/hero", "Kazino Lietuvoje – 2026", "lietuviškomis", "casinos-com-10-gratis-de-bonus.jpg", '"imageId":101'],
     ],
     "content-text" => [
         "content" => '<!-- wp:new-theme/content-section {"kind":"text","title":"Tekstas","items":[{"heading":"Grupė","left":"<p>Kairė</p>","right":"<p>Dešinė</p>"}]} /-->',

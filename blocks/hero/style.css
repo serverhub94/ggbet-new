@@ -1,0 +1,92 @@
+.wp-block-new-theme-hero.page-hero {
+	background: linear-gradient(180deg, #09101f 0, #012325 186.11%);
+	color: #fff;
+	isolation: isolate;
+	min-height: 520px;
+	overflow: hidden;
+	padding: 72px 0 285px;
+	position: relative;
+}
+
+.wp-block-new-theme-hero.page-hero .page-hero__background,
+.wp-block-new-theme-hero.page-hero .page-hero__overlay {
+	inset: 0;
+	pointer-events: none;
+	position: absolute;
+}
+
+.wp-block-new-theme-hero.page-hero .page-hero__background {
+	background-position: center top;
+	background-repeat: no-repeat;
+	background-size: cover;
+	z-index: -2;
+}
+
+.wp-block-new-theme-hero.page-hero .page-hero__overlay {
+	z-index: -1;
+}
+
+.wp-block-new-theme-hero.page-hero::after {
+	background: var(--new-theme-color-soft-gray, #f2f2f3);
+	content: "";
+	height: 210px;
+	left: -5%;
+	position: absolute;
+	top: calc(100% - 105px);
+	transform: rotate(-3deg);
+	transform-origin: top left;
+	width: 110%;
+	z-index: 0;
+}
+
+.wp-block-new-theme-hero.page-hero > .container {
+	position: relative;
+	z-index: 1;
+}
+
+.wp-block-new-theme-hero .page-hero__content {
+	max-width: 800px;
+}
+
+.wp-block-new-theme-hero .page-hero__content > :first-child {
+	margin-top: 0;
+}
+
+.wp-block-new-theme-hero .page-hero__content > :last-child {
+	margin-bottom: 0;
+}
+
+.wp-block-new-theme-hero .page-hero__content h1,
+.wp-block-new-theme-hero .page-hero__content > .wp-block-heading:first-child {
+	color: inherit;
+	font-family: var(--new-theme-font-heading);
+	font-size: clamp(36px, 5.7vw, 68px);
+	font-weight: 700;
+	letter-spacing: -.01em;
+	line-height: 1.03;
+	margin: 0 0 24px;
+}
+
+.wp-block-new-theme-hero .page-hero__content > p:first-of-type {
+	color: inherit;
+	font-size: clamp(17px, 2vw, 20px);
+	line-height: 1.55;
+	max-width: 760px;
+}
+
+.wp-block-new-theme-hero.page-hero--light {
+	color: var(--new-theme-color-ink, #1d2129);
+}
+
+@media (max-width: 767px) {
+	.wp-block-new-theme-hero.page-hero {
+		min-height: 430px;
+		padding-bottom: 230px;
+		padding-top: 52px;
+	}
+
+	.wp-block-new-theme-hero.page-hero::after {
+		height: 150px;
+		top: calc(100% - 70px);
+	}
+}

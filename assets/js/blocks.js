@@ -27,6 +27,7 @@
 	};
 	const forbiddenSectionBlocks = [
 		'new-theme/section',
+		'new-theme/hero',
 		'new-theme/page-main',
 		'new-theme/site-header',
 		'new-theme/site-footer',
@@ -736,6 +737,110 @@
 						orientation: 'vertical',
 						renderAppender: InnerBlocks.ButtonBlockAppender,
 					} )
+				)
+			);
+		},
+		save: () => el( InnerBlocks.Content ),
+	} );
+
+	// ── hero ──────────────────────────────────────────────────────────────────
+
+	registerBlockType( 'new-theme/hero', {
+		title: __( 'Hero', 'new-theme' ),
+		description: __( 'Уникальная hero-секция с произвольными вложенными блоками Gutenberg.', 'new-theme' ),
+		icon: 'cover-image',
+		category: 'new-theme',
+		attributes: {
+			image: { type: 'string', default: 'assets/img/2022/01/roleta-casino-online.png' },
+			imageId: { type: 'number' },
+			backgroundPosition: { type: 'object', default: { x: 0.5, y: 0 } },
+			overlayColor: { type: 'string', default: '#09101f' },
+			overlayOpacity: { type: 'number', default: 35 },
+			variant: { type: 'string', default: 'dark' },
+			title: { type: 'string' },
+			text: { type: 'string' },
+		},
+		supports: {
+			align: [ 'wide', 'full' ],
+			anchor: true,
+			color: { text: true, link: true },
+			html: false,
+			reusable: true,
+		},
+		edit: ( { attributes, setAttributes } ) => {
+			const backgroundPosition = attributes.backgroundPosition || { x: 0.5, y: 0 };
+			const allowedHeroBlocks = getBlockTypes()
+				.map( ( blockType ) => blockType.name )
+				.filter( ( blockName ) => ! forbiddenSectionBlocks.includes( blockName ) );
+			const template = [
+				[ 'core/heading', { level: 1, content: attributes.title || __( 'Заголовок страницы', 'new-theme' ) } ],
+				[ 'core/paragraph', { content: attributes.text || __( 'Добавьте описание и любые дополнительные блоки.', 'new-theme' ), fontSize: 'lead' } ],
+			];
+			const backgroundStyle = attributes.image ? {
+				backgroundImage: 'url("' + normalizePreviewHtml( attributes.image ) + '")',
+				backgroundPosition: ( backgroundPosition.x * 100 ) + '% ' + ( backgroundPosition.y * 100 ) + '%',
+			} : undefined;
+			const overlayStyle = {
+				backgroundColor: hexToRgba( attributes.overlayColor || '#09101f', ( attributes.overlayOpacity ?? 35 ) / 100 ),
+			};
+
+			return el(
+				'header',
+				useBlockProps( { className: 'page-hero page-hero--' + ( attributes.variant === 'light' ? 'light' : 'dark' ) } ),
+				el(
+					InspectorControls,
+					{},
+					el(
+						PanelBody,
+						{ title: __( 'Настройки Hero', 'new-theme' ), initialOpen: true },
+						mediaImageControl( __( 'Фоновое изображение', 'new-theme' ), attributes.image, attributes.imageId,
+							( image, imageId ) => setAttributes( { image, imageId } ) ),
+						attributes.image ? el( FocalPointPicker, {
+							label: __( 'Точка фокуса', 'new-theme' ),
+							url: normalizePreviewHtml( attributes.image ),
+							value: backgroundPosition,
+							onChange: ( value ) => setAttributes( { backgroundPosition: value } ),
+						} ) : null,
+						el( SelectControl, {
+							label: __( 'Цвет текста', 'new-theme' ),
+							value: attributes.variant || 'dark',
+							options: [
+								{ label: __( 'Светлый', 'new-theme' ), value: 'dark' },
+								{ label: __( 'Тёмный', 'new-theme' ), value: 'light' },
+							],
+							onChange: ( variant ) => setAttributes( { variant } ),
+						} ),
+						el( 'p', {}, __( 'Цвет затемнения', 'new-theme' ) ),
+						el( ColorPalette, {
+							colors: sectionPalette,
+							value: attributes.overlayColor || '#09101f',
+							onChange: ( overlayColor ) => setAttributes( { overlayColor: overlayColor || '#09101f' } ),
+							clearable: false,
+						} ),
+						el( RangeControl, {
+							label: __( 'Прозрачность затемнения', 'new-theme' ),
+							value: attributes.overlayOpacity ?? 35,
+							min: 0,
+							max: 90,
+							onChange: ( overlayOpacity ) => setAttributes( { overlayOpacity } ),
+						} )
+					)
+				),
+				backgroundStyle ? el( 'div', { className: 'page-hero__background', 'aria-hidden': true, style: backgroundStyle } ) : null,
+				el( 'div', { className: 'page-hero__overlay', 'aria-hidden': true, style: overlayStyle } ),
+				el(
+					'div',
+					{ className: 'container' },
+					el(
+						'div',
+						{ className: 'page-hero__content' },
+						el( InnerBlocks, {
+							allowedBlocks: allowedHeroBlocks,
+							template,
+							templateLock: false,
+							renderAppender: InnerBlocks.ButtonBlockAppender,
+						} )
+					)
 				)
 			);
 		},

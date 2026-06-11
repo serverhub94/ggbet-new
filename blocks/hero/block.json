@@ -1,0 +1,34 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "new-theme/hero",
+	"title": "Hero",
+	"category": "new-theme",
+	"icon": "cover-image",
+	"description": "Уникальная hero-секция с произвольными вложенными блоками Gutenberg.",
+	"textdomain": "new-theme",
+	"style": "file:./style.css",
+	"attributes": {
+		"image": { "type": "string", "default": "assets/img/2022/01/roleta-casino-online.png" },
+		"imageId": { "type": "number" },
+		"backgroundPosition": {
+			"type": "object",
+			"default": { "x": 0.5, "y": 0 }
+		},
+		"overlayColor": { "type": "string", "default": "#09101f" },
+		"overlayOpacity": { "type": "number", "default": 35 },
+		"variant": { "type": "string", "default": "dark", "enum": [ "dark", "light" ] },
+		"title": { "type": "string" },
+		"text": { "type": "string" }
+	},
+	"supports": {
+		"align": [ "wide", "full" ],
+		"anchor": true,
+		"color": {
+			"text": true,
+			"link": true
+		},
+		"html": false,
+		"reusable": true
+	}
+}

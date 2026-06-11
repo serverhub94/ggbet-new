@@ -7,8 +7,9 @@
 - добавлен `new-theme/section` с `InnerBlocks`;
 - добавлены настройки фона, изображения, overlay, ширины, высоты и отступов;
 - добавлена безопасная вставка `core/columns` для двухколоночного макета;
-- добавлены все 12 обязательных patterns: обычная секция, цветной и фотофон, Hero, две текстовые колонки, оба варианта контент/изображение, преимущества, информационная сетка, таблица сравнения, карточки ссылок и FAQ;
-- `templates/front-page.html` и `patterns/page-casino-legal.php` переведены на `section + core blocks`; функциональные `offer-list`, `live-odds` и `news-slider` сохранены;
+- добавлены все 12 обязательных patterns: обычная секция, цветной и фотофон, гибкий Hero, две текстовые колонки, оба варианта контент/изображение, преимущества, информационная сетка, таблица сравнения, карточки ссылок и FAQ;
+- Hero сохранён отдельным `new-theme/hero` из-за уникальной геометрии и перекрытия следующей секции; его контент переведён на `InnerBlocks`;
+- `templates/front-page.html` и `patterns/page-casino-legal.php` переведены на гибкий `hero`/`section` + core blocks; функциональные `offer-list`, `live-odds` и `news-slider` сохранены;
 - заменяемые legacy-блоки скрыты из inserter через `supports.inserter = false`, но остаются зарегистрированными для существующего контента;
 - legacy-блоки пока физически не удалялись;
 - добавлена WP-CLI миграция `audit/dry-run/migrate/verify` с рекурсивным `parse_blocks()`, backup исходного `post_content` и fixtures;
@@ -47,7 +48,7 @@
 
 | Текущий блок | Целевая замена |
 |---|---|
-| `new-theme/hero` | Section с фоновым изображением + Heading H1 + Paragraph |
+| `new-theme/hero` | Отдельный гибкий Hero с `InnerBlocks`, фоновым изображением + произвольными core-блоками |
 | `new-theme/content-section` | Section + произвольные core-блоки |
 | `new-theme/two-column-text` | Section + Columns |
 | `new-theme/about-list` | Section + List/Groups или готовый pattern |
@@ -69,7 +70,9 @@
 
 ## 3. Целевая архитектура
 
-### 3.1 Единственный новый блок
+Исключение из правила единой контентной секции: `new-theme/hero` остаётся отдельным блоком, поскольку его скошенный нижний край, высота и перекрытие следующего блока являются самостоятельным дизайн-компонентом. При этом Hero не хранит контент в жёстких `title`/`text`: новый контент сохраняется через `InnerBlocks`.
+
+### 3.1 Универсальный блок секции
 
 Имя: `new-theme/section`  
 Название в редакторе: `Универсальная секция`  
@@ -220,7 +223,7 @@ wp new-theme sections verify
 
 Правила преобразования:
 
-- `hero` -> section(image background) + core/heading level 1 + core/paragraph;
+- legacy `hero` с атрибутами `title`/`text` -> новый `hero` с `InnerBlocks` + core/heading level 1 + core/paragraph;
 - `two-column-text` -> section + headings + core/columns;
 - `content-section` -> вариант по `kind`, без потери title/text/image/items;
 - `about-list` -> section + heading + list/groups;
@@ -329,6 +332,7 @@ wp new-theme sections verify
 
 ```text
 section
+hero
 page-main
 age-disclaimer
 site-header
