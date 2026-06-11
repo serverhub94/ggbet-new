@@ -746,10 +746,11 @@
 	// ── hero ──────────────────────────────────────────────────────────────────
 
 	registerBlockType( 'new-theme/hero', {
-		title: __( 'Hero', 'new-theme' ),
+		title: __( 'Hero-секция', 'new-theme' ),
 		description: __( 'Уникальная hero-секция с произвольными вложенными блоками Gutenberg.', 'new-theme' ),
 		icon: 'cover-image',
 		category: 'new-theme',
+		keywords: [ 'hero', __( 'баннер', 'new-theme' ), __( 'обложка', 'new-theme' ) ],
 		attributes: {
 			image: { type: 'string', default: 'assets/img/2022/01/roleta-casino-online.png' },
 			imageId: { type: 'number' },

@@ -97,7 +97,7 @@ docker exec wordpress_nginx sh -c 'find /var/cache/nginx -type f -delete'
 
 ## Asset Loading
 
-CSS загружается в следующем порядке: `global.css` → `legacy-reference.css` → `block-theme.css`. Те же три файла плюс `editor.css` подключаются в editor styles через `add_editor_style`. `styles.css` является совместимым шимом для прямых ссылок; основной frontend стилизации он больше не несёт.
+CSS загружается в следующем порядке: `global.css` → `legacy-reference.css` → `block-theme.css` → `core-blocks-v2.css`. Последний файл является fallback-слоем для стандартных Gutenberg-блоков на установках, где оптимизатор удаляет WordPress `global-styles` или `wp-block-library`. Те же файлы плюс `editor.css` подключаются в editor styles через `add_editor_style`. `styles.css` является совместимым шимом для прямых ссылок; основной frontend стилизации он больше не несёт.
 
 Фронтовые JS-файлы регистрируются заранее, но подключаются только при рендере нужных блоков:
 

@@ -41,7 +41,7 @@ function new_theme_setup(): void
     add_theme_support("responsive-embeds");
     add_theme_support("post-thumbnails");
     add_theme_support("html5", ["comment-form", "comment-list", "gallery", "caption", "style", "script", "navigation-widgets"]);
-    add_editor_style(["assets/css/global.css", "assets/css/legacy-reference.css", "assets/css/block-theme.css", "assets/css/editor.css"]);
+    add_editor_style(["assets/css/global.css", "assets/css/legacy-reference.css", "assets/css/block-theme.css", "assets/css/core-blocks-v2.css", "assets/css/editor.css"]);
 }
 
 add_action("wp_enqueue_scripts", "new_theme_enqueue_assets");
@@ -62,6 +62,8 @@ function new_theme_enqueue_assets(): void
     wp_enqueue_style("new-theme-legacy-reference", $asset_uri . "/css/legacy-reference.css", ["new-theme-global"], $version("/css/legacy-reference.css"));
 
     wp_enqueue_style("new-theme-block-theme", $asset_uri . "/css/block-theme.css", ["new-theme-legacy-reference"], $version("/css/block-theme.css"));
+
+    wp_enqueue_style("new-theme-core-blocks", $asset_uri . "/css/core-blocks-v2.css", ["new-theme-block-theme"], $version("/css/core-blocks-v2.css"));
 
     wp_register_script("new-theme-slick", $asset_uri . "/js/slick.js", ["jquery"], $version("/js/slick.js"), true);
 
@@ -113,7 +115,7 @@ function new_theme_register_blocks(): void
         "new-theme-blocks",
         $asset_uri . "/js/blocks.js",
         ["wp-blocks", "wp-block-editor", "wp-components", "wp-data", "wp-element", "wp-i18n", "wp-server-side-render"],
-        file_exists($asset_dir . "/js/blocks.js") ? (string) filemtime($asset_dir . "/js/blocks.js") : wp_get_theme()->get("Version"),
+        file_exists($asset_dir . "/js/blocks.js") ? substr((string) sha1_file($asset_dir . "/js/blocks.js"), 0, 12) : wp_get_theme()->get("Version"),
         true,
     );
 

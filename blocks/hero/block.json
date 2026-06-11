@@ -2,10 +2,11 @@
 	"$schema": "https://schemas.wp.org/trunk/block.json",
 	"apiVersion": 3,
 	"name": "new-theme/hero",
-	"title": "Hero",
+	"title": "Hero-секция",
 	"category": "new-theme",
 	"icon": "cover-image",
 	"description": "Уникальная hero-секция с произвольными вложенными блоками Gutenberg.",
+	"keywords": [ "hero", "баннер", "обложка" ],
 	"textdomain": "new-theme",
 	"style": "file:./style.css",
 	"attributes": {
