@@ -385,6 +385,92 @@
 	width: 100%;
 }
 
+/* Consistent editorial rhythm inside Section and Hero. */
+:where(.nt-content-section__container, .page-hero__content) > :where(.wp-block-heading, p, ul, ol, .wp-block-list) {
+	margin-top: 0;
+}
+
+:where(.nt-content-section__container, .page-hero__content) > h1.wp-block-heading {
+	font-family: var(--new-theme-font-heading);
+	font-size: clamp(36px, 5.7vw, 68px);
+	font-weight: 700;
+	letter-spacing: -.01em;
+	line-height: 1.03;
+	margin-bottom: 24px;
+}
+
+:where(.nt-content-section__container, .page-hero__content) > h2.wp-block-heading {
+	font-family: var(--new-theme-font-heading);
+	font-size: clamp(30px, 4vw, 48px);
+	font-weight: 700;
+	letter-spacing: -.01em;
+	line-height: 1.08;
+	margin-bottom: 28px;
+}
+
+:where(.nt-content-section__container, .page-hero__content) > h3.wp-block-heading {
+	font-family: var(--new-theme-font-heading);
+	font-size: 24px;
+	font-weight: 700;
+	line-height: 1.2;
+	margin-bottom: 14px;
+}
+
+:where(.nt-content-section__container, .page-hero__content) > :where(p, ul, ol, .wp-block-list) {
+	font-size: 17px;
+	line-height: 1.65;
+	margin-bottom: 18px;
+}
+
+:where(.nt-content-section__container, .page-hero__content) > :where(ul, ol, .wp-block-list) {
+	padding-left: 24px;
+}
+
+:where(.nt-content-section__container, .page-hero__content) > :where(.wp-block-heading, p, ul, ol, .wp-block-list):last-child {
+	margin-bottom: 0;
+}
+
+:where(.nt-content-section__container, .page-hero__content) > :where(p, ul, ol, .wp-block-list, .wp-block-table, .wp-block-image, .wp-block-buttons, .wp-block-columns) + h2.wp-block-heading {
+	margin-top: 56px;
+}
+
+:where(.nt-content-section__container, .page-hero__content) > :where(p, ul, ol, .wp-block-list, .wp-block-table, .wp-block-image, .wp-block-buttons, .wp-block-columns) + h3.wp-block-heading {
+	margin-top: 38px;
+}
+
+:where(.nt-content-section__container, .page-hero__content) > :where(ul, ol, .wp-block-list) + p {
+	margin-top: 24px;
+}
+
+:where(.nt-content-section__container, .page-hero__content) > p + :where(ul, ol, .wp-block-list) {
+	margin-top: 8px;
+}
+
+:where(.nt-content-section__container, .page-hero__content) > :where(ul, ol, .wp-block-list) li {
+	padding-left: 4px;
+}
+
+:where(.nt-content-section__container, .page-hero__content) > :where(ul, ol, .wp-block-list) li + li {
+	margin-top: 12px;
+}
+
+/* The same rhythm for core blocks inserted directly into Page Main. */
+:where(.page__main, .wp-block-post-content, .wp-site-blocks) > .wp-block-heading + :where(p, ul, ol, .wp-block-list) {
+	margin-top: 0;
+}
+
+:where(.page__main, .wp-block-post-content, .wp-site-blocks) > :where(ul, ol, .wp-block-list) + p {
+	margin-top: 24px;
+}
+
+:where(.page__main, .wp-block-post-content, .wp-site-blocks) > p + :where(ul, ol, .wp-block-list) {
+	margin-top: 8px;
+}
+
+:where(.page__main, .wp-block-post-content, .wp-site-blocks) > :where(ul, ol, .wp-block-list) li + li {
+	margin-top: 12px;
+}
+
 @media (max-width: 781px) {
 	.wp-block-columns:not(.is-not-stacked-on-mobile) {
 		flex-wrap: wrap;
@@ -406,6 +492,30 @@
 
 	.has-heading-1-font-size {
 		font-size: 40px !important;
+	}
+
+	:where(.nt-content-section__container, .page-hero__content) > h1.wp-block-heading {
+		font-size: 38px;
+		margin-bottom: 18px;
+	}
+
+	:where(.nt-content-section__container, .page-hero__content) > h2.wp-block-heading {
+		font-size: 30px;
+		margin-bottom: 20px;
+	}
+
+	:where(.nt-content-section__container, .page-hero__content) > h3.wp-block-heading {
+		font-size: 22px;
+		margin-bottom: 12px;
+	}
+
+	:where(.nt-content-section__container, .page-hero__content) > :where(p, ul, ol, .wp-block-list) {
+		font-size: 16px;
+		line-height: 1.6;
+	}
+
+	:where(.nt-content-section__container, .page-hero__content) > :where(ul, ol, .wp-block-list) li + li {
+		margin-top: 10px;
 	}
 
 	:where(.page__main, .wp-block-post-content, .wp-site-blocks) > h1.wp-block-heading,
