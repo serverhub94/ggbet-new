@@ -96,13 +96,18 @@ function new_theme_enqueue_assets(): void
 add_action("wp_head", "new_theme_render_favicons", 1);
 function new_theme_render_favicons(): void
 {
-    $favicon_uri = get_template_directory_uri() . "/assets/img/favicon";
+    if (has_site_icon()) {
+        return;
+    }
 
-    printf('<link rel="icon" type="image/png" href="%s" sizes="96x96" />' . "\n", esc_url($favicon_uri . "/favicon-96x96.png"));
-    printf('<link rel="icon" type="image/svg+xml" href="%s" />' . "\n", esc_url($favicon_uri . "/favicon.svg"));
-    printf('<link rel="shortcut icon" href="%s" />' . "\n", esc_url($favicon_uri . "/favicon.ico"));
-    printf('<link rel="apple-touch-icon" sizes="180x180" href="%s" />' . "\n", esc_url($favicon_uri . "/apple-touch-icon.png"));
-    printf('<link rel="manifest" href="%s" />' . "\n", esc_url($favicon_uri . "/site.webmanifest"));
+    $favicon_dir = get_template_directory() . "/assets/img";
+    $favicon_uri = get_template_directory_uri() . "/assets/img";
+    $version = static fn(string $file): string => (string) filemtime($favicon_dir . $file);
+
+    printf('<link rel="icon" type="image/png" href="%s" sizes="32x32" />' . "\n", esc_url($favicon_uri . "/favicon-32.png?v=" . $version("/favicon-32.png")));
+    printf('<link rel="icon" type="image/png" href="%s" sizes="192x192" />' . "\n", esc_url($favicon_uri . "/favicon-192.png?v=" . $version("/favicon-192.png")));
+    printf('<link rel="shortcut icon" href="%s" />' . "\n", esc_url($favicon_uri . "/favicon.ico?v=" . $version("/favicon.ico")));
+    printf('<link rel="apple-touch-icon" sizes="192x192" href="%s" />' . "\n", esc_url($favicon_uri . "/favicon-192.png?v=" . $version("/favicon-192.png")));
 }
 
 add_action("init", "new_theme_register_blocks");
