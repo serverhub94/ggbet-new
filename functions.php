@@ -110,6 +110,81 @@ function new_theme_render_favicons(): void
     printf('<link rel="apple-touch-icon" sizes="192x192" href="%s" />' . "\n", esc_url($favicon_uri . "/favicon-192.png?v=" . $version("/favicon-192.png")));
 }
 
+add_action("wp_head", "new_theme_render_site_schema", 20);
+function new_theme_render_site_schema(): void
+{
+    $schemas = [
+        [
+            "@context" => "https://schema.org",
+            "@type" => "Organization",
+            "@id" => "https://uzsieniokazino1.lt/#organization",
+            "name" => "Uzsenio Kazino",
+            "url" => "https://uzsieniokazino1.lt",
+            "description" => "Užsienio Kazino — tarptautiniu mastu žinomas azartinių lošimų prekės ženklas su kazino žaidimais ir premijomis.",
+            "foundingDate" => "2016",
+            "address" => [
+                "@type" => "PostalAddress",
+                "streetAddress" => "JPR Buildings, Level 2, Triq Taz-Zwejt",
+                "addressLocality" => "San Gwann",
+                "addressRegion" => "Malta",
+                "addressCountry" => "MT",
+            ],
+            "contactPoint" => [
+                "@type" => "ContactPoint",
+                "telephone" => "+44-203-769-19-62",
+                "contactType" => "customer service",
+                "availableLanguage" => ["Lithuanian", "English", "Russian"],
+            ],
+        ],
+        [
+            "@context" => "https://schema.org",
+            "@type" => "WebSite",
+            "@id" => "https://uzsieniokazino1.lt/#website",
+            "name" => "Užsienio Kazino",
+            "url" => "https://uzsieniokazino1.lt",
+            "inLanguage" => "lt-LT",
+            "potentialAction" => [
+                "@type" => "SearchAction",
+                "target" => [
+                    "@type" => "EntryPoint",
+                    "urlTemplate" => "https://uzsieniokazino1.lt/?s={search_term_string}",
+                ],
+                "query-input" => "required name=search_term_string",
+            ],
+        ],
+        [
+            "@context" => "https://schema.org",
+            "@type" => "BreadcrumbList",
+            "itemListElement" => [
+                [
+                    "@type" => "ListItem",
+                    "position" => 1,
+                    "name" => "Home",
+                    "item" => "https://uzsieniokazino1.lt/",
+                ],
+                [
+                    "@type" => "ListItem",
+                    "position" => 2,
+                    "name" => "€4 500 ",
+                    "item" => "https://uzsieniokazino1.lt/",
+                ],
+                [
+                    "@type" => "ListItem",
+                    "position" => 3,
+                    "name" => "275 FS",
+                    "item" => "https://uzsieniokazino1.lt/",
+                ],
+            ],
+        ],
+    ];
+
+    foreach ($schemas as $schema) {
+        echo '<script type="application/ld+json">';
+        echo wp_json_encode($schema, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+        echo "</script>\n";
+    }
+}
+
 add_action("init", "new_theme_register_blocks");
 function new_theme_register_blocks(): void
 {
