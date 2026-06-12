@@ -6,132 +6,139 @@
  * those optional frontend assets.
  */
 
+.header__brand .brand__img,
+.site-footer .brand__img {
+    width: 100%;
+    min-width: 8em;
+    max-width: 8em;
+}
+
 .has-aposta-green-color {
-	color: var(--new-theme-color-green) !important;
+    color: var(--new-theme-color-green) !important;
 }
 
 .has-rating-yellow-color {
-	color: #ffc700 !important;
+    color: #ffc700 !important;
 }
 
 .has-bonus-orange-color {
-	color: var(--new-theme-color-orange) !important;
+    color: var(--new-theme-color-orange) !important;
 }
 
 .has-ink-color {
-	color: var(--new-theme-color-ink) !important;
+    color: var(--new-theme-color-ink) !important;
 }
 
 .has-soft-gray-color {
-	color: var(--new-theme-color-soft-gray) !important;
+    color: var(--new-theme-color-soft-gray) !important;
 }
 
 .has-white-color {
-	color: var(--new-theme-color-white) !important;
+    color: var(--new-theme-color-white) !important;
 }
 
 .has-aposta-green-background-color {
-	background-color: var(--new-theme-color-green) !important;
+    background-color: var(--new-theme-color-green) !important;
 }
 
 .has-rating-yellow-background-color {
-	background-color: #ffc700 !important;
+    background-color: #ffc700 !important;
 }
 
 .has-bonus-orange-background-color {
-	background-color: var(--new-theme-color-orange) !important;
+    background-color: var(--new-theme-color-orange) !important;
 }
 
 .has-ink-background-color {
-	background-color: var(--new-theme-color-ink) !important;
+    background-color: var(--new-theme-color-ink) !important;
 }
 
 .has-soft-gray-background-color {
-	background-color: var(--new-theme-color-soft-gray) !important;
+    background-color: var(--new-theme-color-soft-gray) !important;
 }
 
 .has-white-background-color {
-	background-color: var(--new-theme-color-white) !important;
+    background-color: var(--new-theme-color-white) !important;
 }
 
 .has-small-font-size {
-	font-size: 13px !important;
+    font-size: 13px !important;
 }
 
 .has-body-font-size {
-	font-size: 17px !important;
+    font-size: 17px !important;
 }
 
 .has-lead-font-size {
-	font-size: 20px !important;
+    font-size: 20px !important;
 }
 
 .has-heading-3-font-size {
-	font-size: 24px !important;
+    font-size: 24px !important;
 }
 
 .has-heading-2-font-size {
-	font-size: 34px !important;
+    font-size: 34px !important;
 }
 
 .has-heading-1-font-size {
-	font-size: 64px !important;
+    font-size: 64px !important;
 }
 
 .wp-block-columns {
-	align-items: normal;
-	box-sizing: border-box;
-	display: flex;
-	flex-wrap: nowrap;
-	gap: 32px;
+    align-items: normal;
+    box-sizing: border-box;
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 32px;
 }
 
 .wp-block-column {
-	flex: 1 1 0;
-	min-width: 0;
+    flex: 1 1 0;
+    min-width: 0;
 }
 
 .is-layout-flex {
-	align-items: center;
-	display: flex;
-	flex-wrap: wrap;
-	gap: 16px;
+    align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
 }
 
 .is-layout-grid {
-	display: grid;
-	gap: 16px;
+    display: grid;
+    gap: 16px;
 }
 
 .wp-block-group {
-	box-sizing: border-box;
+    box-sizing: border-box;
 }
 
 .wp-block-buttons {
-	align-items: center;
-	display: flex;
-	flex-wrap: wrap;
-	gap: 12px;
+    align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
 }
 
 .wp-block-button {
-	display: inline-block;
+    display: inline-block;
 }
 
 .wp-block-button__link {
-	align-items: center;
-	background: var(--new-theme-color-green);
-	border: 0;
-	border-radius: 4px;
-	color: var(--new-theme-color-white);
-	display: inline-flex;
-	font-family: var(--new-theme-font-heading);
-	font-weight: 700;
-	justify-content: center;
-	min-height: 44px;
-	padding: 12px 20px;
-	text-decoration: none;
-	text-transform: uppercase;
+    align-items: center;
+    background: var(--new-theme-color-green);
+    border: 0;
+    border-radius: 4px;
+    color: var(--new-theme-color-white);
+    display: inline-flex;
+    font-family: var(--new-theme-font-heading);
+    font-weight: 700;
+    justify-content: center;
+    min-height: 44px;
+    padding: 12px 20px;
+    text-decoration: none;
+    text-transform: uppercase;
 }
 
 .wp-block-image,
@@ -139,391 +146,401 @@
 .wp-block-quote,
 .wp-block-code,
 .wp-block-preformatted {
-	box-sizing: border-box;
+    box-sizing: border-box;
 }
 
 .wp-block-image {
-	margin-block: 24px;
+    margin: 0;
 }
 
 .wp-block-image img {
-	height: auto;
-	max-width: 100%;
+    height: auto;
+    max-width: 100%;
 }
 
 .wp-block-gallery {
-	display: flex;
-	flex-wrap: wrap;
-	gap: 16px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
 }
 
 .wp-block-gallery > .wp-block-image {
-	flex: 1 1 calc(33.333% - 11px);
-	margin: 0;
-	min-width: 220px;
+    flex: 1 1 calc(33.333% - 11px);
+    margin: 0;
+    min-width: 220px;
 }
 
 .wp-block-gallery > .wp-block-image img {
-	height: 100%;
-	object-fit: cover;
-	width: 100%;
+    height: 100%;
+    object-fit: cover;
+    width: 100%;
 }
 
 .wp-block-cover {
-	align-items: center;
-	display: flex;
-	justify-content: center;
-	min-height: 430px;
-	overflow: hidden;
-	position: relative;
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    min-height: 430px;
+    overflow: hidden;
+    position: relative;
 }
 
 .wp-block-cover__background,
 .wp-block-cover__image-background {
-	inset: 0;
-	position: absolute;
+    inset: 0;
+    position: absolute;
 }
 
 .wp-block-cover__image-background {
-	height: 100%;
-	object-fit: cover;
-	width: 100%;
+    height: 100%;
+    object-fit: cover;
+    width: 100%;
 }
 
 .wp-block-cover__inner-container {
-	color: var(--new-theme-color-white);
-	position: relative;
-	width: 100%;
-	z-index: 1;
+    color: var(--new-theme-color-white);
+    position: relative;
+    width: 100%;
+    z-index: 1;
 }
 
 .wp-block-media-text {
-	align-items: center;
-	display: grid;
-	gap: 32px;
-	grid-template-columns: 1fr 1fr;
+    align-items: center;
+    display: grid;
+    gap: 32px;
+    grid-template-columns: 1fr 1fr;
 }
 
 .wp-block-media-text.has-media-on-the-right .wp-block-media-text__media {
-	grid-column: 2;
-	grid-row: 1;
+    grid-column: 2;
+    grid-row: 1;
 }
 
 .wp-block-media-text.has-media-on-the-right .wp-block-media-text__content {
-	grid-column: 1;
-	grid-row: 1;
+    grid-column: 1;
+    grid-row: 1;
 }
 
 .wp-block-media-text__media img {
-	height: auto;
-	width: 100%;
+    height: auto;
+    width: 100%;
 }
 
 .wp-block-image figcaption,
 .wp-block-table figcaption {
-	color: #5d6066;
-	font-size: 13px;
-	line-height: 1.45;
-	margin-top: 8px;
+    color: #5d6066;
+    font-size: 13px;
+    line-height: 1.45;
+    margin-top: 8px;
 }
 
 .wp-block-table {
-	overflow-x: auto;
+    overflow-x: auto;
 }
 
 .wp-block-table table {
-	border-collapse: collapse;
-	min-width: 640px;
-	width: 100%;
+    border-collapse: collapse;
+    min-width: 640px;
+    width: 100%;
 }
 
 .wp-block-table th,
 .wp-block-table td {
-	border: 1px solid #d9dce1;
-	padding: 14px 16px;
-	vertical-align: top;
+    border: 1px solid #d9dce1;
+    padding: 14px 16px;
+    vertical-align: top;
 }
 
 .wp-block-table th {
-	background: var(--new-theme-color-ink);
-	color: var(--new-theme-color-white);
-	font-family: var(--new-theme-font-heading);
-	font-size: 14px;
-	font-weight: 700;
-	text-align: left;
-	text-transform: uppercase;
+    background: var(--new-theme-color-ink);
+    color: var(--new-theme-color-white);
+    font-family: var(--new-theme-font-heading);
+    font-size: 14px;
+    font-weight: 700;
+    text-align: left;
+    text-transform: uppercase;
 }
 
 .wp-block-table.is-style-stripes tbody tr:nth-child(odd) td,
 .wp-block-table:not(.is-style-stripes) tbody tr:nth-child(even) td {
-	background: var(--new-theme-color-soft-gray);
+    background: var(--new-theme-color-soft-gray);
 }
 
 .wp-block-details {
-	border-bottom: 1px solid #bebec7;
-	padding: 16px 0;
+    border-bottom: 1px solid #bebec7;
+    padding: 16px 0;
 }
 
 .wp-block-details summary {
-	cursor: pointer;
-	font-family: var(--new-theme-font-heading);
-	font-size: 18px;
-	font-weight: 700;
+    cursor: pointer;
+    font-family: var(--new-theme-font-heading);
+    font-size: 18px;
+    font-weight: 700;
 }
 
 .wp-block-details[open] summary {
-	color: var(--new-theme-color-green);
-	margin-bottom: 12px;
+    color: var(--new-theme-color-green);
+    margin-bottom: 12px;
 }
 
 .wp-block-quote {
-	border-left: 4px solid var(--new-theme-color-green);
-	margin-block: 32px;
-	padding: 8px 0 8px 24px;
+    border-left: 4px solid var(--new-theme-color-green);
+    margin-block: 32px;
+    padding: 8px 0 8px 24px;
 }
 
 .wp-block-quote p {
-	font-size: 20px;
-	font-style: italic;
+    font-size: 20px;
+    font-style: italic;
 }
 
 .wp-block-separator {
-	border: 0;
-	border-top: 1px solid #d9dce1;
-	margin-block: 32px;
+    border: 0;
+    border-top: 1px solid #d9dce1;
+    margin-block: 32px;
 }
 
 /* Core content can be inserted directly into page-main or a template root. */
-:where(.page__main, .wp-block-post-content, .wp-site-blocks) > :where(
-	.wp-block-heading,
-	p,
-	ul,
-	ol,
-	.wp-block-list,
-	.wp-block-image,
-	.wp-block-gallery,
-	.wp-block-table,
-	.wp-block-quote,
-	.wp-block-details,
-	.wp-block-buttons,
-	.wp-block-columns,
-	.wp-block-group,
-	.wp-block-cover,
-	.wp-block-media-text,
-	.wp-block-code,
-	.wp-block-preformatted,
-	.wp-block-separator
-):not(.alignfull) {
-	margin-left: auto;
-	margin-right: auto;
-	max-width: var(--new-theme-content-width);
-	padding-left: 15px;
-	padding-right: 15px;
-	width: 100%;
+:where(.page__main, .wp-block-post-content, .wp-site-blocks)
+    > :where(
+        .wp-block-heading,
+        p,
+        ul,
+        ol,
+        .wp-block-list,
+        .wp-block-image,
+        .wp-block-gallery,
+        .wp-block-table,
+        .wp-block-quote,
+        .wp-block-details,
+        .wp-block-buttons,
+        .wp-block-columns,
+        .wp-block-group,
+        .wp-block-cover,
+        .wp-block-media-text,
+        .wp-block-code,
+        .wp-block-preformatted,
+        .wp-block-separator
+    ):not(.alignfull) {
+    margin-left: auto;
+    margin-right: auto;
+    max-width: var(--new-theme-content-width);
+    padding-left: 15px;
+    padding-right: 15px;
+    width: 100%;
 }
 
 :where(.page__main, .wp-block-post-content, .wp-site-blocks) > .wp-block-heading {
-	font-family: var(--new-theme-font-heading);
-	font-weight: 700;
-	letter-spacing: -.01em;
+    font-family: var(--new-theme-font-heading);
+    font-weight: 700;
+    letter-spacing: -0.01em;
 }
 
 :where(.page__main, .wp-block-post-content, .wp-site-blocks) > h1.wp-block-heading {
-	font-size: clamp(36px, 5vw, 64px);
-	line-height: 1.03;
-	margin-bottom: 24px;
-	margin-top: 64px;
+    font-size: clamp(36px, 5vw, 64px);
+    line-height: 1.03;
+    margin-bottom: 24px;
+    margin-top: 64px;
 }
 
 :where(.page__main, .wp-block-post-content, .wp-site-blocks) > h2.wp-block-heading {
-	font-size: clamp(30px, 4vw, 48px);
-	line-height: 1.08;
-	margin-bottom: 24px;
-	margin-top: 64px;
+    font-size: clamp(30px, 4vw, 48px);
+    line-height: 1.08;
+    margin-bottom: 24px;
+    margin-top: 64px;
 }
 
 :where(.page__main, .wp-block-post-content, .wp-site-blocks) > h3.wp-block-heading {
-	font-size: 24px;
-	line-height: 1.2;
-	margin-bottom: 16px;
-	margin-top: 40px;
+    font-size: 24px;
+    line-height: 1.2;
+    margin-bottom: 16px;
+    margin-top: 40px;
 }
 
 :where(.page__main, .wp-block-post-content, .wp-site-blocks) > p,
 :where(.page__main, .wp-block-post-content, .wp-site-blocks) > :where(ul, ol, .wp-block-list) {
-	font-size: 17px;
-	line-height: 1.65;
+    font-size: 17px;
+    line-height: 1.65;
 }
 
 :where(.page__main, .wp-block-post-content, .wp-site-blocks) > p {
-	margin-bottom: 18px;
-	margin-top: 0;
+    margin-bottom: 18px;
+    margin-top: 0;
 }
 
 :where(.page__main, .wp-block-post-content, .wp-site-blocks) > :where(ul, ol, .wp-block-list) {
-	margin-bottom: 24px;
-	margin-top: 0;
-	padding-left: 39px;
+    margin-bottom: 24px;
+    margin-top: 0;
+    padding-left: 39px;
 }
 
 :where(.page__main, .wp-block-post-content, .wp-site-blocks) > :where(ul, ol, .wp-block-list) li + li {
-	margin-top: 8px;
+    margin-top: 8px;
 }
 
 :where(.page__main, .wp-block-post-content, .wp-site-blocks) > :where(ul, ol, .wp-block-list) li::marker {
-	color: var(--new-theme-color-green);
-	font-weight: 700;
+    color: var(--new-theme-color-green);
+    font-weight: 700;
 }
 
-:where(.page__main, .wp-block-post-content, .wp-site-blocks) > :where(.wp-block-table, .wp-block-image, .wp-block-gallery, .wp-block-quote, .wp-block-details, .wp-block-buttons, .wp-block-columns, .wp-block-group, .wp-block-cover, .wp-block-media-text) {
-	margin-bottom: 32px;
-	margin-top: 32px;
+:where(.page__main, .wp-block-post-content, .wp-site-blocks)
+    > :where(.wp-block-table, .wp-block-image, .wp-block-gallery, .wp-block-quote, .wp-block-details, .wp-block-buttons, .wp-block-columns, .wp-block-group, .wp-block-cover, .wp-block-media-text) {
+    margin-bottom: 32px;
+    margin-top: 32px;
+}
+
+.nt-content-section__container {
+    gap: 20px;
+}
+
+.nt-content-section__container > * {
+    margin: 0;
 }
 
 .nt-content-section__container > :where(.wp-block-columns, .wp-block-buttons),
 .page-hero__content > :where(.wp-block-columns, .wp-block-buttons) {
-	width: 100%;
+    width: 100%;
 }
 
 /* Consistent editorial rhythm inside Section and Hero. */
 :where(.nt-content-section__container, .page-hero__content) > :where(.wp-block-heading, p, ul, ol, .wp-block-list) {
-	margin-top: 0;
+    margin-top: 0;
 }
 
 :where(.nt-content-section__container, .page-hero__content) > h1.wp-block-heading {
-	font-family: var(--new-theme-font-heading);
-	font-size: clamp(36px, 5.7vw, 68px);
-	font-weight: 700;
-	letter-spacing: -.01em;
-	line-height: 1.03;
-	margin-bottom: 24px;
+    font-family: var(--new-theme-font-heading);
+    font-size: clamp(36px, 5.7vw, 68px);
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    line-height: 1.03;
+    margin-bottom: 24px;
 }
 
 :where(.nt-content-section__container, .page-hero__content) > h2.wp-block-heading {
-	font-family: var(--new-theme-font-heading);
-	font-size: clamp(30px, 4vw, 48px);
-	font-weight: 700;
-	letter-spacing: -.01em;
-	line-height: 1.08;
-	margin-bottom: 28px;
+    font-family: var(--new-theme-font-heading);
+    font-size: clamp(30px, 4vw, 48px);
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    line-height: 1.08;
+    margin-bottom: 28px;
 }
 
 :where(.nt-content-section__container, .page-hero__content) > h3.wp-block-heading {
-	font-family: var(--new-theme-font-heading);
-	font-size: 24px;
-	font-weight: 700;
-	line-height: 1.2;
-	margin-bottom: 14px;
+    font-family: var(--new-theme-font-heading);
+    font-size: 24px;
+    font-weight: 700;
+    line-height: 1.2;
+    margin-bottom: 14px;
 }
 
 :where(.nt-content-section__container, .page-hero__content) > :where(p, ul, ol, .wp-block-list) {
-	font-size: 17px;
-	line-height: 1.65;
-	margin-bottom: 18px;
+    font-size: 17px;
+    line-height: 1.65;
+    margin-bottom: 18px;
 }
 
 :where(.nt-content-section__container, .page-hero__content) > :where(ul, ol, .wp-block-list) {
-	padding-left: 24px;
+    padding-left: 24px;
 }
 
 :where(.nt-content-section__container, .page-hero__content) > :where(.wp-block-heading, p, ul, ol, .wp-block-list):last-child {
-	margin-bottom: 0;
+    margin-bottom: 0;
 }
 
 :where(.nt-content-section__container, .page-hero__content) > :where(p, ul, ol, .wp-block-list, .wp-block-table, .wp-block-image, .wp-block-buttons, .wp-block-columns) + h2.wp-block-heading {
-	margin-top: 56px;
+    margin-top: 56px;
 }
 
 :where(.nt-content-section__container, .page-hero__content) > :where(p, ul, ol, .wp-block-list, .wp-block-table, .wp-block-image, .wp-block-buttons, .wp-block-columns) + h3.wp-block-heading {
-	margin-top: 38px;
+    margin-top: 38px;
 }
 
 :where(.nt-content-section__container, .page-hero__content) > :where(ul, ol, .wp-block-list) + p {
-	margin-top: 24px;
+    margin-top: 24px;
 }
 
 :where(.nt-content-section__container, .page-hero__content) > p + :where(ul, ol, .wp-block-list) {
-	margin-top: 8px;
+    margin-top: 8px;
 }
 
 :where(.nt-content-section__container, .page-hero__content) > :where(ul, ol, .wp-block-list) li {
-	padding-left: 4px;
+    padding-left: 4px;
 }
 
 :where(.nt-content-section__container, .page-hero__content) > :where(ul, ol, .wp-block-list) li + li {
-	margin-top: 12px;
+    margin-top: 12px;
 }
 
 /* The same rhythm for core blocks inserted directly into Page Main. */
 :where(.page__main, .wp-block-post-content, .wp-site-blocks) > .wp-block-heading + :where(p, ul, ol, .wp-block-list) {
-	margin-top: 0;
+    margin-top: 0;
 }
 
 :where(.page__main, .wp-block-post-content, .wp-site-blocks) > :where(ul, ol, .wp-block-list) + p {
-	margin-top: 24px;
+    margin-top: 24px;
 }
 
 :where(.page__main, .wp-block-post-content, .wp-site-blocks) > p + :where(ul, ol, .wp-block-list) {
-	margin-top: 8px;
+    margin-top: 8px;
 }
 
 :where(.page__main, .wp-block-post-content, .wp-site-blocks) > :where(ul, ol, .wp-block-list) li + li {
-	margin-top: 12px;
+    margin-top: 12px;
 }
 
 @media (max-width: 781px) {
-	.wp-block-columns:not(.is-not-stacked-on-mobile) {
-		flex-wrap: wrap;
-	}
+    .wp-block-columns:not(.is-not-stacked-on-mobile) {
+        flex-wrap: wrap;
+    }
 
-	.wp-block-columns:not(.is-not-stacked-on-mobile) > .wp-block-column {
-		flex-basis: 100% !important;
-	}
+    .wp-block-columns:not(.is-not-stacked-on-mobile) > .wp-block-column {
+        flex-basis: 100% !important;
+    }
 
-	.wp-block-columns:not(.is-not-stacked-on-mobile) > .wp-block-column:has(> .wp-block-image) {
-		order: -1;
-	}
+    .wp-block-columns:not(.is-not-stacked-on-mobile) > .wp-block-column:has(> .wp-block-image) {
+        order: -1;
+    }
 
-	.wp-block-media-text {
-		grid-template-columns: 1fr;
-	}
+    .wp-block-media-text {
+        grid-template-columns: 1fr;
+    }
 
-	.wp-block-media-text.has-media-on-the-right .wp-block-media-text__media,
-	.wp-block-media-text.has-media-on-the-right .wp-block-media-text__content {
-		grid-column: 1;
-		grid-row: auto;
-	}
+    .wp-block-media-text.has-media-on-the-right .wp-block-media-text__media,
+    .wp-block-media-text.has-media-on-the-right .wp-block-media-text__content {
+        grid-column: 1;
+        grid-row: auto;
+    }
 
-	.has-heading-1-font-size {
-		font-size: 40px !important;
-	}
+    .has-heading-1-font-size {
+        font-size: 40px !important;
+    }
 
-	:where(.nt-content-section__container, .page-hero__content) > h1.wp-block-heading {
-		font-size: 38px;
-		margin-bottom: 18px;
-	}
+    :where(.nt-content-section__container, .page-hero__content) > h1.wp-block-heading {
+        font-size: 38px;
+        margin-bottom: 18px;
+    }
 
-	:where(.nt-content-section__container, .page-hero__content) > h2.wp-block-heading {
-		font-size: 30px;
-		margin-bottom: 20px;
-	}
+    :where(.nt-content-section__container, .page-hero__content) > h2.wp-block-heading {
+        font-size: 30px;
+        margin-bottom: 20px;
+    }
 
-	:where(.nt-content-section__container, .page-hero__content) > h3.wp-block-heading {
-		font-size: 22px;
-		margin-bottom: 12px;
-	}
+    :where(.nt-content-section__container, .page-hero__content) > h3.wp-block-heading {
+        font-size: 22px;
+        margin-bottom: 12px;
+    }
 
-	:where(.nt-content-section__container, .page-hero__content) > :where(p, ul, ol, .wp-block-list) {
-		font-size: 16px;
-		line-height: 1.6;
-	}
+    :where(.nt-content-section__container, .page-hero__content) > :where(p, ul, ol, .wp-block-list) {
+        font-size: 16px;
+        line-height: 1.6;
+    }
 
-	:where(.nt-content-section__container, .page-hero__content) > :where(ul, ol, .wp-block-list) li + li {
-		margin-top: 10px;
-	}
+    :where(.nt-content-section__container, .page-hero__content) > :where(ul, ol, .wp-block-list) li + li {
+        margin-top: 10px;
+    }
 
-	:where(.page__main, .wp-block-post-content, .wp-site-blocks) > h1.wp-block-heading,
-	:where(.page__main, .wp-block-post-content, .wp-site-blocks) > h2.wp-block-heading {
-		margin-top: 44px;
-	}
+    :where(.page__main, .wp-block-post-content, .wp-site-blocks) > h1.wp-block-heading,
+    :where(.page__main, .wp-block-post-content, .wp-site-blocks) > h2.wp-block-heading {
+        margin-top: 44px;
+    }
 }
