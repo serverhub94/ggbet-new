@@ -504,7 +504,26 @@ h3.wp-block-heading {
     margin-top: 12px;
 }
 
-/* core/list: "Числа" block style variation — forces decimal markers on any list */
+/* Reset legacy and WP-core overrides on standard list blocks.
+   legacy-reference.css applies ul:not(9 classes...) li::before {content:'\2022'}
+   with specificity (0,9,3); wp-block-list is not excluded, so !important is required. */
+ul.wp-block-list {
+    list-style-type: disc;
+}
+
+ol.wp-block-list {
+    list-style-type: decimal;
+}
+
+.wp-block-list li {
+    list-style-type: inherit;
+}
+
+.wp-block-list li::before {
+    content: none !important;
+}
+
+/* core/list: "Числа" block style variation */
 ul.wp-block-list.is-style-numbered,
 ol.wp-block-list.is-style-numbered {
     list-style-type: decimal;
