@@ -398,7 +398,8 @@
 }
 
 .nt-content-section__container > h2,
-.nt-content-section__container > h3 {
+.nt-content-section__container > h3,
+.nt-content-section__container > ul {
     margin: 0 !important;
 }
 
