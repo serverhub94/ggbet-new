@@ -399,7 +399,7 @@
 
 .nt-content-section__container > h2,
 .nt-content-section__container > h3 {
-    margin: 0;
+    margin: 0 !important;
 }
 
 .nt-content-section__container > :where(.wp-block-columns, .wp-block-buttons),
