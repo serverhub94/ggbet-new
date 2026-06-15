@@ -505,7 +505,8 @@ h3.wp-block-heading {
 }
 
 /* core/list: "Числа" block style variation — forces decimal markers on any list */
-.wp-block-list.is-style-numbered {
+ul.wp-block-list.is-style-numbered,
+ol.wp-block-list.is-style-numbered {
     list-style-type: decimal;
 }
 

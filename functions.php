@@ -259,8 +259,9 @@ add_action("init", "new_theme_register_list_styles");
 function new_theme_register_list_styles(): void
 {
     register_block_style("core/list", [
-        "name"  => "numbered",
-        "label" => __("Числа", "new-theme"),
+        "name"         => "numbered",
+        "label"        => __("Числа", "new-theme"),
+        "inline_style" => "ul.wp-block-list.is-style-numbered,ol.wp-block-list.is-style-numbered{list-style-type:decimal;}",
     ]);
 }
 
