@@ -504,6 +504,11 @@ h3.wp-block-heading {
     margin-top: 12px;
 }
 
+/* core/list: "Числа" block style variation — forces decimal markers on any list */
+.wp-block-list.is-style-numbered {
+    list-style-type: decimal;
+}
+
 @media (max-width: 781px) {
     .wp-block-columns:not(.is-not-stacked-on-mobile) {
         flex-wrap: wrap;

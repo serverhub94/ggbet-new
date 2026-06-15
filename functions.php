@@ -255,6 +255,15 @@ function new_theme_register_pattern_categories(): void
     }
 }
 
+add_action("init", "new_theme_register_list_styles");
+function new_theme_register_list_styles(): void
+{
+    register_block_style("core/list", [
+        "name"  => "numbered",
+        "label" => __("Числа", "new-theme"),
+    ]);
+}
+
 add_action("init", "new_theme_register_offer_model", 0);
 function new_theme_register_offer_model(): void
 {
