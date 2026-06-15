@@ -13,6 +13,13 @@
     max-width: 8em;
 }
 
+h3.wp-block-heading {
+    font-family: var(--new-theme-font-heading);
+    font-size: 24px;
+    font-weight: 700;
+    line-height: 1.2;
+}
+
 .has-aposta-green-color {
     color: var(--new-theme-color-green) !important;
 }
