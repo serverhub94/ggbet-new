@@ -400,7 +400,7 @@ h3.wp-block-heading {
 :where(.page__main, .wp-block-post-content, .wp-site-blocks)
     > :where(.wp-block-table, .wp-block-image, .wp-block-gallery, .wp-block-quote, .wp-block-details, .wp-block-buttons, .wp-block-columns, .wp-block-group, .wp-block-cover, .wp-block-media-text) {
     margin-bottom: 32px;
-    margin-top: 32px;
+    margin-top: 102px;
 }
 
 .nt-content-section__container {
