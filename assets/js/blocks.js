@@ -784,6 +784,96 @@
 		save: () => el( InnerBlocks.Content ),
 	} );
 
+	// ── decorative info blocks ────────────────────────────────────────────────
+
+	const allowedCoreContentBlocks = () =>
+		getBlockTypes()
+			.map( ( blockType ) => blockType.name )
+			.filter( ( blockName ) =>
+				blockName.indexOf( 'core/' ) === 0 &&
+				! [ 'core/template-part', 'core/navigation' ].includes( blockName )
+			);
+
+	registerBlockType( 'new-theme/info-wrapper', {
+		title: __( 'Инфо-блок с оберткой', 'new-theme' ),
+		description: __( 'Декоративный контейнер с темной шапкой и произвольными стандартными блоками.', 'new-theme' ),
+		icon: 'feedback',
+		category: 'new-theme',
+		keywords: [ 'info', 'wrapper', 'uagb' ],
+		supports: {
+			align: [ 'wide', 'full' ],
+			anchor: true,
+			html: false,
+			reusable: true,
+		},
+		attributes: {
+			title: { type: 'string', default: 'Nemokami sukimai naujiems žaidėjams' },
+		},
+		edit: ( { attributes, setAttributes } ) =>
+			el(
+				'section',
+				useBlockProps( { className: 'nt-info-wrapper' } ),
+				el(
+					'div',
+					{ className: 'nt-info-wrapper__header' },
+					el( RichText, {
+						tagName: 'h2',
+						className: 'nt-info-wrapper__title',
+						value: attributes.title || '',
+						placeholder: __( 'Заголовок блока', 'new-theme' ),
+						allowedFormats: [],
+						onChange: ( title ) => setAttributes( { title } ),
+					} )
+				),
+				el(
+					'div',
+					{ className: 'nt-info-wrapper__body' },
+					el( InnerBlocks, {
+						allowedBlocks: allowedCoreContentBlocks(),
+						orientation: 'vertical',
+						template: [
+							[ 'core/paragraph', { content: 'Kaip jau minėjome, iš kazino galite gauti kelių skirtingų tipų Free Spins premijas. Trumpai apžvelgsime, kaip kiekvienas tipas skiriasi.' } ],
+						],
+						renderAppender: InnerBlocks.ButtonBlockAppender,
+					} )
+				)
+			),
+		save: () => el( InnerBlocks.Content ),
+	} );
+
+	registerBlockType( 'new-theme/infobox', {
+		title: __( 'Infobox', 'new-theme' ),
+		description: __( 'Светлый декоративный infobox с большой кавычкой и произвольными стандартными блоками.', 'new-theme' ),
+		icon: 'editor-quote',
+		category: 'new-theme',
+		keywords: [ 'info', 'quote', 'kt-info-box' ],
+		supports: {
+			align: [ 'wide', 'full' ],
+			anchor: true,
+			html: false,
+			reusable: true,
+		},
+		edit: () =>
+			el(
+				'aside',
+				useBlockProps( { className: 'nt-infobox' } ),
+				el( 'div', { className: 'nt-infobox__mark', 'aria-hidden': true }, '\u201d' ),
+				el(
+					'div',
+					{ className: 'nt-infobox__content' },
+					el( InnerBlocks, {
+						allowedBlocks: allowedCoreContentBlocks(),
+						orientation: 'vertical',
+						template: [
+							[ 'core/paragraph', { content: 'Gaunate 50 € premiją ir 100 Free Spins. Jiems taikomas 30× Bonus + laimėjimų WR. Tarkime, kad laimite 10 € iš sukimų. Tai reiškia, kad turėsite atlikti statymų už 1,800 € prieš galėdami išsiimti realius pinigus.' } ],
+						],
+						renderAppender: InnerBlocks.ButtonBlockAppender,
+					} )
+				)
+			),
+		save: () => el( InnerBlocks.Content ),
+	} );
+
 	// ── hero ──────────────────────────────────────────────────────────────────
 
 	registerBlockType( 'new-theme/hero', {

@@ -210,6 +210,8 @@ function new_theme_register_blocks(): void
         "page-main" => "new_theme_render_page_main",
         "hero" => "new_theme_render_hero",
         "section" => "new_theme_render_section",
+        "info-wrapper" => "new_theme_render_info_wrapper",
+        "infobox" => "new_theme_render_infobox",
         "offer-list" => "new_theme_render_offer_list",
         "offer-card" => "new_theme_render_offer_card",
         "news-slider" => "new_theme_render_news_slider",
@@ -1058,6 +1060,36 @@ function new_theme_render_section(array $attributes, string $content): string
         $background_html .
         $overlay_html .
         '<div class="nt-content-section__container">' . $content . "</div></section>";
+}
+
+function new_theme_render_info_wrapper(array $attributes, string $content): string
+{
+    $title = trim((string) ($attributes["title"] ?? ""));
+
+    $wrapper_attributes = get_block_wrapper_attributes([
+        "class" => "nt-info-wrapper",
+    ]);
+
+    return '<section ' .
+        $wrapper_attributes .
+        '><div class="nt-info-wrapper__header"><h2 class="nt-info-wrapper__title">' .
+        new_theme_content_html($title) .
+        '</h2></div><div class="nt-info-wrapper__body">' .
+        $content .
+        "</div></section>";
+}
+
+function new_theme_render_infobox(array $attributes, string $content): string
+{
+    $wrapper_attributes = get_block_wrapper_attributes([
+        "class" => "nt-infobox",
+    ]);
+
+    return '<aside ' .
+        $wrapper_attributes .
+        '><div class="nt-infobox__mark" aria-hidden="true">&rdquo;</div><div class="nt-infobox__content">' .
+        $content .
+        "</div></aside>";
 }
 
 function new_theme_render_hero(array $attributes, string $content): string

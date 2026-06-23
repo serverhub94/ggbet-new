@@ -1,0 +1,24 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "new-theme/info-wrapper",
+	"title": "Инфо-блок с оберткой",
+	"category": "new-theme",
+	"icon": "feedback",
+	"description": "Декоративный контейнер с темной шапкой и произвольными вложенными блоками Gutenberg.",
+	"keywords": [ "info", "wrapper", "uagb" ],
+	"textdomain": "new-theme",
+	"style": "file:./style.css",
+	"attributes": {
+		"title": {
+			"type": "string",
+			"default": "Nemokami sukimai naujiems žaidėjams"
+		}
+	},
+	"supports": {
+		"anchor": true,
+		"align": [ "wide", "full" ],
+		"html": false,
+		"reusable": true
+	}
+}
