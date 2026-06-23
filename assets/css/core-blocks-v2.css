@@ -122,6 +122,10 @@ h3.wp-block-heading {
 
 .wp-block-group {
     box-sizing: border-box;
+    padding: 20px !important;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
 }
 
 .wp-block-buttons {
