@@ -284,6 +284,12 @@
 	padding: 0;
 }
 
+.header.header--dark.header--inner-page .sidebar-nav {
+	background: linear-gradient(180deg, #1d2129 0, #012325 103.08%);
+	background-position: right bottom;
+	background-repeat: no-repeat;
+}
+
 .nt-offer-list {
 	display: grid;
 	gap: 16px;

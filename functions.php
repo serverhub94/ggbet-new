@@ -1182,7 +1182,12 @@ function new_theme_render_site_header(array $attributes): string
         $primary_nav .= "</nav>";
     }
 
-    $html = '<header class="header header--initial header--with-disclaimer header--dark">';
+    $header_classes = ["header", "header--initial", "header--with-disclaimer", "header--dark"];
+    if (!is_front_page()) {
+        $header_classes[] = "header--inner-page";
+    }
+
+    $html = '<header class="' . esc_attr(implode(" ", $header_classes)) . '">';
     $html .= '<div class="container"><div class="row">';
     $html .= $sidebar_nav;
     $html .= sprintf(
