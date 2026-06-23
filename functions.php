@@ -212,6 +212,7 @@ function new_theme_register_blocks(): void
         "section" => "new_theme_render_section",
         "info-wrapper" => "new_theme_render_info_wrapper",
         "infobox" => "new_theme_render_infobox",
+        "icon-cards" => "new_theme_render_icon_cards",
         "offer-list" => "new_theme_render_offer_list",
         "offer-card" => "new_theme_render_offer_card",
         "news-slider" => "new_theme_render_news_slider",
@@ -1090,6 +1091,96 @@ function new_theme_render_infobox(array $attributes, string $content): string
         '><div class="nt-infobox__mark" aria-hidden="true">&rdquo;</div><div class="nt-infobox__content">' .
         $content .
         "</div></aside>";
+}
+
+function new_theme_icon_cards_svg(string $icon): string
+{
+    $icons = [
+        "gift" => '<path d="M20 12v10H4V12"/><path d="M2 7h20v5H2z"/><path d="M12 22V7"/><path d="M12 7H7.5a2.5 2.5 0 1 1 2.1-3.85C10.8 4.7 12 7 12 7Z"/><path d="M12 7h4.5a2.5 2.5 0 1 0-2.1-3.85C13.2 4.7 12 7 12 7Z"/>',
+        "dice" => '<rect x="4" y="4" width="16" height="16" rx="3"/><circle cx="8.5" cy="8.5" r="1"/><circle cx="15.5" cy="8.5" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="8.5" cy="15.5" r="1"/><circle cx="15.5" cy="15.5" r="1"/>',
+        "card" => '<rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 10h18"/><path d="M7 15h4"/>',
+        "shield" => '<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z"/><path d="m9 12 2 2 4-4"/>',
+        "external" => '<path d="M14 3h7v7"/><path d="m10 14 11-11"/><path d="M21 14v5a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5"/>',
+        "lock" => '<rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/>',
+        "star" => '<path d="m12 2 3.1 6.3 6.9 1-5 4.9 1.2 6.8-6.2-3.3L5.8 21 7 14.2 2 9.3l6.9-1L12 2Z"/>',
+        "alert" => '<path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z"/><path d="M12 9v4"/><path d="M12 17h.01"/>',
+    ];
+    $paths = $icons[$icon] ?? $icons["star"];
+
+    return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">' . $paths . "</svg>";
+}
+
+function new_theme_icon_cards_default_items(): array
+{
+    return [
+        [
+            "icon" => "gift",
+            "tone" => "orange",
+            "title" => "Platesni bonusai",
+            "text" => "Lietuvišką licenciją turinčios svetainės negali laisvai siūlyti didelių pasveikinimo premijų ar nemokamų sukimų. Bonusas turi vertę tik tada, kai jo sąlygos aiškios.",
+            "note" => "",
+        ],
+        [
+            "icon" => "dice",
+            "tone" => "violet",
+            "title" => "Daugiau žaidimų",
+            "text" => "Tarptautinėse svetainėse galima rasti tūkstančius automatų, gyvo kazino stalų, crash žaidimų ir sporto lažybų rinkų.",
+            "note" => "",
+        ],
+    ];
+}
+
+function new_theme_render_icon_cards(array $attributes, string $content = ""): string
+{
+    $orientation = ($attributes["orientation"] ?? "vertical") === "horizontal" ? "horizontal" : "vertical";
+    $title = trim((string) ($attributes["title"] ?? ""));
+    $items = is_array($attributes["items"] ?? null) ? $attributes["items"] : new_theme_icon_cards_default_items();
+    $tones = ["orange", "violet", "blue", "pink", "green"];
+
+    $wrapper_attributes = get_block_wrapper_attributes([
+        "class" => "nt-icon-cards nt-icon-cards--" . $orientation,
+    ]);
+
+    $html = '<section ' . $wrapper_attributes . ">";
+    if ("" !== $title) {
+        $html .= '<h2 class="nt-icon-cards__title">' . new_theme_content_html($title) . "</h2>";
+    }
+    $html .= '<div class="nt-icon-cards__list">';
+
+    foreach ($items as $item) {
+        if (!is_array($item)) {
+            continue;
+        }
+
+        $item_title = trim((string) ($item["title"] ?? ""));
+        $item_text = trim((string) ($item["text"] ?? ""));
+        $item_note = trim((string) ($item["note"] ?? ""));
+        if ("" === $item_title && "" === $item_text && "" === $item_note) {
+            continue;
+        }
+
+        $icon = sanitize_key((string) ($item["icon"] ?? "star"));
+        $tone = sanitize_key((string) ($item["tone"] ?? "orange"));
+        if (!in_array($tone, $tones, true)) {
+            $tone = "orange";
+        }
+
+        $html .= '<article class="nt-icon-card nt-icon-card--tone-' . esc_attr($tone) . '">';
+        $html .= '<div class="nt-icon-card__icon">' . new_theme_icon_cards_svg($icon) . "</div>";
+        $html .= '<div class="nt-icon-card__body">';
+        if ("" !== $item_title) {
+            $html .= '<h3 class="nt-icon-card__title">' . new_theme_content_html($item_title) . "</h3>";
+        }
+        if ("" !== $item_text) {
+            $html .= '<p class="nt-icon-card__text">' . new_theme_content_html($item_text) . "</p>";
+        }
+        if ("" !== $item_note) {
+            $html .= '<div class="nt-icon-card__note">' . new_theme_icon_cards_svg("alert") . '<span>' . new_theme_content_html($item_note) . "</span></div>";
+        }
+        $html .= "</div></article>";
+    }
+
+    return $html . "</div></section>";
 }
 
 function new_theme_render_hero(array $attributes, string $content): string

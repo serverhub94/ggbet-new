@@ -793,6 +793,105 @@
 				blockName.indexOf( 'core/' ) === 0 &&
 				! [ 'core/template-part', 'core/navigation' ].includes( blockName )
 			);
+	const iconCardDefaults = [
+		{
+			icon: 'gift',
+			tone: 'orange',
+			title: 'Platesni bonusai',
+			text: 'Lietuvišką licenciją turinčios svetainės negali laisvai siūlyti didelių pasveikinimo premijų ar nemokamų sukimų. Bonusas turi vertę tik tada, kai jo sąlygos aiškios.',
+			note: '',
+		},
+		{
+			icon: 'dice',
+			tone: 'violet',
+			title: 'Daugiau žaidimų',
+			text: 'Tarptautinėse svetainėse galima rasti tūkstančius automatų, gyvo kazino stalų, crash žaidimų ir sporto lažybų rinkų.',
+			note: '',
+		},
+		{
+			icon: 'card',
+			tone: 'blue',
+			title: 'Įvairūs mokėjimo būdai',
+			text: 'Elektroninės piniginės, kriptovaliutos ir kelios valiutos. Kiekvienas operatorius turi savo limitus ir tikrinimo tvarką.',
+			note: '',
+		},
+	];
+	const iconCardIconOptions = [
+		{ label: __( 'Подарок', 'new-theme' ), value: 'gift' },
+		{ label: __( 'Кости', 'new-theme' ), value: 'dice' },
+		{ label: __( 'Карта', 'new-theme' ), value: 'card' },
+		{ label: __( 'Щит', 'new-theme' ), value: 'shield' },
+		{ label: __( 'Внешняя ссылка', 'new-theme' ), value: 'external' },
+		{ label: __( 'Замок', 'new-theme' ), value: 'lock' },
+		{ label: __( 'Звезда', 'new-theme' ), value: 'star' },
+	];
+	const iconCardToneOptions = [
+		{ label: __( 'Оранжевый', 'new-theme' ), value: 'orange' },
+		{ label: __( 'Фиолетовый', 'new-theme' ), value: 'violet' },
+		{ label: __( 'Голубой', 'new-theme' ), value: 'blue' },
+		{ label: __( 'Розовый', 'new-theme' ), value: 'pink' },
+		{ label: __( 'Зеленый', 'new-theme' ), value: 'green' },
+	];
+	const iconCardShapes = {
+		gift: [
+			[ 'path', { d: 'M20 12v10H4V12' } ],
+			[ 'path', { d: 'M2 7h20v5H2z' } ],
+			[ 'path', { d: 'M12 22V7' } ],
+			[ 'path', { d: 'M12 7H7.5a2.5 2.5 0 1 1 2.1-3.85C10.8 4.7 12 7 12 7Z' } ],
+			[ 'path', { d: 'M12 7h4.5a2.5 2.5 0 1 0-2.1-3.85C13.2 4.7 12 7 12 7Z' } ],
+		],
+		dice: [
+			[ 'rect', { x: '4', y: '4', width: '16', height: '16', rx: '3' } ],
+			[ 'circle', { cx: '8.5', cy: '8.5', r: '1' } ],
+			[ 'circle', { cx: '15.5', cy: '8.5', r: '1' } ],
+			[ 'circle', { cx: '12', cy: '12', r: '1' } ],
+			[ 'circle', { cx: '8.5', cy: '15.5', r: '1' } ],
+			[ 'circle', { cx: '15.5', cy: '15.5', r: '1' } ],
+		],
+		card: [
+			[ 'rect', { x: '3', y: '5', width: '18', height: '14', rx: '2' } ],
+			[ 'path', { d: 'M3 10h18' } ],
+			[ 'path', { d: 'M7 15h4' } ],
+		],
+		shield: [
+			[ 'path', { d: 'M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z' } ],
+			[ 'path', { d: 'm9 12 2 2 4-4' } ],
+		],
+		external: [
+			[ 'path', { d: 'M14 3h7v7' } ],
+			[ 'path', { d: 'm10 14 11-11' } ],
+			[ 'path', { d: 'M21 14v5a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5' } ],
+		],
+		lock: [
+			[ 'rect', { x: '4', y: '11', width: '16', height: '10', rx: '2' } ],
+			[ 'path', { d: 'M8 11V7a4 4 0 0 1 8 0v4' } ],
+		],
+		star: [
+			[ 'path', { d: 'm12 2 3.1 6.3 6.9 1-5 4.9 1.2 6.8-6.2-3.3L5.8 21 7 14.2 2 9.3l6.9-1L12 2Z' } ],
+		],
+		alert: [
+			[ 'path', { d: 'M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z' } ],
+			[ 'path', { d: 'M12 9v4' } ],
+			[ 'path', { d: 'M12 17h.01' } ],
+		],
+	};
+	const renderIconCardIcon = ( icon ) =>
+		el(
+			'svg',
+			{
+				viewBox: '0 0 24 24',
+				fill: 'none',
+				stroke: 'currentColor',
+				strokeWidth: '1.9',
+				strokeLinecap: 'round',
+				strokeLinejoin: 'round',
+				'aria-hidden': true,
+				focusable: false,
+			},
+			( iconCardShapes[ icon ] || iconCardShapes.star ).map( ( shape, index ) =>
+				el( shape[ 0 ], { key: index, ...shape[ 1 ] } )
+			)
+		);
 
 	registerBlockType( 'new-theme/info-wrapper', {
 		title: __( 'Инфо-блок с оберткой', 'new-theme' ),
@@ -872,6 +971,115 @@
 				)
 			),
 		save: () => el( InnerBlocks.Content ),
+	} );
+
+	registerBlockType( 'new-theme/icon-cards', {
+		title: __( 'Карточки с иконками', 'new-theme' ),
+		description: __( 'Список карточек с вертикальным или горизонтальным макетом и стандартными иконками.', 'new-theme' ),
+		icon: 'grid-view',
+		category: 'new-theme',
+		keywords: [ 'cards', 'icons', 'benefits' ],
+		supports: {
+			align: [ 'wide', 'full' ],
+			anchor: true,
+			html: false,
+			reusable: true,
+		},
+		attributes: {
+			title: { type: 'string', default: 'Kodėl verta rinkti Užsienio Kazino?' },
+			orientation: { type: 'string', default: 'vertical' },
+			items: { type: 'array', default: iconCardDefaults },
+		},
+		edit: ( { attributes, setAttributes } ) => {
+			const orientation = attributes.orientation === 'horizontal' ? 'horizontal' : 'vertical';
+			const items = Array.isArray( attributes.items ) ? attributes.items : iconCardDefaults;
+			const itemDefaults = { icon: 'star', tone: 'orange', title: '', text: '', note: '' };
+			const set = ( key ) => ( value ) => setAttributes( { [ key ]: value } );
+			const inspector = el(
+				InspectorControls,
+				{},
+				el(
+					PanelBody,
+					{ title: __( 'Настройки', 'new-theme' ), initialOpen: true },
+					el( SelectControl, {
+						label: __( 'Макет', 'new-theme' ),
+						value: orientation,
+						options: [
+							{ label: __( 'Вертикально', 'new-theme' ), value: 'vertical' },
+							{ label: __( 'Горизонтально', 'new-theme' ), value: 'horizontal' },
+						],
+						onChange: set( 'orientation' ),
+					} )
+				),
+				simpleRepeater(
+					__( 'Элементы', 'new-theme' ),
+					items,
+					set( 'items' ),
+					itemDefaults,
+					( item, _index, update ) =>
+						el(
+							Fragment,
+							{},
+							el( SelectControl, {
+								label: __( 'Иконка', 'new-theme' ),
+								value: item.icon || 'star',
+								options: iconCardIconOptions,
+								onChange: ( icon ) => update( { icon } ),
+							} ),
+							el( SelectControl, {
+								label: __( 'Цвет иконки', 'new-theme' ),
+								value: item.tone || 'orange',
+								options: iconCardToneOptions,
+								onChange: ( tone ) => update( { tone } ),
+							} ),
+							text( __( 'Заголовок', 'new-theme' ), item.title, ( title ) => update( { title } ) ),
+							textarea( __( 'Текст', 'new-theme' ), item.text, ( value ) => update( { text: value } ) ),
+							textarea( __( 'Заметка', 'new-theme' ), item.note, ( note ) => update( { note } ), __( 'Опционально. Выводится в желтом блоке внутри карточки.', 'new-theme' ) )
+						)
+				)
+			);
+
+			return el(
+				'section',
+				useBlockProps( { className: 'nt-icon-cards nt-icon-cards--' + orientation } ),
+				inspector,
+				el( RichText, {
+					tagName: 'h2',
+					className: 'nt-icon-cards__title',
+					value: attributes.title || '',
+					placeholder: __( 'Заголовок блока', 'new-theme' ),
+					allowedFormats: [],
+					onChange: set( 'title' ),
+				} ),
+				el(
+					'div',
+					{ className: 'nt-icon-cards__list' },
+					items.map( ( item, index ) =>
+						el(
+							'article',
+							{
+								key: index,
+								className: 'nt-icon-card nt-icon-card--tone-' + ( item.tone || 'orange' ),
+							},
+							el( 'div', { className: 'nt-icon-card__icon' }, renderIconCardIcon( item.icon || 'star' ) ),
+							el(
+								'div',
+								{ className: 'nt-icon-card__body' },
+								item.title ? el( 'h3', { className: 'nt-icon-card__title' }, item.title ) : null,
+								item.text ? el( 'p', { className: 'nt-icon-card__text' }, item.text ) : null,
+								item.note ? el(
+									'div',
+									{ className: 'nt-icon-card__note' },
+									renderIconCardIcon( 'alert' ),
+									el( 'span', {}, item.note )
+								) : null
+							)
+						)
+					)
+				)
+			);
+		},
+		save: () => null,
 	} );
 
 	// ── hero ──────────────────────────────────────────────────────────────────

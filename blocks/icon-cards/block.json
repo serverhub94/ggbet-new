@@ -1,0 +1,55 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "new-theme/icon-cards",
+	"title": "Карточки с иконками",
+	"category": "new-theme",
+	"icon": "grid-view",
+	"description": "Список информационных карточек с выбором вертикального или горизонтального макета и стандартных иконок.",
+	"keywords": [ "cards", "icons", "benefits" ],
+	"textdomain": "new-theme",
+	"style": "file:./style.css",
+	"attributes": {
+		"title": {
+			"type": "string",
+			"default": "Kodėl verta rinkti Užsienio Kazino?"
+		},
+		"orientation": {
+			"type": "string",
+			"default": "vertical",
+			"enum": [ "vertical", "horizontal" ]
+		},
+		"items": {
+			"type": "array",
+			"default": [
+				{
+					"icon": "gift",
+					"tone": "orange",
+					"title": "Platesni bonusai",
+					"text": "Lietuvišką licenciją turinčios svetainės negali laisvai siūlyti didelių pasveikinimo premijų ar nemokamų sukimų. Bonusas turi vertę tik tada, kai jo sąlygos aiškios.",
+					"note": ""
+				},
+				{
+					"icon": "dice",
+					"tone": "violet",
+					"title": "Daugiau žaidimų",
+					"text": "Tarptautinėse svetainėse galima rasti tūkstančius automatų, gyvo kazino stalų, crash žaidimų ir sporto lažybų rinkų.",
+					"note": ""
+				},
+				{
+					"icon": "card",
+					"tone": "blue",
+					"title": "Įvairūs mokėjimo būdai",
+					"text": "Elektroninės piniginės, kriptovaliutos ir kelios valiutos. Kiekvienas operatorius turi savo limitus ir tikrinimo tvarką.",
+					"note": ""
+				}
+			]
+		}
+	},
+	"supports": {
+		"anchor": true,
+		"align": [ "wide", "full" ],
+		"html": false,
+		"reusable": true
+	}
+}
