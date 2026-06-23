@@ -17,6 +17,28 @@
 		{ name: 'Soft Gray', color: '#f2f2f3' },
 		{ name: 'White', color: '#ffffff' },
 	];
+	const sectionGradients = [
+		{
+			label: __( 'Темный teal', 'new-theme' ),
+			value: 'dark-teal',
+			gradient: 'linear-gradient(180deg, #1d2129 0%, #012325 103.08%)',
+		},
+		{
+			label: __( 'Зеленый и темный', 'new-theme' ),
+			value: 'green-ink',
+			gradient: 'linear-gradient(135deg, #12a96a 0%, #1d2129 100%)',
+		},
+		{
+			label: __( 'Casino glow', 'new-theme' ),
+			value: 'casino-glow',
+			gradient: 'linear-gradient(135deg, #11151c 0%, #12a96a 52%, #ffc700 100%)',
+		},
+		{
+			label: __( 'Светлый', 'new-theme' ),
+			value: 'soft-light',
+			gradient: 'linear-gradient(180deg, #ffffff 0%, #f2f2f3 100%)',
+		},
+	];
 	const sectionPaletteBySlug = {
 		'aposta-green': '#12a96a',
 		'rating-yellow': '#ffc700',
@@ -471,6 +493,7 @@
 		attributes: {
 			backgroundType: { type: 'string', default: 'none' },
 			backgroundColor: { type: 'string', default: '' },
+			backgroundGradient: { type: 'string', default: 'dark-teal' },
 			backgroundImageId: { type: 'number' },
 			backgroundImageUrl: { type: 'string', default: '' },
 			backgroundPosition: { type: 'object', default: { x: 0.5, y: 0.5 } },
@@ -498,6 +521,7 @@
 			const spacing = { none: '0px', s: '16px', m: '32px', l: '48px', xl: '64px' };
 			const minHeights = { auto: 'auto', s: '240px', m: '360px', l: '520px', screen: '100vh' };
 			const backgroundPosition = attributes.backgroundPosition || { x: 0.5, y: 0.5 };
+			const selectedGradient = sectionGradients.find( ( gradient ) => gradient.value === attributes.backgroundGradient ) || sectionGradients[ 0 ];
 			const sectionClasses = [
 				'nt-content-section',
 				'nt-content-section--width-' + ( attributes.contentWidth || 'content' ),
@@ -627,6 +651,7 @@
 							{ label: __( 'Без фона', 'new-theme' ), value: 'none' },
 							{ label: __( 'Цвет', 'new-theme' ), value: 'color' },
 							{ label: __( 'Изображение', 'new-theme' ), value: 'image' },
+							{ label: __( 'Градиент', 'new-theme' ), value: 'gradient' },
 						],
 						onChange: ( value ) => setAttributes( { backgroundType: value } ),
 					} ),
@@ -635,6 +660,15 @@
 						value: attributes.backgroundColor || '',
 						onChange: ( value ) => setAttributes( { backgroundColor: value || '' } ),
 						clearable: true,
+					} ) : null,
+					attributes.backgroundType === 'gradient' ? el( SelectControl, {
+						label: __( 'Градиент', 'new-theme' ),
+						value: selectedGradient.value,
+						options: sectionGradients.map( ( gradient ) => ( {
+							label: gradient.label,
+							value: gradient.value,
+						} ) ),
+						onChange: ( value ) => setAttributes( { backgroundGradient: value } ),
 					} ) : null,
 					attributes.backgroundType === 'image' ? el(
 						Fragment,
@@ -714,11 +748,18 @@
 				)
 			);
 
-			const backgroundStyle = attributes.backgroundType === 'image' && attributes.backgroundImageUrl ? {
-				backgroundImage: 'url("' + normalizePreviewHtml( attributes.backgroundImageUrl ) + '")',
-				backgroundPosition: ( backgroundPosition.x * 100 ) + '% ' + ( backgroundPosition.y * 100 ) + '%',
-				backgroundSize: attributes.backgroundSize || 'cover',
-			} : undefined;
+			let backgroundStyle;
+			if ( attributes.backgroundType === 'image' && attributes.backgroundImageUrl ) {
+				backgroundStyle = {
+					backgroundImage: 'url("' + normalizePreviewHtml( attributes.backgroundImageUrl ) + '")',
+					backgroundPosition: ( backgroundPosition.x * 100 ) + '% ' + ( backgroundPosition.y * 100 ) + '%',
+					backgroundSize: attributes.backgroundSize || 'cover',
+				};
+			} else if ( attributes.backgroundType === 'gradient' ) {
+				backgroundStyle = {
+					backgroundImage: selectedGradient.gradient,
+				};
+			}
 			const overlayStyle = attributes.backgroundType !== 'none' && attributes.overlayOpacity > 0 ? {
 				backgroundColor: hexToRgba( attributes.overlayColor || '#000000', attributes.overlayOpacity / 100 ),
 			} : undefined;

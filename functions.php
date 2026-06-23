@@ -906,6 +906,16 @@ function new_theme_hex_to_rgba(string $hex, float $opacity): string
     return sprintf("rgba(%d, %d, %d, %.3F)", $red, $green, $blue, $opacity);
 }
 
+function new_theme_section_gradients(): array
+{
+    return [
+        "dark-teal" => "linear-gradient(180deg, #1d2129 0%, #012325 103.08%)",
+        "green-ink" => "linear-gradient(135deg, #12a96a 0%, #1d2129 100%)",
+        "casino-glow" => "linear-gradient(135deg, #11151c 0%, #12a96a 52%, #ffc700 100%)",
+        "soft-light" => "linear-gradient(180deg, #ffffff 0%, #f2f2f3 100%)",
+    ];
+}
+
 function new_theme_normalize_schema_value(mixed $value): mixed
 {
     if (is_string($value)) {
@@ -952,7 +962,7 @@ function new_theme_render_page_main(array $attributes, string $content): string
 function new_theme_render_section(array $attributes, string $content): string
 {
     $background_type_value = $attributes["backgroundType"] ?? "none";
-    $background_type = in_array($background_type_value, ["none", "color", "image"], true) ? $background_type_value : "none";
+    $background_type = in_array($background_type_value, ["none", "color", "image", "gradient"], true) ? $background_type_value : "none";
     $content_width_value = $attributes["contentWidth"] ?? "content";
     $content_width = in_array($content_width_value, ["content", "wide", "full"], true) ? $content_width_value : "content";
     $vertical_align_value = $attributes["verticalAlign"] ?? "start";
@@ -1013,7 +1023,12 @@ function new_theme_render_section(array $attributes, string $content): string
         $attachment_url = wp_get_attachment_image_url(absint($attributes["backgroundImageId"]), "full");
         $background_image_url = is_string($attachment_url) ? $attachment_url : "";
     }
-    if ("image" === $background_type && "" !== $background_image_url) {
+    if ("gradient" === $background_type) {
+        $gradients = new_theme_section_gradients();
+        $gradient_slug = sanitize_key((string) ($attributes["backgroundGradient"] ?? "dark-teal"));
+        $background_gradient = $gradients[$gradient_slug] ?? $gradients["dark-teal"];
+        $background_html = '<div class="nt-content-section__background" aria-hidden="true" style="' . esc_attr("background:" . $background_gradient) . '"></div>';
+    } elseif ("image" === $background_type && "" !== $background_image_url) {
         $position = is_array($attributes["backgroundPosition"] ?? null) ? $attributes["backgroundPosition"] : [];
         $position_x = max(0, min(1, (float) ($position["x"] ?? 0.5))) * 100;
         $position_y = max(0, min(1, (float) ($position["y"] ?? 0.5))) * 100;
@@ -1032,7 +1047,7 @@ function new_theme_render_section(array $attributes, string $content): string
 
     $overlay_html = "";
     $overlay_opacity = min(100, max(0, absint($attributes["overlayOpacity"] ?? 0)));
-    if ($overlay_opacity > 0 && in_array($background_type, ["color", "image"], true)) {
+    if ($overlay_opacity > 0 && in_array($background_type, ["color", "image", "gradient"], true)) {
         $overlay_color = sanitize_hex_color((string) ($attributes["overlayColor"] ?? "#000000")) ?: "#000000";
         $overlay_html = '<div class="nt-content-section__overlay" aria-hidden="true" style="background-color:' .
             esc_attr(new_theme_hex_to_rgba($overlay_color, $overlay_opacity / 100)) .

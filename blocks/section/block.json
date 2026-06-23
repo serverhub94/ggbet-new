@@ -9,8 +9,9 @@
 	"textdomain": "new-theme",
 	"style": "file:./style.css",
 	"attributes": {
-		"backgroundType": { "type": "string", "default": "none", "enum": [ "none", "color", "image" ] },
+		"backgroundType": { "type": "string", "default": "none", "enum": [ "none", "color", "image", "gradient" ] },
 		"backgroundColor": { "type": "string", "default": "" },
+		"backgroundGradient": { "type": "string", "default": "dark-teal" },
 		"backgroundImageId": { "type": "number" },
 		"backgroundImageUrl": { "type": "string", "default": "" },
 		"backgroundPosition": {
